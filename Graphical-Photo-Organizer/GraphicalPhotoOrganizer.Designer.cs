@@ -163,6 +163,7 @@ partial class GraphicalPhotoOrganizer
             this.currentItemGroupBox.Controls.Add(this.textBox1);
             this.currentItemGroupBox.Controls.Add(this.monthCalendar1);
             this.currentItemGroupBox.Controls.Add(this.datePickerLabel);
+            this.currentItemGroupBox.Enabled = false;
             this.currentItemGroupBox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.currentItemGroupBox.Location = new System.Drawing.Point(12, 204);
             this.currentItemGroupBox.Name = "currentItemGroupBox";
