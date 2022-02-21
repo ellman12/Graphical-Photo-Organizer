@@ -54,11 +54,6 @@ public partial class GraphicalPhotoOrganizer : Form
         }
     }
 
-    private void applyBtn_Click(object sender, EventArgs e)
-    {
-
-    }
-
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
 
