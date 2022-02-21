@@ -28,8 +28,8 @@ partial class GraphicalPhotoOrganizer
     /// </summary>
     private void InitializeComponent()
     {
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.datePickerLabel = new System.Windows.Forms.Label();
+            this.datePicker = new System.Windows.Forms.MonthCalendar();
+            this.dateTakenTextLabel = new System.Windows.Forms.Label();
             this.filenameLabel = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.chooseSrcDirBtn = new System.Windows.Forms.Button();
@@ -38,34 +38,37 @@ partial class GraphicalPhotoOrganizer
             this.chooseDestDirBtn = new System.Windows.Forms.Button();
             this.destDirLabel = new System.Windows.Forms.Label();
             this.destPathLabel = new System.Windows.Forms.Label();
-            this.currentItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.currentPhotoGroupBox = new System.Windows.Forms.GroupBox();
             this.resetBtn = new System.Windows.Forms.Button();
             this.skipPhotoBtn = new System.Windows.Forms.Button();
             this.deletePhotoBtn = new System.Windows.Forms.Button();
             this.nextPhotoBtn = new System.Windows.Forms.Button();
             this.applyBtn = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.dateTakenLabel = new System.Windows.Forms.Label();
+            this.beginBtn = new System.Windows.Forms.Button();
             this.setupGroupBox.SuspendLayout();
-            this.currentItemGroupBox.SuspendLayout();
+            this.currentPhotoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // monthCalendar1
+            // datePicker
             // 
-            this.monthCalendar1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.monthCalendar1.Location = new System.Drawing.Point(6, 123);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 1;
+            this.datePicker.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.datePicker.Location = new System.Drawing.Point(6, 123);
+            this.datePicker.MaxSelectionCount = 1;
+            this.datePicker.Name = "datePicker";
+            this.datePicker.TabIndex = 1;
             // 
-            // datePickerLabel
+            // dateTakenTextLabel
             // 
-            this.datePickerLabel.AutoSize = true;
-            this.datePickerLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.datePickerLabel.Location = new System.Drawing.Point(6, 94);
-            this.datePickerLabel.Name = "datePickerLabel";
-            this.datePickerLabel.Size = new System.Drawing.Size(107, 28);
-            this.datePickerLabel.TabIndex = 2;
-            this.datePickerLabel.Text = "Date Taken";
+            this.dateTakenTextLabel.AutoSize = true;
+            this.dateTakenTextLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.dateTakenTextLabel.Location = new System.Drawing.Point(6, 94);
+            this.dateTakenTextLabel.Name = "dateTakenTextLabel";
+            this.dateTakenTextLabel.Size = new System.Drawing.Size(116, 28);
+            this.dateTakenTextLabel.TabIndex = 2;
+            this.dateTakenTextLabel.Text = "Date Taken: ";
             // 
             // filenameLabel
             // 
@@ -108,6 +111,7 @@ partial class GraphicalPhotoOrganizer
             // 
             // setupGroupBox
             // 
+            this.setupGroupBox.Controls.Add(this.beginBtn);
             this.setupGroupBox.Controls.Add(this.chooseDestDirBtn);
             this.setupGroupBox.Controls.Add(this.destDirLabel);
             this.setupGroupBox.Controls.Add(this.chooseSrcDirBtn);
@@ -115,7 +119,7 @@ partial class GraphicalPhotoOrganizer
             this.setupGroupBox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.setupGroupBox.Location = new System.Drawing.Point(12, 12);
             this.setupGroupBox.Name = "setupGroupBox";
-            this.setupGroupBox.Size = new System.Drawing.Size(326, 186);
+            this.setupGroupBox.Size = new System.Drawing.Size(326, 240);
             this.setupGroupBox.TabIndex = 10;
             this.setupGroupBox.TabStop = false;
             this.setupGroupBox.Text = "Setup";
@@ -145,77 +149,82 @@ partial class GraphicalPhotoOrganizer
             // 
             this.destPathLabel.AutoSize = true;
             this.destPathLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathLabel.Location = new System.Drawing.Point(6, 519);
+            this.destPathLabel.Location = new System.Drawing.Point(6, 521);
             this.destPathLabel.Name = "destPathLabel";
             this.destPathLabel.Size = new System.Drawing.Size(80, 25);
             this.destPathLabel.TabIndex = 6;
             this.destPathLabel.Text = "destPath";
             // 
-            // currentItemGroupBox
+            // currentPhotoGroupBox
             // 
-            this.currentItemGroupBox.Controls.Add(this.resetBtn);
-            this.currentItemGroupBox.Controls.Add(this.skipPhotoBtn);
-            this.currentItemGroupBox.Controls.Add(this.deletePhotoBtn);
-            this.currentItemGroupBox.Controls.Add(this.destPathLabel);
-            this.currentItemGroupBox.Controls.Add(this.nextPhotoBtn);
-            this.currentItemGroupBox.Controls.Add(this.applyBtn);
-            this.currentItemGroupBox.Controls.Add(this.filenameLabel);
-            this.currentItemGroupBox.Controls.Add(this.textBox1);
-            this.currentItemGroupBox.Controls.Add(this.monthCalendar1);
-            this.currentItemGroupBox.Controls.Add(this.datePickerLabel);
-            this.currentItemGroupBox.Enabled = false;
-            this.currentItemGroupBox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currentItemGroupBox.Location = new System.Drawing.Point(12, 204);
-            this.currentItemGroupBox.Name = "currentItemGroupBox";
-            this.currentItemGroupBox.Size = new System.Drawing.Size(326, 553);
-            this.currentItemGroupBox.TabIndex = 11;
-            this.currentItemGroupBox.TabStop = false;
-            this.currentItemGroupBox.Text = "Current Photo";
+            this.currentPhotoGroupBox.Controls.Add(this.dateTakenLabel);
+            this.currentPhotoGroupBox.Controls.Add(this.resetBtn);
+            this.currentPhotoGroupBox.Controls.Add(this.skipPhotoBtn);
+            this.currentPhotoGroupBox.Controls.Add(this.deletePhotoBtn);
+            this.currentPhotoGroupBox.Controls.Add(this.destPathLabel);
+            this.currentPhotoGroupBox.Controls.Add(this.nextPhotoBtn);
+            this.currentPhotoGroupBox.Controls.Add(this.applyBtn);
+            this.currentPhotoGroupBox.Controls.Add(this.filenameLabel);
+            this.currentPhotoGroupBox.Controls.Add(this.textBox1);
+            this.currentPhotoGroupBox.Controls.Add(this.datePicker);
+            this.currentPhotoGroupBox.Controls.Add(this.dateTakenTextLabel);
+            this.currentPhotoGroupBox.Enabled = false;
+            this.currentPhotoGroupBox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.currentPhotoGroupBox.Location = new System.Drawing.Point(12, 258);
+            this.currentPhotoGroupBox.Name = "currentPhotoGroupBox";
+            this.currentPhotoGroupBox.Size = new System.Drawing.Size(326, 553);
+            this.currentPhotoGroupBox.TabIndex = 11;
+            this.currentPhotoGroupBox.TabStop = false;
+            this.currentPhotoGroupBox.Text = "Current Photo";
             // 
             // resetBtn
             // 
             this.resetBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.resetBtn.Location = new System.Drawing.Point(6, 476);
+            this.resetBtn.Location = new System.Drawing.Point(6, 477);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(154, 41);
             this.resetBtn.TabIndex = 17;
             this.resetBtn.Text = "Reset";
             this.resetBtn.UseVisualStyleBackColor = true;
+            this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
             // skipPhotoBtn
             // 
             this.skipPhotoBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.skipPhotoBtn.Location = new System.Drawing.Point(164, 429);
+            this.skipPhotoBtn.Location = new System.Drawing.Point(164, 430);
             this.skipPhotoBtn.Name = "skipPhotoBtn";
             this.skipPhotoBtn.Size = new System.Drawing.Size(154, 41);
             this.skipPhotoBtn.TabIndex = 16;
             this.skipPhotoBtn.Text = "Skip Photo";
             this.skipPhotoBtn.UseVisualStyleBackColor = true;
+            this.skipPhotoBtn.Click += new System.EventHandler(this.skipPhotoBtn_Click);
             // 
             // deletePhotoBtn
             // 
             this.deletePhotoBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.deletePhotoBtn.Location = new System.Drawing.Point(6, 429);
+            this.deletePhotoBtn.Location = new System.Drawing.Point(6, 430);
             this.deletePhotoBtn.Name = "deletePhotoBtn";
             this.deletePhotoBtn.Size = new System.Drawing.Size(154, 41);
             this.deletePhotoBtn.TabIndex = 15;
             this.deletePhotoBtn.Text = "Delete Photo";
             this.deletePhotoBtn.UseVisualStyleBackColor = true;
+            this.deletePhotoBtn.Click += new System.EventHandler(this.deletePhotoBtn_Click);
             // 
             // nextPhotoBtn
             // 
             this.nextPhotoBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nextPhotoBtn.Location = new System.Drawing.Point(164, 382);
+            this.nextPhotoBtn.Location = new System.Drawing.Point(164, 383);
             this.nextPhotoBtn.Name = "nextPhotoBtn";
             this.nextPhotoBtn.Size = new System.Drawing.Size(154, 41);
             this.nextPhotoBtn.TabIndex = 14;
             this.nextPhotoBtn.Text = "Next Photo";
             this.nextPhotoBtn.UseVisualStyleBackColor = true;
+            this.nextPhotoBtn.Click += new System.EventHandler(this.nextPhotoBtn_Click);
             // 
             // applyBtn
             // 
             this.applyBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.applyBtn.Location = new System.Drawing.Point(6, 382);
+            this.applyBtn.Location = new System.Drawing.Point(6, 383);
             this.applyBtn.Name = "applyBtn";
             this.applyBtn.Size = new System.Drawing.Size(154, 41);
             this.applyBtn.TabIndex = 13;
@@ -228,35 +237,56 @@ partial class GraphicalPhotoOrganizer
             this.pictureBox1.ImageLocation = "";
             this.pictureBox1.Location = new System.Drawing.Point(357, 27);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1295, 730);
+            this.pictureBox1.Size = new System.Drawing.Size(1295, 784);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
+            // 
+            // dateTakenLabel
+            // 
+            this.dateTakenLabel.AutoSize = true;
+            this.dateTakenLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.dateTakenLabel.Location = new System.Drawing.Point(110, 94);
+            this.dateTakenLabel.Name = "dateTakenLabel";
+            this.dateTakenLabel.Size = new System.Drawing.Size(107, 28);
+            this.dateTakenLabel.TabIndex = 18;
+            this.dateTakenLabel.Text = "Date Taken";
+            // 
+            // beginBtn
+            // 
+            this.beginBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.beginBtn.Location = new System.Drawing.Point(6, 185);
+            this.beginBtn.Name = "beginBtn";
+            this.beginBtn.Size = new System.Drawing.Size(311, 41);
+            this.beginBtn.TabIndex = 14;
+            this.beginBtn.Text = "Begin Sorting";
+            this.beginBtn.UseVisualStyleBackColor = true;
             // 
             // GraphicalPhotoOrganizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1650, 767);
+            this.ClientSize = new System.Drawing.Size(1664, 835);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.currentItemGroupBox);
+            this.Controls.Add(this.currentPhotoGroupBox);
             this.Controls.Add(this.setupGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "GraphicalPhotoOrganizer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Graphical Photo Organizer";
+            this.Shown += new System.EventHandler(this.GraphicalPhotoOrganizer_Shown);
             this.setupGroupBox.ResumeLayout(false);
             this.setupGroupBox.PerformLayout();
-            this.currentItemGroupBox.ResumeLayout(false);
-            this.currentItemGroupBox.PerformLayout();
+            this.currentPhotoGroupBox.ResumeLayout(false);
+            this.currentPhotoGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
     }
 
     #endregion
-    private MonthCalendar monthCalendar1;
-    private Label datePickerLabel;
+    private MonthCalendar datePicker;
+    private Label dateTakenTextLabel;
     private Label filenameLabel;
     private TextBox textBox1;
     private Button chooseSrcDirBtn;
@@ -264,7 +294,7 @@ partial class GraphicalPhotoOrganizer
     private GroupBox setupGroupBox;
     private Button chooseDestDirBtn;
     private Label destDirLabel;
-    private GroupBox currentItemGroupBox;
+    private GroupBox currentPhotoGroupBox;
     private PictureBox pictureBox1;
     private Button nextPhotoBtn;
     private Button applyBtn;
@@ -272,4 +302,6 @@ partial class GraphicalPhotoOrganizer
     private Button deletePhotoBtn;
     private Label destPathLabel;
     private Button resetBtn;
+    private Label dateTakenLabel;
+    private Button beginBtn;
 }

@@ -3,11 +3,20 @@ namespace Graphical_Photo_Organizer;
 public partial class GraphicalPhotoOrganizer : Form
 {
     private List<string> unsortedFiles = new();
-    private string sortedDirRootPath = "";
+    private string unsortedDirRootPath = "", sortedDirRootPath = "";
+    private DateTime dateTaken;
     
     public GraphicalPhotoOrganizer()
     {
         InitializeComponent();
+    }
+
+    private void GraphicalPhotoOrganizer_Shown(object sender, EventArgs e)
+    {
+        srcDirLabel.Text = "";
+        destDirLabel.Text = "";
+        destPathLabel.Text = "";
+        //currentPhotoGroupBox.Enabled = true;
     }
 
     private void chooseSrcDirBtn_Click(object sender, EventArgs e)
@@ -46,6 +55,26 @@ public partial class GraphicalPhotoOrganizer : Form
     }
 
     private void applyBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void nextPhotoBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void deletePhotoBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void skipPhotoBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void resetBtn_Click(object sender, EventArgs e)
     {
 
     }
