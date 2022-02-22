@@ -312,7 +312,9 @@ partial class GraphicalPhotoOrganizer
             this.Controls.Add(this.setupGroupBox);
             this.Controls.Add(this.destPathLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "GraphicalPhotoOrganizer";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Graphical Photo Organizer";
             this.Shown += new System.EventHandler(this.GraphicalPhotoOrganizer_Shown);

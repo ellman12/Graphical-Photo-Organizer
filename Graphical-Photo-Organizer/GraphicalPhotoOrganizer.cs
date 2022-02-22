@@ -149,7 +149,7 @@ public partial class GraphicalPhotoOrganizer : Form
         filenameTextBox.Text = filename;
         dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
         dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
-        datePicker.SelectionStart = DateTime.Today;
+        datePicker.SelectionStart = dateTaken;
         photoPreview.ImageLocation = path;
 
         UpdateDestPath();
@@ -177,10 +177,21 @@ public partial class GraphicalPhotoOrganizer : Form
     /// <summary>Moves the current item to its new home and loads the next image.</summary>
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
+        UpdateDestPath();
         if (!File.Exists(destFilePath))
         {
             Directory.CreateDirectory(destFolderPath);
-            File.Move(unsortedFiles[0], destFilePath);
+
+            try
+            {
+                File.Move(unsortedFiles[0], destFilePath);
+            }
+            catch (IOException) //Stupid but fixes file in use error
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Move(unsortedFiles[0], destFilePath);
+            }
         }
         else
         {
@@ -207,9 +218,11 @@ public partial class GraphicalPhotoOrganizer : Form
     private void LoadNextImage()
     {
         unsortedFiles.RemoveAt(0);
-        LoadImage(unsortedFiles[0]);
         amountSorted++;
         UpdateStats();
+        
+        if (unsortedFiles.Count > 0)
+            LoadImage(unsortedFiles[0]);
     }
 
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
@@ -250,6 +263,6 @@ public partial class GraphicalPhotoOrganizer : Form
     {
         filenameTextBox.Text = filename;
         dateTakenLabel.Text = datePicker.SelectionStart.ToString("M/d/yyyy");
-        datePicker.SelectionStart = DateTime.Today;
+        datePicker.SelectionStart = dateTaken;
     }
 }
