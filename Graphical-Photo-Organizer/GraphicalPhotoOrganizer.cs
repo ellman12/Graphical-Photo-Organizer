@@ -30,7 +30,7 @@ public partial class GraphicalPhotoOrganizer : Form
 
         beginBtn.Enabled = true;
         currentPhotoGroupBox.Enabled = true;
-        
+
         unsortedFiles = Directory.GetFiles(unsortedDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
         unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(unsortedDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
     }
@@ -97,6 +97,23 @@ public partial class GraphicalPhotoOrganizer : Form
             beginBtn.Enabled = false;
         }
     }
+
+    //https://stackoverflow.com/a/1132559
+    private void srcDirLabel_Click(object sender, EventArgs e) =>
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = unsortedDirRootPath,
+            UseShellExecute = true,
+            Verb = "open"
+        });
+
+    private void destDirLabel_Click(object sender, EventArgs e) =>
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = sortedDirRootPath,
+            UseShellExecute = true,
+            Verb = "open"
+        });
 
     private void beginBtn_Click(object sender, EventArgs e)
     {

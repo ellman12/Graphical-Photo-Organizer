@@ -97,6 +97,7 @@ partial class GraphicalPhotoOrganizer
             this.srcDirLabel.Size = new System.Drawing.Size(29, 21);
             this.srcDirLabel.TabIndex = 9;
             this.srcDirLabel.Text = "dir";
+            this.srcDirLabel.Click += new System.EventHandler(this.srcDirLabel_Click);
             // 
             // setupGroupBox
             // 
@@ -145,6 +146,7 @@ partial class GraphicalPhotoOrganizer
             this.destDirLabel.Size = new System.Drawing.Size(29, 21);
             this.destDirLabel.TabIndex = 12;
             this.destDirLabel.Text = "dir";
+            this.destDirLabel.Click += new System.EventHandler(this.destDirLabel_Click);
             // 
             // destPathLabel
             // 
