@@ -58,6 +58,7 @@ partial class GraphicalPhotoOrganizer
             this.datePicker.MaxSelectionCount = 1;
             this.datePicker.Name = "datePicker";
             this.datePicker.TabIndex = 1;
+            this.datePicker.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.datePicker_DateChanged);
             // 
             // filenameLabel
             // 

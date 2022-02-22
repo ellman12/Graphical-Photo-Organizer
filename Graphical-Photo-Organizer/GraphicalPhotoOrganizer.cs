@@ -138,6 +138,11 @@ public partial class GraphicalPhotoOrganizer : Form
         datePicker.SelectionStart = DateTime.Today;
         photoPreview.ImageLocation = path;
     }
+    
+    private void datePicker_DateChanged(object sender, DateRangeEventArgs e)
+    {
+        dateTakenLabel.Text = datePicker.SelectionStart.ToString("M/d/yyyy");
+    }
 
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
@@ -155,7 +160,7 @@ public partial class GraphicalPhotoOrganizer : Form
     private void resetBtn_Click(object sender, EventArgs e)
     {
         filenameTextBox.Text = filename;
-        dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
+        dateTakenLabel.Text = datePicker.SelectionStart.ToString("M/d/yyyy");
         datePicker.SelectionStart = DateTime.Today;
     }
 }
