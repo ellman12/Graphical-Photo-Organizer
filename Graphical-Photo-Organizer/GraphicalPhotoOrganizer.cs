@@ -14,7 +14,7 @@ public partial class GraphicalPhotoOrganizer : Form
     private string destFilePath = ""; //The full final path to it.
     private DateTime dateTaken;
     private M.DateTakenSrc dateTakenSrc;
-    
+
     //Stats
     private int amountSorted = 0;
     private int amountSkipped = 0;
@@ -151,7 +151,21 @@ public partial class GraphicalPhotoOrganizer : Form
         dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
         datePicker.SelectionStart = DateTime.Today;
         photoPreview.ImageLocation = path;
+        
         UpdateDestPath();
+        CheckForDuplicates(path);
+    }
+
+    private void CheckForDuplicates(string path)
+    {
+        string[] sortedFiles = Directory.GetFiles(sortedDirRootPath, "*.jp*g", SearchOption.AllDirectories);
+        sortedFiles = sortedFiles.Concat(Directory.GetFiles(sortedDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
+
+        foreach (string file in sortedFiles)
+        {
+            if (file.EndsWith(Path.GetFileName(path)))
+                MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
     }
 
     private void datePicker_DateChanged(object sender, DateRangeEventArgs e)
