@@ -181,7 +181,7 @@ partial class GraphicalPhotoOrganizer
             // 
             this.dateTakenSrcLabel.AutoSize = true;
             this.dateTakenSrcLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateTakenSrcLabel.Location = new System.Drawing.Point(210, 97);
+            this.dateTakenSrcLabel.Location = new System.Drawing.Point(180, 97);
             this.dateTakenSrcLabel.Name = "dateTakenSrcLabel";
             this.dateTakenSrcLabel.Size = new System.Drawing.Size(36, 28);
             this.dateTakenSrcLabel.TabIndex = 19;

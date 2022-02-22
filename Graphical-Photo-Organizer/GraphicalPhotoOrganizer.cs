@@ -117,7 +117,7 @@ public partial class GraphicalPhotoOrganizer : Form
 
         filenameTextBox.Text = filename;
         dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
-        dateTakenSrcLabel.Text = dateTakenSrc.ToString();
+        dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
         datePicker.SelectionStart = DateTime.Today;
         photoPreview.ImageLocation = path;
     }
