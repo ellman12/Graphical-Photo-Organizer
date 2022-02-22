@@ -23,6 +23,16 @@ public partial class GraphicalPhotoOrganizer : Form
         srcDirLabel.Text = "";
         destDirLabel.Text = "";
         destPathLabel.Text = "";
+
+        //TODO: temporary stuff to make development easier
+        srcDirLabel.Text = unsortedDirRootPath = "C:/Users/Elliott/Pictures/unsorted pics";
+        destDirLabel.Text = sortedDirRootPath = "C:/Users/Elliott/Pictures/sorted pics";
+
+        beginBtn.Enabled = true;
+        currentPhotoGroupBox.Enabled = true;
+        
+        unsortedFiles = Directory.GetFiles(unsortedDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
+        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(unsortedDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
     }
 
     private void chooseSrcDirBtn_Click(object sender, EventArgs e)
