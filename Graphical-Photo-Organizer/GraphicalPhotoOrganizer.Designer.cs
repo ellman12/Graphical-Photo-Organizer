@@ -49,6 +49,7 @@ partial class GraphicalPhotoOrganizer
             this.destPathTextLabel = new System.Windows.Forms.Label();
             this.originalPathTextLabel = new System.Windows.Forms.Label();
             this.originalPathLabel = new System.Windows.Forms.Label();
+            this.statsLabel = new System.Windows.Forms.Label();
             this.setupGroupBox.SuspendLayout();
             this.currentPhotoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.photoPreview)).BeginInit();
@@ -157,7 +158,7 @@ partial class GraphicalPhotoOrganizer
             // 
             this.destPathLabel.AutoSize = true;
             this.destPathLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathLabel.Location = new System.Drawing.Point(175, 781);
+            this.destPathLabel.Location = new System.Drawing.Point(175, 785);
             this.destPathLabel.Name = "destPathLabel";
             this.destPathLabel.Size = new System.Drawing.Size(52, 28);
             this.destPathLabel.TabIndex = 6;
@@ -261,7 +262,7 @@ partial class GraphicalPhotoOrganizer
             // 
             this.destPathTextLabel.AutoSize = true;
             this.destPathTextLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathTextLabel.Location = new System.Drawing.Point(12, 781);
+            this.destPathTextLabel.Location = new System.Drawing.Point(12, 785);
             this.destPathTextLabel.Name = "destPathTextLabel";
             this.destPathTextLabel.Size = new System.Drawing.Size(159, 28);
             this.destPathTextLabel.TabIndex = 14;
@@ -287,11 +288,22 @@ partial class GraphicalPhotoOrganizer
             this.originalPathLabel.TabIndex = 15;
             this.originalPathLabel.Text = "path";
             // 
+            // statsLabel
+            // 
+            this.statsLabel.AutoSize = true;
+            this.statsLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.statsLabel.Location = new System.Drawing.Point(12, 822);
+            this.statsLabel.Name = "statsLabel";
+            this.statsLabel.Size = new System.Drawing.Size(52, 28);
+            this.statsLabel.TabIndex = 17;
+            this.statsLabel.Text = "stats";
+            // 
             // GraphicalPhotoOrganizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1664, 819);
+            this.ClientSize = new System.Drawing.Size(1664, 862);
+            this.Controls.Add(this.statsLabel);
             this.Controls.Add(this.originalPathTextLabel);
             this.Controls.Add(this.originalPathLabel);
             this.Controls.Add(this.destPathTextLabel);
@@ -336,4 +348,5 @@ partial class GraphicalPhotoOrganizer
     private Label destPathTextLabel;
     private Label originalPathTextLabel;
     private Label originalPathLabel;
+    private Label statsLabel;
 }

@@ -14,6 +14,11 @@ public partial class GraphicalPhotoOrganizer : Form
     private string destFilePath = ""; //The full final path to it.
     private DateTime dateTaken;
     private M.DateTakenSrc dateTakenSrc;
+    
+    //Stats
+    private int amountSorted = 0;
+    private int amountSkipped = 0;
+    private int amountDeleted = 0;
 
     public GraphicalPhotoOrganizer()
     {
@@ -26,6 +31,7 @@ public partial class GraphicalPhotoOrganizer : Form
         destDirLabel.Text = "";
         originalPathLabel.Text = "";
         destPathLabel.Text = "";
+        statsLabel.Text = "";
 
         //TODO: temporary stuff to make development easier
         srcDirLabel.Text = unsortedDirRootPath = "C:/Users/Elliott/Pictures/unsorted pics";
@@ -123,6 +129,7 @@ public partial class GraphicalPhotoOrganizer : Form
         currentPhotoGroupBox.Enabled = true;
         LoadImage(unsortedFiles[0]);
         setupGroupBox.Enabled = false;
+        UpdateStats();
     }
 
     private void LoadImage(string path)
@@ -160,6 +167,8 @@ public partial class GraphicalPhotoOrganizer : Form
         File.Move(unsortedFiles[0], destFilePath);
         unsortedFiles.RemoveAt(0);
         LoadImage(unsortedFiles[0]);
+        amountSorted++;
+        UpdateStats();
     }
 
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
@@ -180,6 +189,8 @@ public partial class GraphicalPhotoOrganizer : Form
             File.Delete(unsortedFiles[0]);
             unsortedFiles.RemoveAt(0);
             LoadImage(unsortedFiles[0]);
+            amountDeleted++;
+            UpdateStats();
         }
     }
 
@@ -187,7 +198,11 @@ public partial class GraphicalPhotoOrganizer : Form
     {
         unsortedFiles.RemoveAt(0);
         LoadImage(unsortedFiles[0]);
+        amountSkipped++;
+        UpdateStats();
     }
+
+    private void UpdateStats() => statsLabel.Text = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
 
     ///<summary>Reset changes made to this photo. Resets values to what they first were.</summary>
     private void resetBtn_Click(object sender, EventArgs e)
