@@ -34,8 +34,8 @@ public partial class GraphicalPhotoOrganizer : Form
         statsLabel.Text = "";
 
         //TODO: temporary stuff to make development easier
-        srcDirLabel.Text = unsortedDirRootPath = "C:/Users/Elliott/Pictures/unsorted pics";
-        destDirLabel.Text = sortedDirRootPath = "C:/Users/Elliott/Pictures/sorted pics";
+        srcDirLabel.Text = unsortedDirRootPath = "C:/Users/Elliott/Pictures/tmp/unsorted pics";
+        destDirLabel.Text = sortedDirRootPath = "C:/Users/Elliott/Pictures/tmp/sorted pics";
 
         beginBtn.Enabled = true;
         currentPhotoGroupBox.Enabled = true;
@@ -151,7 +151,7 @@ public partial class GraphicalPhotoOrganizer : Form
         dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
         datePicker.SelectionStart = DateTime.Today;
         photoPreview.ImageLocation = path;
-        
+
         UpdateDestPath();
         CheckForDuplicates(path);
     }
@@ -177,8 +177,35 @@ public partial class GraphicalPhotoOrganizer : Form
     /// <summary>Moves the current item to its new home and loads the next image.</summary>
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
-        Directory.CreateDirectory(destFolderPath);
-        File.Move(unsortedFiles[0], destFilePath);
+        if (!File.Exists(destFilePath))
+        {
+            Directory.CreateDirectory(destFolderPath);
+            File.Move(unsortedFiles[0], destFilePath);
+        }
+        else
+        {
+            DialogResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+
+            if (result == DialogResult.Yes)
+            {
+                File.Delete(destFilePath);
+                File.Move(unsortedFiles[0], destFilePath);
+            }
+            else if (result == DialogResult.No)
+            {
+                LoadNextImage();
+                return;
+            }
+            else if (result == DialogResult.Cancel)
+                return;
+        }
+        
+        LoadNextImage();
+    }
+
+    ///<summary>Removes the current image from the List and loads the next one.</summary>
+    private void LoadNextImage()
+    {
         unsortedFiles.RemoveAt(0);
         LoadImage(unsortedFiles[0]);
         amountSorted++;
