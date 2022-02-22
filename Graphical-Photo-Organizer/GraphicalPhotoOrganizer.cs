@@ -172,6 +172,13 @@ public partial class GraphicalPhotoOrganizer : Form
 
     private void deletePhotoBtn_Click(object sender, EventArgs e)
     {
+        DialogResult result = MessageBox.Show("Are you sure you want to delete this photo?", "Delete this photo?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        if (result == DialogResult.Yes)
+        {
+            File.Delete(unsortedFiles[0]);
+            unsortedFiles.RemoveAt(0);
+            LoadImage(unsortedFiles[0]);
+        }
     }
 
     private void skipPhotoBtn_Click(object sender, EventArgs e)
