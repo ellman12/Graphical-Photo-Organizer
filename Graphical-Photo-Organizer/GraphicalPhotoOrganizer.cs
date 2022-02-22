@@ -126,7 +126,7 @@ public partial class GraphicalPhotoOrganizer : Form
 
     private void LoadImage(string path)
     {
-        filename = Path.GetFileName(path);
+        filename = Path.GetFileNameWithoutExtension(path);
         ext = Path.GetExtension(path);
 
         (bool hasData, dateTakenSrc) = M.GetDateTaken(path, out dateTaken);
@@ -137,7 +137,7 @@ public partial class GraphicalPhotoOrganizer : Form
             dateTakenSrc = M.DateTakenSrc.Now;
         }
 
-        filenameTextBox.Text = Path.GetFileNameWithoutExtension(filename);
+        filenameTextBox.Text = filename;
         dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
         dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
         datePicker.SelectionStart = DateTime.Today;
