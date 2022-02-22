@@ -151,6 +151,7 @@ public partial class GraphicalPhotoOrganizer : Form
         UpdateDestPath();
     }
 
+    /// <summary>Moves the current item to its new home and loads the next image.</summary>
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
         Directory.CreateDirectory(destFolderPath);
@@ -159,12 +160,12 @@ public partial class GraphicalPhotoOrganizer : Form
         LoadImage(unsortedFiles[0]);
     }
 
-    private string UpdateDestPath()
+    ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
+    private void UpdateDestPath()
     {
         destFolderPath = Path.Combine(sortedDirRootPath, datePicker.SelectionStart.ToString("yyyy/M MMMM/d")).Replace('\\', '/');
         destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext);
         destPathLabel.Text = destFilePath;
-        return destFilePath;
     }
 
     private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
@@ -175,6 +176,8 @@ public partial class GraphicalPhotoOrganizer : Form
 
     private void skipPhotoBtn_Click(object sender, EventArgs e)
     {
+        unsortedFiles.RemoveAt(0);
+        LoadImage(unsortedFiles[0]);
     }
 
     ///<summary>Reset changes made to this photo. Resets values to what they first were.</summary>
