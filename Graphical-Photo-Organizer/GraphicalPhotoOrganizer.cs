@@ -24,6 +24,7 @@ public partial class GraphicalPhotoOrganizer : Form
     {
         srcDirLabel.Text = "";
         destDirLabel.Text = "";
+        originalPathLabel.Text = "";
         destPathLabel.Text = "";
 
         //TODO: temporary stuff to make development easier
@@ -126,6 +127,7 @@ public partial class GraphicalPhotoOrganizer : Form
 
     private void LoadImage(string path)
     {
+        originalPathLabel.Text = unsortedFiles[0];
         filename = Path.GetFileNameWithoutExtension(path);
         ext = Path.GetExtension(path);
 
@@ -164,7 +166,7 @@ public partial class GraphicalPhotoOrganizer : Form
     private void UpdateDestPath()
     {
         destFolderPath = Path.Combine(sortedDirRootPath, datePicker.SelectionStart.ToString("yyyy/M MMMM/d")).Replace('\\', '/');
-        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext);
+        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
         destPathLabel.Text = destFilePath;
     }
 

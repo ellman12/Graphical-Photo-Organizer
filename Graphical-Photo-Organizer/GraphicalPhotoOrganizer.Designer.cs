@@ -47,6 +47,8 @@ partial class GraphicalPhotoOrganizer
             this.nextPhotoBtn = new System.Windows.Forms.Button();
             this.photoPreview = new System.Windows.Forms.PictureBox();
             this.destPathTextLabel = new System.Windows.Forms.Label();
+            this.originalPathTextLabel = new System.Windows.Forms.Label();
+            this.originalPathLabel = new System.Windows.Forms.Label();
             this.setupGroupBox.SuspendLayout();
             this.currentPhotoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.photoPreview)).BeginInit();
@@ -155,11 +157,11 @@ partial class GraphicalPhotoOrganizer
             // 
             this.destPathLabel.AutoSize = true;
             this.destPathLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathLabel.Location = new System.Drawing.Point(242, 749);
+            this.destPathLabel.Location = new System.Drawing.Point(175, 781);
             this.destPathLabel.Name = "destPathLabel";
-            this.destPathLabel.Size = new System.Drawing.Size(87, 28);
+            this.destPathLabel.Size = new System.Drawing.Size(52, 28);
             this.destPathLabel.TabIndex = 6;
-            this.destPathLabel.Text = "destPath";
+            this.destPathLabel.Text = "path";
             // 
             // currentPhotoGroupBox
             // 
@@ -259,17 +261,39 @@ partial class GraphicalPhotoOrganizer
             // 
             this.destPathTextLabel.AutoSize = true;
             this.destPathTextLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathTextLabel.Location = new System.Drawing.Point(12, 749);
+            this.destPathTextLabel.Location = new System.Drawing.Point(12, 781);
             this.destPathTextLabel.Name = "destPathTextLabel";
-            this.destPathTextLabel.Size = new System.Drawing.Size(230, 28);
+            this.destPathTextLabel.Size = new System.Drawing.Size(159, 28);
             this.destPathTextLabel.TabIndex = 14;
-            this.destPathTextLabel.Text = "Photo\'s Destination Path:";
+            this.destPathTextLabel.Text = "Destination Path:";
+            // 
+            // originalPathTextLabel
+            // 
+            this.originalPathTextLabel.AutoSize = true;
+            this.originalPathTextLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.originalPathTextLabel.Location = new System.Drawing.Point(12, 748);
+            this.originalPathTextLabel.Name = "originalPathTextLabel";
+            this.originalPathTextLabel.Size = new System.Drawing.Size(129, 28);
+            this.originalPathTextLabel.TabIndex = 16;
+            this.originalPathTextLabel.Text = "Original Path:";
+            // 
+            // originalPathLabel
+            // 
+            this.originalPathLabel.AutoSize = true;
+            this.originalPathLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.originalPathLabel.Location = new System.Drawing.Point(175, 748);
+            this.originalPathLabel.Name = "originalPathLabel";
+            this.originalPathLabel.Size = new System.Drawing.Size(52, 28);
+            this.originalPathLabel.TabIndex = 15;
+            this.originalPathLabel.Text = "path";
             // 
             // GraphicalPhotoOrganizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1664, 783);
+            this.ClientSize = new System.Drawing.Size(1664, 819);
+            this.Controls.Add(this.originalPathTextLabel);
+            this.Controls.Add(this.originalPathLabel);
             this.Controls.Add(this.destPathTextLabel);
             this.Controls.Add(this.photoPreview);
             this.Controls.Add(this.currentPhotoGroupBox);
@@ -310,4 +334,6 @@ partial class GraphicalPhotoOrganizer
     private Button beginBtn;
     private Label dateTakenSrcLabel;
     private Label destPathTextLabel;
+    private Label originalPathTextLabel;
+    private Label originalPathLabel;
 }
