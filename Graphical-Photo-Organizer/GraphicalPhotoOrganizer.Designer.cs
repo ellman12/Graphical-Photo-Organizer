@@ -46,6 +46,7 @@ partial class GraphicalPhotoOrganizer
             this.deletePhotoBtn = new System.Windows.Forms.Button();
             this.nextPhotoBtn = new System.Windows.Forms.Button();
             this.photoPreview = new System.Windows.Forms.PictureBox();
+            this.destPathTextLabel = new System.Windows.Forms.Label();
             this.setupGroupBox.SuspendLayout();
             this.currentPhotoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.photoPreview)).BeginInit();
@@ -77,6 +78,7 @@ partial class GraphicalPhotoOrganizer
             this.filenameTextBox.Name = "filenameTextBox";
             this.filenameTextBox.Size = new System.Drawing.Size(312, 34);
             this.filenameTextBox.TabIndex = 4;
+            this.filenameTextBox.TextChanged += new System.EventHandler(this.filenameTextBox_TextChanged);
             // 
             // chooseSrcDirBtn
             // 
@@ -152,10 +154,10 @@ partial class GraphicalPhotoOrganizer
             // destPathLabel
             // 
             this.destPathLabel.AutoSize = true;
-            this.destPathLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.destPathLabel.Location = new System.Drawing.Point(6, 485);
+            this.destPathLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.destPathLabel.Location = new System.Drawing.Point(242, 749);
             this.destPathLabel.Name = "destPathLabel";
-            this.destPathLabel.Size = new System.Drawing.Size(80, 25);
+            this.destPathLabel.Size = new System.Drawing.Size(87, 28);
             this.destPathLabel.TabIndex = 6;
             this.destPathLabel.Text = "destPath";
             // 
@@ -166,7 +168,6 @@ partial class GraphicalPhotoOrganizer
             this.currentPhotoGroupBox.Controls.Add(this.resetBtn);
             this.currentPhotoGroupBox.Controls.Add(this.skipPhotoBtn);
             this.currentPhotoGroupBox.Controls.Add(this.deletePhotoBtn);
-            this.currentPhotoGroupBox.Controls.Add(this.destPathLabel);
             this.currentPhotoGroupBox.Controls.Add(this.nextPhotoBtn);
             this.currentPhotoGroupBox.Controls.Add(this.filenameLabel);
             this.currentPhotoGroupBox.Controls.Add(this.filenameTextBox);
@@ -175,7 +176,7 @@ partial class GraphicalPhotoOrganizer
             this.currentPhotoGroupBox.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.currentPhotoGroupBox.Location = new System.Drawing.Point(12, 258);
             this.currentPhotoGroupBox.Name = "currentPhotoGroupBox";
-            this.currentPhotoGroupBox.Size = new System.Drawing.Size(326, 515);
+            this.currentPhotoGroupBox.Size = new System.Drawing.Size(326, 487);
             this.currentPhotoGroupBox.TabIndex = 11;
             this.currentPhotoGroupBox.TabStop = false;
             this.currentPhotoGroupBox.Text = "Current Photo";
@@ -249,19 +250,31 @@ partial class GraphicalPhotoOrganizer
             this.photoPreview.ImageLocation = "";
             this.photoPreview.Location = new System.Drawing.Point(357, 12);
             this.photoPreview.Name = "photoPreview";
-            this.photoPreview.Size = new System.Drawing.Size(1295, 756);
+            this.photoPreview.Size = new System.Drawing.Size(1295, 733);
             this.photoPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.photoPreview.TabIndex = 13;
             this.photoPreview.TabStop = false;
+            // 
+            // destPathTextLabel
+            // 
+            this.destPathTextLabel.AutoSize = true;
+            this.destPathTextLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.destPathTextLabel.Location = new System.Drawing.Point(12, 749);
+            this.destPathTextLabel.Name = "destPathTextLabel";
+            this.destPathTextLabel.Size = new System.Drawing.Size(230, 28);
+            this.destPathTextLabel.TabIndex = 14;
+            this.destPathTextLabel.Text = "Photo\'s Destination Path:";
             // 
             // GraphicalPhotoOrganizer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1664, 783);
+            this.Controls.Add(this.destPathTextLabel);
             this.Controls.Add(this.photoPreview);
             this.Controls.Add(this.currentPhotoGroupBox);
             this.Controls.Add(this.setupGroupBox);
+            this.Controls.Add(this.destPathLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "GraphicalPhotoOrganizer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -273,6 +286,7 @@ partial class GraphicalPhotoOrganizer
             this.currentPhotoGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.photoPreview)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
     }
 
@@ -295,4 +309,5 @@ partial class GraphicalPhotoOrganizer
     private Label dateTakenLabel;
     private Button beginBtn;
     private Label dateTakenSrcLabel;
+    private Label destPathTextLabel;
 }
