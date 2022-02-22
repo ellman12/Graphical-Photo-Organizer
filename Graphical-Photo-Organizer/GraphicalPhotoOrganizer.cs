@@ -8,8 +8,10 @@ public partial class GraphicalPhotoOrganizer : Form
     private List<string> unsortedFiles = new();
     private string unsortedDirRootPath = "", sortedDirRootPath = "";
 
-    //Set when new file selected.
-    private string filename = "", ext = "", destPath = "";
+    //Set when new file selected or when user updates data.
+    private string filename = "", ext = "";
+    private string destFolderPath = ""; //Folder where the current photo will end
+    private string destFilePath = ""; //The full final path to it.
     private DateTime dateTaken;
     private M.DateTakenSrc dateTakenSrc;
 
@@ -23,7 +25,7 @@ public partial class GraphicalPhotoOrganizer : Form
         srcDirLabel.Text = "";
         destDirLabel.Text = "";
         destPathLabel.Text = "";
-        
+
         //TODO: temporary stuff to make development easier
         srcDirLabel.Text = unsortedDirRootPath = "C:/Users/Elliott/Pictures/unsorted pics";
         destDirLabel.Text = sortedDirRootPath = "C:/Users/Elliott/Pictures/sorted pics";
@@ -126,7 +128,7 @@ public partial class GraphicalPhotoOrganizer : Form
     {
         filename = Path.GetFileName(path);
         ext = Path.GetExtension(path);
-        
+
         (bool hasData, dateTakenSrc) = M.GetDateTaken(path, out dateTaken);
 
         if (!hasData)
@@ -142,7 +144,7 @@ public partial class GraphicalPhotoOrganizer : Form
         photoPreview.ImageLocation = path;
         UpdateDestPath();
     }
-    
+
     private void datePicker_DateChanged(object sender, DateRangeEventArgs e)
     {
         dateTakenLabel.Text = datePicker.SelectionStart.ToString("M/d/yyyy");
@@ -151,17 +153,18 @@ public partial class GraphicalPhotoOrganizer : Form
 
     private void nextPhotoBtn_Click(object sender, EventArgs e)
     {
-        UpdateDestPath();
-        // File.Move(unsortedFiles[0], CreateDestPath());
-        // unsortedFiles.RemoveAt(0);
-        // LoadImage(unsortedFiles[0]);
+        Directory.CreateDirectory(destFolderPath);
+        File.Move(unsortedFiles[0], destFilePath);
+        unsortedFiles.RemoveAt(0);
+        LoadImage(unsortedFiles[0]);
     }
 
     private string UpdateDestPath()
     {
-        destPath = Path.Combine(sortedDirRootPath, datePicker.SelectionStart.ToString("yyyy/M MMMM/d"), filenameTextBox.Text + ext).Replace('\\', '/');
-        destPathLabel.Text = destPath;
-        return destPath;
+        destFolderPath = Path.Combine(sortedDirRootPath, datePicker.SelectionStart.ToString("yyyy/M MMMM/d")).Replace('\\', '/');
+        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext);
+        destPathLabel.Text = destFilePath;
+        return destFilePath;
     }
 
     private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
