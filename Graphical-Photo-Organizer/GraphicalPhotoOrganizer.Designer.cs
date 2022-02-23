@@ -218,7 +218,7 @@ partial class GraphicalPhotoOrganizer
             // skipPhotoBtn
             // 
             this.skipPhotoBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.skipPhotoBtn.Location = new System.Drawing.Point(163, 389);
+            this.skipPhotoBtn.Location = new System.Drawing.Point(6, 389);
             this.skipPhotoBtn.Name = "skipPhotoBtn";
             this.skipPhotoBtn.Size = new System.Drawing.Size(154, 41);
             this.skipPhotoBtn.TabIndex = 16;
@@ -240,7 +240,7 @@ partial class GraphicalPhotoOrganizer
             // nextPhotoBtn
             // 
             this.nextPhotoBtn.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nextPhotoBtn.Location = new System.Drawing.Point(6, 389);
+            this.nextPhotoBtn.Location = new System.Drawing.Point(163, 389);
             this.nextPhotoBtn.Name = "nextPhotoBtn";
             this.nextPhotoBtn.Size = new System.Drawing.Size(154, 41);
             this.nextPhotoBtn.TabIndex = 14;
