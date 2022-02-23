@@ -256,6 +256,21 @@ public partial class GraphicalPhotoOrganizer : Form
         UpdateStats();
     }
 
+    private void photoPreview_Click(object sender, EventArgs e)
+    {
+        Image image = photoPreview.Image;
+        
+        //https://stackoverflow.com/a/19448432
+        //https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image.rotateflip?view=dotnet-plat-ext-6.0
+        MouseEventArgs me = (MouseEventArgs) e;
+        if (me.Button == MouseButtons.Left)
+            image.RotateFlip(RotateFlipType.Rotate270FlipNone);
+        else if (me.Button == MouseButtons.Right)
+            image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            
+        photoPreview.Image = image;
+    }
+
     private void UpdateStats() => statsLabel.Text = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
 
     ///<summary>Reset changes made to this photo. Resets values to what they first were.</summary>

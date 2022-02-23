@@ -257,6 +257,7 @@ partial class GraphicalPhotoOrganizer
             this.photoPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.photoPreview.TabIndex = 13;
             this.photoPreview.TabStop = false;
+            this.photoPreview.Click += new System.EventHandler(this.photoPreview_Click);
             // 
             // destPathTextLabel
             // 
