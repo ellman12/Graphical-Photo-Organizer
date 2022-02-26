@@ -1,12 +1,12 @@
-﻿<Window x:Class="Graphical_Photo_Organizer.GPO"
+<Window x:Class="Graphical_Photo_Organizer.GPO"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphical_Photo_Organizer"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="750">
-    <Grid>
+        Title="Graphical Photo Organizer" Width="1000" Height="750" ResizeMode="NoResize">
+    <Grid Width="1000" Height="750">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
             <ColumnDefinition Width="250"/>
@@ -14,10 +14,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="46"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -30,8 +30,18 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Header="Setup" FontSize="14"/>
-        <GroupBox Grid.Column="1" Grid.Row="5" Grid.RowSpan="7" Header="Current Item" FontSize="14"/>
+        <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="14">
+            <StackPanel Margin="4">
+                <Button Content="Choose Source Folder" VerticalAlignment="Top" Height="26"/>
+                <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Button Content="Choose Destination Folder" VerticalAlignment="Top" Height="26"/>
+                <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Button Content="Begin Sorting" Height="26"/>
+            </StackPanel>
+        </GroupBox>
+
+
+        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" FontSize="14"/>
 
     </Grid>
 </Window>
