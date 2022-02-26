@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -6,6 +6,7 @@
     <RootNamespace>Graphical_Photo_Organizer</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms> <!-- Necessary since WPF doesn't have folder dialogs for some reason: https://stackoverflow.com/a/68962353 -->
   </PropertyGroup>
 
 </Project>
