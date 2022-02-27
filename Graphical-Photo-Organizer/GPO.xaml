@@ -24,7 +24,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="64"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -40,7 +40,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" >
+        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" FontSize="14">
             <StackPanel Name="grid1" UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <Label Content="Filename"/>
                 <TextBox Name="filenameTextBox" Margin="0,0,0,3" />
@@ -52,6 +52,15 @@
                 <Label Content="New: " Margin="0,0,0,3"/>
                 <Calendar FontWeight="SemiBold"/>
 
+                <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
+                    <Button Content="Skip" Height="26" Width="88"/>
+                    <Button Content="Next" Height="26" Width="88" Margin="4,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
+                    <Button Content="Delete" Height="26" Width="88"/>
+                    <Button Content="Reset" Height="26" Width="88" Margin="4,0,0,0"/>
+                </StackPanel>
+                
             </StackPanel>
         </GroupBox>
 
