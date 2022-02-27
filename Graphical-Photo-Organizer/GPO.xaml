@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphical_Photo_Organizer"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="675" ResizeMode="NoResize">
+        Title="Graphical Photo Organizer" Width="1000" Height="634" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -27,21 +27,20 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="45"/>
             <RowDefinition Height="34"/>
-            <RowDefinition Height="32"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <GroupBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="14">
             <StackPanel Margin="4">
-                <Button Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="Button_Click"/>
-                <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button Content="Choose Destination Folder" VerticalAlignment="Top" Height="26"/>
-                <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button Content="Begin Sorting" Height="26"/>
+                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click"/>
+                <Label x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
+                <Label x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Button x:Name="beginBtn" Content="Begin Sorting" Height="26"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="14">
+        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="14" IsEnabled="False">
             <StackPanel Name="grid1" UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <Label Content="Filename"/>
                 <TextBox Name="filenameTextBox" Margin="0,0,0,3" />
@@ -65,19 +64,20 @@
             </StackPanel>
         </GroupBox>
 
-        <Label Grid.Column="1" Grid.Row="12" FontSize="14" Content="OG Path: " />
-        <Label Grid.Column="2" Grid.Row="12" FontSize="14" Content="path" />
-        <Label Grid.Column="1" Grid.Row="13" FontSize="14" Content="New Path: " />
-        <Label Grid.Column="2" Grid.Row="13" FontSize="14" Content="path" />
-        <Label Grid.Column="1" Grid.Row="14" FontSize="14" Content="Stats" />
+        <Label Grid.Column="1" Grid.Row="12" FontSize="14" VerticalAlignment="Center" Content="OG Path: " />
+        <Label Grid.Column="2" Grid.Row="12" FontSize="14" VerticalAlignment="Center" Content="path" />
+        <Label Grid.Column="1" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="New Path: " />
+        <Label Grid.Column="2" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="path" />
 
-        <MediaElement Grid.Column="4" HorizontalAlignment="Left" Height="455" Margin="10,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="11" Source="C:\Users\Elliott\Downloads\Photos-001\VID_20220202_100025.mp4"/>
+        <MediaElement Grid.Column="4" HorizontalAlignment="Left" Height="455" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="11"/>
 
-        <StackPanel Grid.Column="4" Grid.Row="10" Orientation="Horizontal" Margin="5,0,0,0">
+        <StackPanel Grid.Column="4" Grid.Row="10" Orientation="Horizontal" >
             <Button FontSize="14" Content="Play/Pause" Height="26" Width="100" Margin="4"/>
             <Button FontSize="14" Content="Mute/Unmute" Height="26" Width="100" Margin="4"/>
             <CheckBox Content="Auto Play" Height="15" Margin="37,4,4,4"/>
             <CheckBox Content="Unmute on Next" Height="15" Margin="4"/>
         </StackPanel>
+
+        <Label Grid.Column="4" Grid.Row="11" FontSize="14" VerticalAlignment="Center" Content="Stats" />
     </Grid>
 </Window>
