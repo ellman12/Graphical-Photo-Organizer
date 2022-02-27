@@ -9,7 +9,7 @@
     <Grid Width="1000" Height="750">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
         </Grid.RowDefinitions>
         <GroupBox Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="14">
             <StackPanel Margin="4">
-                <Button Content="Choose Source Folder" VerticalAlignment="Top" Height="26"/>
+                <Button Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="Button_Click"/>
                 <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
                 <Button Content="Choose Destination Folder" VerticalAlignment="Top" Height="26"/>
                 <Label Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
@@ -40,11 +40,18 @@
             </StackPanel>
         </GroupBox>
 
-
-        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" FontSize="14">
-            <StackPanel>
+        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" >
+            <StackPanel Name="grid1" UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <Label Content="Filename"/>
-                <TextBox Name="filenameTextBox"  />
+                <TextBox Name="filenameTextBox" Margin="0,0,0,3" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="OG: " Margin="0,0,50,0"/>
+                    <Label Content="src"/>
+                </StackPanel>
+
+                <Label Content="New: " Margin="0,0,0,3"/>
+                <Calendar FontWeight="SemiBold"/>
+
             </StackPanel>
         </GroupBox>
 
