@@ -41,7 +41,12 @@
         </GroupBox>
 
 
-        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" FontSize="14"/>
+        <GroupBox Grid.Column="1" Grid.Row="4" Grid.RowSpan="7" Header="Current Item" FontSize="14">
+            <StackPanel>
+                <Label Content="Filename"/>
+                <TextBox Name="filenameTextBox"  />
+            </StackPanel>
+        </GroupBox>
 
     </Grid>
 </Window>
