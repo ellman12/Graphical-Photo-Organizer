@@ -9,4 +9,9 @@
     <UseWindowsForms>true</UseWindowsForms> <!-- Necessary since WPF doesn't have folder dialogs for some reason: https://stackoverflow.com/a/68962353 -->
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ExifLib" Version="1.7.0" />
+    <PackageReference Include="MetadataExtractor" Version="2.7.1" />
+  </ItemGroup>
+
 </Project>
