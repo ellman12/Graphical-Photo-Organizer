@@ -112,5 +112,37 @@ namespace Graphical_Photo_Organizer
 
             ValidateFolderDirs();
         }
+
+        private void beginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            currentItemGroupBox.IsEnabled = true;
+            LoadItem(unsortedFiles[0]);
+            setupGroupBox.IsEnabled = false;
+            //UpdateStats();
+        }
+
+        private void LoadItem(string path)
+        {
+            originalPathLabel.Content = unsortedFiles[0];
+            ogFilename = Path.GetFileNameWithoutExtension(path);
+            ext = Path.GetExtension(path);
+
+            (bool hasData, dateTakenSrc) = M.GetDateTaken(path, out dateTaken);
+
+            if (!hasData)
+            {
+                dateTaken = DateTime.Now;
+                dateTakenSrc = M.DateTakenSrc.Now;
+            }
+
+            filenameTextBox.Text = filename;
+            dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
+            dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
+            datePicker.SelectionStart = dateTaken;
+            photoPreview.ImageLocation = path;
+
+            UpdateDestPath();
+            CheckForDuplicates(path);
+        }
     }
 }
