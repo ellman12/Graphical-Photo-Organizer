@@ -41,20 +41,20 @@
         </GroupBox>
 
         <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="14" IsEnabled="False">
-            <StackPanel Name="grid1" UseLayoutRounding="True" SnapsToDevicePixels="True">
+            <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <Label Content="Filename"/>
-                <TextBox Name="filenameTextBox" Margin="0,0,0,3" />
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,0,0,3" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="OG: " Margin="0,0,50,0"/>
-                    <Label Content="src"/>
+                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,50,0"/>
+                    <Label Name="dateTakenSrcLabel" Content="src"/>
                 </StackPanel>
 
-                <Label Content="New: " Margin="0,0,0,3"/>
-                <Calendar FontWeight="SemiBold"/>
+                <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
+                <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
                     <Button Content="Skip" Height="26" Width="88"/>
-                    <Button Content="Next" Height="26" Width="88" Margin="4,0,0,0"/>
+                    <Button Name="nextItemBtn" Click="nextItemBtn_Click" Content="Next" Height="26" Width="88" Margin="4,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
                     <Button Content="Delete" Height="26" Width="88"/>
@@ -69,7 +69,7 @@
         <Label Grid.Column="1" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="New Path: " />
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="path" />
 
-        <MediaElement Grid.Column="4" HorizontalAlignment="Left" Height="455" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="11"/>
+        <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="455" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="11"/>
 
         <StackPanel Grid.Column="4" Grid.Row="10" Orientation="Horizontal" >
             <Button FontSize="14" Content="Play/Pause" Height="26" Width="100" Margin="4"/>
@@ -78,6 +78,6 @@
             <CheckBox Content="Unmute on Next" Height="15" Margin="4"/>
         </StackPanel>
 
-        <Label Grid.Column="4" Grid.Row="11" FontSize="14" VerticalAlignment="Center" Content="Stats" />
+        <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="14" VerticalAlignment="Center" Content="Stats" />
     </Grid>
 </Window>

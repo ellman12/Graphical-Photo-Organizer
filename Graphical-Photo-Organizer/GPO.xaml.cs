@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
-// using M = Graphical_Photo_Organizer.Metadata;
+using M = Graphical_Photo_Organizer.Metadata;
 
 namespace Graphical_Photo_Organizer
 {
@@ -21,7 +22,7 @@ namespace Graphical_Photo_Organizer
 
         //Set on file load and stays constant
         private string ext = "";
-        // private M.DateTakenSrc dateTakenSrc;
+        private M.DateTakenSrc dateTakenSrc;
 
         //Set on load and can be changed by user //TODO is this accurate?
         private string ogFilename = "";
@@ -118,7 +119,7 @@ namespace Graphical_Photo_Organizer
             currentItemGroupBox.IsEnabled = true;
             LoadItem(unsortedFiles[0]);
             setupGroupBox.IsEnabled = false;
-            //UpdateStats();
+            UpdateStats();
         }
 
         private void LoadItem(string path)
@@ -127,22 +128,103 @@ namespace Graphical_Photo_Organizer
             ogFilename = Path.GetFileNameWithoutExtension(path);
             ext = Path.GetExtension(path);
 
-            (bool hasData, dateTakenSrc) = M.GetDateTaken(path, out dateTaken);
+            (bool hasData, dateTakenSrc) = M.GetDateTaken(path, out ogDateTaken);
 
             if (!hasData)
             {
-                dateTaken = DateTime.Now;
+                ogDateTaken = DateTime.Now;
                 dateTakenSrc = M.DateTakenSrc.Now;
             }
 
-            filenameTextBox.Text = filename;
-            dateTakenLabel.Text = dateTaken.ToString("M/d/yyyy");
-            dateTakenSrcLabel.Text = "Source: " + dateTakenSrc;
-            datePicker.SelectionStart = dateTaken;
-            photoPreview.ImageLocation = path;
+            filenameTextBox.Text = ogFilename;
+            ogDateTakenLabel.Content = ogDateTaken.ToString("M/d/yyyy");
+            dateTakenSrcLabel.Content = "Source: " + dateTakenSrc;
+            datePicker.SelectedDate = ogDateTaken;
+            itemPreview.Source = new Uri(path);
 
             UpdateDestPath();
             CheckForDuplicates(path);
+        }
+        
+        ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
+        private void UpdateDestPath()
+        {
+            destFolderPath = Path.Combine(srcDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
+            destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+            destPathLabel.Content = destFilePath;
+        }
+        
+        private void CheckForDuplicates(string path)
+        {
+            string[] sortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories);
+            sortedFiles = sortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
+
+            foreach (string file in sortedFiles)
+            {
+                if (file.EndsWith(Path.GetFileName(path)))
+                    MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        
+        private void UpdateStats() => statsLabel.Content = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
+        
+        private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
+
+        private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            newDateTakenLabel.Content = datePicker.SelectedDate?.ToString("M/d/yyyy");
+            UpdateDestPath();
+        }
+        
+        /// <summary>Moves the current item to its new home and loads the next item.</summary>
+        private void nextItemBtn_Click(object sender, EventArgs e)
+        {
+            UpdateDestPath();
+            if (!File.Exists(destFilePath))
+            {
+                Directory.CreateDirectory(destFolderPath);
+
+                try
+                {
+                    File.Move(unsortedFiles[0], destFilePath);
+                }
+                catch (IOException) //Stupid but fixes file in use error
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    File.Move(unsortedFiles[0], destFilePath);
+                }
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    File.Delete(destFilePath);
+                    File.Move(unsortedFiles[0], destFilePath);
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    LoadNextItem();
+                    return;
+                }
+                else if (result == MessageBoxResult.Cancel)
+                    return;
+            }
+        
+            LoadNextItem();
+        }
+
+        ///<summary>Removes the current image from the List and loads the next one.</summary>
+        private void LoadNextItem()
+        {
+            unsortedFiles.RemoveAt(0);
+            amountSorted++;
+            UpdateStats();
+        
+            if (unsortedFiles.Count > 0)
+                LoadItem(unsortedFiles[0]);
         }
     }
 }
