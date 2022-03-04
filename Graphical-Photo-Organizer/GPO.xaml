@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphical_Photo_Organizer"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="634" ResizeMode="NoResize">
+        Title="Graphical Photo Organizer" Width="1000" Height="634" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -45,7 +45,7 @@
                 <Label Content="Filename"/>
                 <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,0,0,3" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,50,0"/>
+                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
                     <Label Name="dateTakenSrcLabel" Content="src"/>
                 </StackPanel>
 
@@ -65,9 +65,9 @@
         </GroupBox>
 
         <Label Grid.Column="1" Grid.Row="12" FontSize="14" VerticalAlignment="Center" Content="OG Path: " />
-        <Label x:Name="originalPathLabel" Grid.Column="2" Grid.Row="12" FontSize="14" VerticalAlignment="Center" Content="path" />
+        <Label x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="14" VerticalAlignment="Center" Content="path" />
         <Label Grid.Column="1" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="New Path: " />
-        <Label x:Name="destPathLabel" Grid.Column="2" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="path" />
+        <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="14" VerticalAlignment="Center" Content="path" />
 
         <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="455" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="11"/>
 

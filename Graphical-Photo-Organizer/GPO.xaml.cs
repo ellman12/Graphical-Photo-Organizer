@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -38,6 +39,27 @@ namespace Graphical_Photo_Organizer
         public GPO()
         {
             InitializeComponent();
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            datePicker.SelectedDate = DateTime.Now;
+            srcDirLabel.Content = "";
+            destDirLabel.Content = "";
+            originalPathLabel.Content = "";
+            destPathLabel.Content = "";
+            statsLabel.Content = "";
+            dateTakenSrcLabel.Content = "";
+            
+            //TODO: TEMP
+            srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/Photos-001";
+            destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/dest";
+            
+            unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
+            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
+            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
+            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToList();
+            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
         }
 
         /// <summary>
@@ -137,31 +159,35 @@ namespace Graphical_Photo_Organizer
             }
 
             filenameTextBox.Text = ogFilename;
-            ogDateTakenLabel.Content = ogDateTaken.ToString("M/d/yyyy");
-            dateTakenSrcLabel.Content = "Source: " + dateTakenSrc;
+            ogDateTakenLabel.Content = "OG: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+            dateTakenSrcLabel.Content = dateTakenSrc;
             datePicker.SelectedDate = ogDateTaken;
             itemPreview.Source = new Uri(path);
 
             UpdateDestPath();
-            CheckForDuplicates(path);
+            CheckForDuplicates();
         }
         
         ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
         private void UpdateDestPath()
         {
-            destFolderPath = Path.Combine(srcDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
+            destFolderPath = Path.Combine(srcDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
             destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
             destPathLabel.Content = destFilePath;
         }
         
-        private void CheckForDuplicates(string path)
+        /// <summary>Checks the destination folder for items that either might be or are duplicates.</summary>
+        private void CheckForDuplicates()
         {
-            string[] sortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories);
-            sortedFiles = sortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
-
+            string[] sortedFiles = Directory.GetFiles(destDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToArray();
+            sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
+            sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.gif", SearchOption.AllDirectories)).ToArray();
+            sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToArray();
+            sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToArray();
+            
             foreach (string file in sortedFiles)
             {
-                if (file.EndsWith(Path.GetFileName(path)))
+                if (file.EndsWith(Path.GetFileName(destFilePath)))
                     MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
@@ -172,7 +198,7 @@ namespace Graphical_Photo_Organizer
 
         private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
         {
-            newDateTakenLabel.Content = datePicker.SelectedDate?.ToString("M/d/yyyy");
+            newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             UpdateDestPath();
         }
         
