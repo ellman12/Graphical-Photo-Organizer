@@ -4,7 +4,6 @@ A convenient C# WinForms utility for organizing photos and videos based on when 
 Problem: Your folder of pictures and videos looks like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902615-aad8f019-0719-4e37-ac2a-bd57f4133d89.png)
 
-
 But what you really want is to have it look like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902653-2a078b6f-750b-44d3-9f57-0ef58215458a.png)
 
@@ -14,10 +13,10 @@ And inside each year folder something like this:
 With Graphical Photo Organizer (GPO), organizing messy folders of pictures and videos like this is a piece of cake! 🍰
 
 ## Installation
-Check the [Releases](https://github.com/ellman12/Graphical-Photo-Organizer/releases) and download the latest version. GPO requires .NET 6.<br>
+Check the [Releases](https://github.com/ellman12/Graphical-Photo-Organizer/releases) and download the latest version. **GPO requires .NET 6**.<br>
 From there it should be able to run wherever you download it to.
 
-## How to Use
+## Using Graphical Photo Organizer
 GPO was designed to be fast, simple, and easy to use. What follows is a guide for your first time use.<br>
 1. In the first GroupBox, choose the folder you want to sort.
 2. Choose where sorted items will end up.
@@ -35,3 +34,6 @@ The text next to the OG (original) date taken is where it found the date taken d
 
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
+
+## Contact
+If you want to contact me you can reach me at either ellduc4@gmail.com or elliott.ducharme@trojans.dsu.edu
