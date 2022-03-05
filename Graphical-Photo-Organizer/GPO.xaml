@@ -33,9 +33,9 @@
         <GroupBox x:Name="setupGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="13">
             <StackPanel Margin="4">
                 <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click"/>
-                <Label x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
                 <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
-                <Label x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
+                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
                 <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False"/>
             </StackPanel>
         </GroupBox>
