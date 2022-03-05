@@ -54,7 +54,7 @@ namespace Graphical_Photo_Organizer
             dateTakenSrcLabel.Content = "";
 
             //TODO: TEMP
-            srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/Photos-001";
+            srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/src";
             destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/sorted";
 
             unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
@@ -116,7 +116,7 @@ namespace Graphical_Photo_Organizer
         {
             string path = SelectFolder("Select Folder of Images to Sort");
 
-            //unsortedFiles.Clear(); //Clear if user changed to different src folder
+            unsortedFiles.Clear(); //Clear if user changed to different src folder
             unsortedFiles = Directory.GetFiles(path, "*.jp*g", SearchOption.AllDirectories).ToList();
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.png", SearchOption.AllDirectories)).ToList();
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.gif", SearchOption.AllDirectories)).ToList();
@@ -142,9 +142,10 @@ namespace Graphical_Photo_Organizer
 
         private async void beginBtn_Click(object sender, RoutedEventArgs e)
         {
+            EnableItemPreview();
+            setupGroupBox.IsEnabled = false;
             currentItemGroupBox.IsEnabled = true;
             await LoadItem(unsortedFiles[0]);
-            setupGroupBox.IsEnabled = false;
             UpdateStats();
         }
 
@@ -205,6 +206,7 @@ namespace Graphical_Photo_Organizer
         {
             newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             UpdateDestPath();
+            nextItemBtn.Focus();
         }
 
         ///<summary>If nothing left to sort, clear the item preview</summary>
@@ -221,6 +223,13 @@ namespace Graphical_Photo_Organizer
             ogDateTakenLabel.Content = "";
             newDateTakenLabel.Content = "";
             dateTakenSrcLabel.Content = "";
+        }
+
+        ///<summary>If starting another round of sorting after finishing one, re-enable and show the item preview.</summary>
+        private void EnableItemPreview()
+        {
+            itemPreview.LoadedBehavior = MediaState.Play;
+            itemPreview.Opacity = 100;
         }
 
         private async void SkipBtn_Click(object sender, RoutedEventArgs e)
