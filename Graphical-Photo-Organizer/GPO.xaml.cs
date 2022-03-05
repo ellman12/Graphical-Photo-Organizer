@@ -18,6 +18,8 @@ namespace Graphical_Photo_Organizer
     ///</summary>
     public partial class GPO
     {
+        private static readonly string[] videoFileExts = {".mp4", ".mkv"};
+
         //Set during setup
         private List<string> unsortedFiles = new();
         private string srcDirRootPath = "", destDirRootPath = "";
@@ -53,6 +55,9 @@ namespace Graphical_Photo_Organizer
             statsLabel.Content = "";
             dateTakenSrcLabel.Content = "";
 
+            muteUnmuteBtn.Visibility = Visibility.Hidden;
+            muteUnmuteBtn.Content = "Mute";
+
             //TODO: TEMP
             srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/src";
             destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/sorted";
@@ -78,8 +83,7 @@ namespace Graphical_Photo_Organizer
 
             if (result == WinForms.DialogResult.OK && !String.IsNullOrWhiteSpace(dialog.SelectedPath))
                 return dialog.SelectedPath;
-            else
-                return "";
+            return "";
         }
 
         ///<summary>Checks the folder paths the user chose to make sure they are valid and they can proceed to the sorting.</summary>
@@ -147,6 +151,7 @@ namespace Graphical_Photo_Organizer
             currentItemGroupBox.IsEnabled = true;
             await LoadItem(unsortedFiles[0]);
             UpdateStats();
+            UpdateMuteBtn();
         }
 
         private async Task LoadItem(string path)
@@ -200,6 +205,14 @@ namespace Graphical_Photo_Organizer
 
         private void UpdateStats() => statsLabel.Content = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
 
+        private void UpdateMuteBtn() => muteUnmuteBtn.Visibility = videoFileExts.Contains(ext) ? Visibility.Visible : Visibility.Hidden;
+
+        private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            itemPreview.IsMuted = !itemPreview.IsMuted;
+            muteUnmuteBtn.Content = itemPreview.IsMuted ? "Unmute" : "Mute";
+        }
+
         private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
 
         private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
@@ -213,7 +226,7 @@ namespace Graphical_Photo_Organizer
         private void ClearItemPreview()
         {
             itemPreview.LoadedBehavior = MediaState.Manual;
-            itemPreview.Opacity = 0;
+            itemPreview.Visibility = Visibility.Hidden;
             itemPreview.IsMuted = true;
             itemPreview.Stop();
 
@@ -229,7 +242,7 @@ namespace Graphical_Photo_Organizer
         private void EnableItemPreview()
         {
             itemPreview.LoadedBehavior = MediaState.Play;
-            itemPreview.Opacity = 100;
+            itemPreview.Visibility = Visibility.Visible;
         }
 
         private async void SkipBtn_Click(object sender, RoutedEventArgs e)
@@ -243,6 +256,7 @@ namespace Graphical_Photo_Organizer
 
             amountSkipped++;
             UpdateStats();
+            UpdateMuteBtn();
         }
 
         ///<summary>Moves the current item to its new home and loads the next item.</summary>
@@ -299,6 +313,7 @@ namespace Graphical_Photo_Organizer
             unsortedFiles.RemoveAt(0);
             amountSorted++;
             UpdateStats();
+            UpdateMuteBtn();
 
             if (unsortedFiles.Count > 0)
                 await LoadItem(unsortedFiles[0]);
@@ -313,6 +328,7 @@ namespace Graphical_Photo_Organizer
                 unsortedFiles.RemoveAt(0);
                 amountDeleted++;
                 UpdateStats();
+                UpdateMuteBtn();
 
                 if (unsortedFiles.Count > 0)
                     await LoadItem(unsortedFiles[0]);

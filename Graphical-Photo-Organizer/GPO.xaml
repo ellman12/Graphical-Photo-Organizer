@@ -70,13 +70,7 @@
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
         <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
-
-        <StackPanel Grid.Column="4" Grid.Row="10" Orientation="Horizontal" >
-            <Button FontSize="13" Content="Play/Pause" Height="26" Width="100" Margin="4"/>
-            <Button FontSize="13" Content="Mute/Unmute" Height="26" Width="100" Margin="4"/>
-            <CheckBox FontSize="13" Content="Auto Play" Height="15" Margin="37,4,4,4"/>
-            <CheckBox FontSize="13" Content="Unmute on Next" Height="15" Margin="4"/>
-        </StackPanel>
+        <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="Mute" Height="26" Width="100" Margin="4"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />
     </Grid>
