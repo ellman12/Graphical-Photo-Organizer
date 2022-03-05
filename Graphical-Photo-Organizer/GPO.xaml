@@ -42,8 +42,8 @@
 
         <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="False">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
-                <Label Content="Filename"/>
-                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,0,0,3" />
+                <Label Content="Filename" FontSize="9"/>
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,0,0,3" FontSize="9" />
                 <StackPanel Orientation="Horizontal">
                     <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
                     <Label Name="dateTakenSrcLabel" Content="src"/>

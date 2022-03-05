@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using M = Graphical_Photo_Organizer.Metadata;
@@ -161,7 +162,16 @@ public partial class GPO
 
         filenameTextBox.Text = ogFilename;
         ogDateTakenLabel.Content = "OG: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+
         dateTakenSrcLabel.Content = dateTakenSrc;
+        dateTakenSrcLabel.Foreground = dateTakenSrc switch
+        {
+            M.DateTakenSrc.Metadata => Brushes.Green,
+            M.DateTakenSrc.Filename => Brushes.Yellow,
+            M.DateTakenSrc.Now => Brushes.Red,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
         datePicker.DisplayDate = ogDateTaken;
         datePicker.SelectedDate = ogDateTaken;
         itemPreview.Source = new Uri(path);
