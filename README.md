@@ -21,7 +21,7 @@ From there it should be able to run wherever you download it to.
 GPO was designed to be fast, simple, and easy to use. What follows is a guide for your first time use.<br>
 1. In the first GroupBox, choose the folder you want to sort.
 2. Choose where sorted items will end up.
-3. Once you've done that, hit the begin button to start sorting. One important thing to note is you can quite sorting whenever you want; GPO moves each file individually as you sort so there's no need to "save" or "apply" or anything.
+3. Once you've done that, hit the begin button to start sorting. One important thing to note is you can quit sorting whenever you want; GPO moves each file individually as you sort so there's no need to "save" or "apply" or anything.
 
 ![image](https://user-images.githubusercontent.com/56001219/156902959-84fe5dcf-a109-40e5-9860-68584933bb37.png)
 When you're viewing a single item, you can change its filename, and also when it was taken (thus affecting where it will end up).
