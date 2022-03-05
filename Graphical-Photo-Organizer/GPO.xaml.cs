@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,9 +13,9 @@ using M = Graphical_Photo_Organizer.Metadata;
 
 namespace Graphical_Photo_Organizer
 {
-    /// <summary>
-    /// Interaction logic for GPO.xaml
-    /// </summary>
+    ///<summary>
+    ///Interaction logic for GPO.xaml
+    ///</summary>
     public partial class GPO
     {
         //Set during setup
@@ -27,7 +26,7 @@ namespace Graphical_Photo_Organizer
         private string ext = "";
         private M.DateTakenSrc dateTakenSrc;
 
-        //Set on load and can be changed by user //TODO is this accurate?
+        //Set on load and can be changed by user
         private string ogFilename = "";
         private string destFolderPath = ""; //Folder where the current photo will end
         private string destFilePath = ""; //The full final path to it.
@@ -65,11 +64,11 @@ namespace Graphical_Photo_Organizer
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
         }
 
-        /// <summary>
-        /// Used for getting the source and destination folders. Uses a WinForms folder browser dialog.
-        /// </summary>
-        /// <param name="winTitle">What the folder browser dialog should display</param>
-        /// <returns>The selected folder path.</returns>
+        ///<summary>
+        ///Used for getting the source and destination folders. Uses a WinForms folder browser dialog.
+        ///</summary>
+        ///<param name="winTitle">What the folder browser dialog should display</param>
+        ///<returns>The selected folder path.</returns>
         private static string SelectFolder(string winTitle)
         {
             using var dialog = new FolderBrowserDialog();
@@ -182,7 +181,7 @@ namespace Graphical_Photo_Organizer
             destPathLabel.Content = destFilePath;
         }
 
-        /// <summary>Checks the destination folder for items that either might be or are duplicates.</summary>
+        ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
         private void CheckForDuplicates()
         {
             string[] sortedFiles = Directory.GetFiles(destDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToArray();
@@ -208,7 +207,7 @@ namespace Graphical_Photo_Organizer
             UpdateDestPath();
         }
 
-        /// <summary>Moves the current item to its new home and loads the next item.</summary>
+        ///<summary>Moves the current item to its new home and loads the next item.</summary>
         private async void nextItemBtn_Click(object sender, EventArgs e)
         {
             UpdateDestPath();
@@ -219,10 +218,8 @@ namespace Graphical_Photo_Organizer
                 //Stupid but fixes file in use error
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                // Thread t = new(() => File.Move(unsortedFiles[0], destFilePath));
-                // t.Start();
                 
-                // File.Move(unsortedFiles[0], destFilePath);
+                itemPreview.Source = new Uri(unsortedFiles[1]);
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             }
             else
@@ -231,10 +228,8 @@ namespace Graphical_Photo_Organizer
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    File.Delete(destFilePath);
-                    // Thread t = new(() => File.Move(unsortedFiles[0], destFilePath));
-                    // t.Start();
-                    await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
+                    File.Delete(destFilePath); //Delete the original
+                    await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
                 }
                 else if (result == MessageBoxResult.No)
                 {
