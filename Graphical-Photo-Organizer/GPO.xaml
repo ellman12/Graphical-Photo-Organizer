@@ -36,7 +36,7 @@
                 <Label x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
                 <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
                 <Label x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click"/>
+                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False"/>
             </StackPanel>
         </GroupBox>
 

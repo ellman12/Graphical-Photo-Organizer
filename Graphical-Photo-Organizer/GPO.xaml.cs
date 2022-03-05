@@ -54,18 +54,7 @@ namespace Graphical_Photo_Organizer
             destPathLabel.Content = "";
             statsLabel.Content = "";
             dateTakenSrcLabel.Content = "";
-
             muteUnmuteBtn.Visibility = Visibility.Hidden;
-
-            //TODO: TEMP
-            srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/src";
-            destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/sorted";
-
-            unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
-            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
-            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
-            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToList();
-            unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
         }
 
         ///<summary>
