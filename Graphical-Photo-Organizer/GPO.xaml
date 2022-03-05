@@ -36,7 +36,7 @@
                 <Label x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
                 <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
                 <Label x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="beginBtn" Content="Begin Sorting" Height="26" Click="beginBtn_Click"/>
+                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click"/>
             </StackPanel>
         </GroupBox>
 
@@ -53,12 +53,12 @@
                 <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
-                    <Button FontSize="13" Content="Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click"/>
-                    <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="Next" Height="26" Width="88" Margin="4,0,0,0"/>
+                    <Button FontSize="13" Content="_Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click"/>
+                    <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
-                    <Button FontSize="13" Content="Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click"/>
-                    <Button FontSize="13" Content="Reset" Height="26" Width="88" Margin="4,0,0,0"/>
+                    <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click"/>
+                    <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0"/>
                 </StackPanel>
 
             </StackPanel>
@@ -70,7 +70,7 @@
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
         <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
-        <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="Mute" Height="26" Width="100" Margin="4"/>
+        <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />
     </Grid>

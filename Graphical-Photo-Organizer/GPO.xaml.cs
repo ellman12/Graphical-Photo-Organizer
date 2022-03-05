@@ -56,7 +56,6 @@ namespace Graphical_Photo_Organizer
             dateTakenSrcLabel.Content = "";
 
             muteUnmuteBtn.Visibility = Visibility.Hidden;
-            muteUnmuteBtn.Content = "Mute";
 
             //TODO: TEMP
             srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/src";
@@ -210,7 +209,7 @@ namespace Graphical_Photo_Organizer
         private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
         {
             itemPreview.IsMuted = !itemPreview.IsMuted;
-            muteUnmuteBtn.Content = itemPreview.IsMuted ? "Unmute" : "Mute";
+            muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
         }
 
         private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
