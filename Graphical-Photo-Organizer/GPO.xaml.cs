@@ -218,8 +218,24 @@ namespace Graphical_Photo_Organizer
                 //Stupid but fixes file in use error
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                
-                itemPreview.Source = new Uri(unsortedFiles[1]);
+
+                if (unsortedFiles.Count >= 2)
+                    itemPreview.Source = new Uri(unsortedFiles[1]);
+                else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
+                {
+                    itemPreview.LoadedBehavior = MediaState.Manual;
+                    itemPreview.Opacity = 0;
+                    itemPreview.IsMuted = true;
+                    itemPreview.Stop();
+
+                    filenameTextBox.Text = "";
+                    originalPathLabel.Content = "";
+                    destPathLabel.Content = "";
+                    ogDateTakenLabel.Content = "";
+                    newDateTakenLabel.Content = "";
+                    dateTakenSrcLabel.Content = "";
+                }
+
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             }
             else
@@ -241,6 +257,14 @@ namespace Graphical_Photo_Organizer
             }
 
             LoadNextItem();
+            
+            if (unsortedFiles.Count == 0)
+            {
+                currentItemGroupBox.IsEnabled = false;
+                setupGroupBox.IsEnabled = true;
+                srcDirLabel.Content = srcDirRootPath = "";
+                destDirLabel.Content = destDirRootPath = "";
+            }
         }
 
         ///<summary>Removes the current image from the List and loads the next one.</summary>
