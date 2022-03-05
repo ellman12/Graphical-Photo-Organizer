@@ -30,6 +30,14 @@ Also when viewing an item, you can
 * Reset any changes made
 * Move the file to its new location and advanced to the next file
 
+GPO also has several keyboard shortcuts. Press Alt + a letter:
+* B to Begin Sorting
+* N for Next Item
+* M to Mute/unmute Video
+* S to Skip the Current Item
+* D to Delete the Current Item
+* R to Reset Changes to Current Item
+
 The text next to the OG (original) date taken is where it found the date taken data, which can either be Metadata, the Filename, or if neither of those, the date right now.
 
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
