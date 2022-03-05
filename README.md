@@ -1,5 +1,5 @@
 # Graphical-Photo-Organizer
-A convenient C# WinForms utility for organizing photos based on when they were taken.
+A convenient C# WinForms utility for organizing photos and videos based on when they were taken.
 
 Problem: Your folder of pictures and videos looks like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902615-aad8f019-0719-4e37-ac2a-bd57f4133d89.png)
