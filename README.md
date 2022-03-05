@@ -31,6 +31,7 @@ Also when viewing an item, you can
 * Reset any changes made
 * Move the file to its new location and advanced to the next file
 
-And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
+The text next to the OG (original) date taken is where it found the date taken data, which can either be Metadata, the Filename, or if neither of those, the date right now.
 
+And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
