@@ -107,6 +107,8 @@ namespace Graphical_Photo_Organizer
         private void chooseSrcBtn_Click(object sender, RoutedEventArgs e)
         {
             string path = SelectFolder("Select Folder of Images to Sort");
+            
+            if (path == "") return;
 
             unsortedFiles.Clear(); //Clear if user changed to different src folder
             unsortedFiles = Directory.GetFiles(path, "*.jp*g", SearchOption.AllDirectories).ToList();
