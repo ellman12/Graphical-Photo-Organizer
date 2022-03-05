@@ -26,10 +26,10 @@ GPO was designed to be fast, simple, and easy to use. What follows is a guide fo
 ![image](https://user-images.githubusercontent.com/56001219/156902959-84fe5dcf-a109-40e5-9860-68584933bb37.png)
 When you're viewing a single item, you can change its filename, and also when it was taken (thus affecting where it will end up).
 Also when viewing an item, you can
-* skip it and not move it
-* delete the file
-* reset any changes made
-* move the file to its new location and advanced to the next file
+* Skip it and not move it
+* Delete the file
+* Reset any changes made
+* Move the file to its new location and advanced to the next file
 
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 
