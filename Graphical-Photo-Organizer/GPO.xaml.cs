@@ -335,5 +335,13 @@ namespace Graphical_Photo_Organizer
                     ClearItemPreview();
             }
         }
+
+        private void resetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            filenameTextBox.Text = ogFilename;
+            newDateTakenLabel.Content = "New: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+            datePicker.DisplayDate = ogDateTaken;
+            datePicker.SelectedDate = ogDateTaken;
+        }
     }
 }

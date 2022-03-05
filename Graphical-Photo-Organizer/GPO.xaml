@@ -58,7 +58,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
                     <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click"/>
-                    <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0"/>
+                    <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0" Click="resetBtn_Click"/>
                 </StackPanel>
 
             </StackPanel>
