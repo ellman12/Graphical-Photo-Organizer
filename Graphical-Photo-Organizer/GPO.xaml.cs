@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -15,7 +17,7 @@ namespace Graphical_Photo_Organizer
     /// <summary>
     /// Interaction logic for GPO.xaml
     /// </summary>
-    public partial class GPO : Window
+    public partial class GPO
     {
         //Set during setup
         private List<string> unsortedFiles = new();
@@ -43,6 +45,7 @@ namespace Graphical_Photo_Organizer
 
         private void Window_Initialized(object sender, EventArgs e)
         {
+            datePicker.DisplayDate = DateTime.Now;
             datePicker.SelectedDate = DateTime.Now;
             srcDirLabel.Content = "";
             destDirLabel.Content = "";
@@ -50,11 +53,11 @@ namespace Graphical_Photo_Organizer
             destPathLabel.Content = "";
             statsLabel.Content = "";
             dateTakenSrcLabel.Content = "";
-            
+
             //TODO: TEMP
             srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Downloads/Photos-001";
-            destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/dest";
-            
+            destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Downloads/sorted";
+
             unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
@@ -69,7 +72,7 @@ namespace Graphical_Photo_Organizer
         /// <returns>The selected folder path.</returns>
         private static string SelectFolder(string winTitle)
         {
-            using var dialog = new WinForms.FolderBrowserDialog();
+            using var dialog = new FolderBrowserDialog();
             dialog.UseDescriptionForTitle = true;
             dialog.Description = winTitle;
             DialogResult result = dialog.ShowDialog();
@@ -122,8 +125,9 @@ namespace Graphical_Photo_Organizer
             unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.mkv", SearchOption.AllDirectories)).ToList();
 
             srcDirRootPath = path;
-            srcDirLabel.Content = srcDirRootPath;
-            ValidateFolderDirs();   
+            srcDirLabel.ToolTip = srcDirRootPath.Replace('\\', '/');
+            srcDirLabel.Content = srcDirRootPath.Replace('\\', '/');
+            ValidateFolderDirs();
         }
 
         private void chooseDestBtn_Click(object sender, RoutedEventArgs e)
@@ -131,22 +135,23 @@ namespace Graphical_Photo_Organizer
             string path = SelectFolder("Select Root Folder Where Sorted Items Will Go");
 
             destDirRootPath = path;
-            destDirLabel.Content = destDirRootPath;
+            destDirLabel.Content = destDirRootPath.Replace('\\', '/');
+            destDirLabel.ToolTip = destDirRootPath.Replace('\\', '/');
 
             ValidateFolderDirs();
         }
 
-        private void beginBtn_Click(object sender, RoutedEventArgs e)
+        private async void beginBtn_Click(object sender, RoutedEventArgs e)
         {
             currentItemGroupBox.IsEnabled = true;
-            LoadItem(unsortedFiles[0]);
+            await LoadItem(unsortedFiles[0]);
             setupGroupBox.IsEnabled = false;
             UpdateStats();
         }
 
-        private void LoadItem(string path)
+        private async Task LoadItem(string path)
         {
-            originalPathLabel.Content = unsortedFiles[0];
+            originalPathLabel.Content = unsortedFiles[0].Replace('\\', '/');
             ogFilename = Path.GetFileNameWithoutExtension(path);
             ext = Path.GetExtension(path);
 
@@ -161,21 +166,22 @@ namespace Graphical_Photo_Organizer
             filenameTextBox.Text = ogFilename;
             ogDateTakenLabel.Content = "OG: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             dateTakenSrcLabel.Content = dateTakenSrc;
+            datePicker.DisplayDate = ogDateTaken;
             datePicker.SelectedDate = ogDateTaken;
             itemPreview.Source = new Uri(path);
 
             UpdateDestPath();
-            CheckForDuplicates();
+            await Task.Run(CheckForDuplicates);
         }
-        
+
         ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
         private void UpdateDestPath()
         {
-            destFolderPath = Path.Combine(srcDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
+            destFolderPath = Path.Combine(destDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
             destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
             destPathLabel.Content = destFilePath;
         }
-        
+
         /// <summary>Checks the destination folder for items that either might be or are duplicates.</summary>
         private void CheckForDuplicates()
         {
@@ -184,16 +190,16 @@ namespace Graphical_Photo_Organizer
             sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.gif", SearchOption.AllDirectories)).ToArray();
             sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToArray();
             sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToArray();
-            
+
             foreach (string file in sortedFiles)
             {
                 if (file.EndsWith(Path.GetFileName(destFilePath)))
                     MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        
+
         private void UpdateStats() => statsLabel.Content = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
-        
+
         private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
 
         private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
@@ -201,25 +207,23 @@ namespace Graphical_Photo_Organizer
             newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             UpdateDestPath();
         }
-        
+
         /// <summary>Moves the current item to its new home and loads the next item.</summary>
-        private void nextItemBtn_Click(object sender, EventArgs e)
+        private async void nextItemBtn_Click(object sender, EventArgs e)
         {
             UpdateDestPath();
             if (!File.Exists(destFilePath))
             {
                 Directory.CreateDirectory(destFolderPath);
 
-                try
-                {
-                    File.Move(unsortedFiles[0], destFilePath);
-                }
-                catch (IOException) //Stupid but fixes file in use error
-                {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    File.Move(unsortedFiles[0], destFilePath);
-                }
+                //Stupid but fixes file in use error
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                // Thread t = new(() => File.Move(unsortedFiles[0], destFilePath));
+                // t.Start();
+                
+                // File.Move(unsortedFiles[0], destFilePath);
+                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             }
             else
             {
@@ -228,7 +232,9 @@ namespace Graphical_Photo_Organizer
                 if (result == MessageBoxResult.Yes)
                 {
                     File.Delete(destFilePath);
-                    File.Move(unsortedFiles[0], destFilePath);
+                    // Thread t = new(() => File.Move(unsortedFiles[0], destFilePath));
+                    // t.Start();
+                    await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
                 }
                 else if (result == MessageBoxResult.No)
                 {
@@ -238,19 +244,19 @@ namespace Graphical_Photo_Organizer
                 else if (result == MessageBoxResult.Cancel)
                     return;
             }
-        
+
             LoadNextItem();
         }
 
         ///<summary>Removes the current image from the List and loads the next one.</summary>
-        private void LoadNextItem()
+        private async void LoadNextItem()
         {
             unsortedFiles.RemoveAt(0);
             amountSorted++;
             UpdateStats();
-        
+
             if (unsortedFiles.Count > 0)
-                LoadItem(unsortedFiles[0]);
+                await LoadItem(unsortedFiles[0]);
         }
     }
 }
