@@ -8,7 +8,7 @@ Problem: Your folder of pictures and videos looks like this:
 But what you really want is to have it look like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902653-2a078b6f-750b-44d3-9f57-0ef58215458a.png)
 
-And inside each folder something like this:
+And inside each year folder something like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902676-0b3c4f65-1c29-48d7-821f-9f93124d69a1.png)
 
 With Graphical Photo Organizer (GPO), organizing messy folders of pictures and videos like this is a piece of cake! 🍰
