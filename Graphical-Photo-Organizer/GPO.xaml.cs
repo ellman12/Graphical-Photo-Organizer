@@ -206,28 +206,32 @@ namespace Graphical_Photo_Organizer
             newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             UpdateDestPath();
         }
-        
+
+        ///<summary>If nothing left to sort, clear the item preview</summary>
+        private void ClearItemPreview()
+        {
+            itemPreview.LoadedBehavior = MediaState.Manual;
+            itemPreview.Opacity = 0;
+            itemPreview.IsMuted = true;
+            itemPreview.Stop();
+
+            filenameTextBox.Text = "";
+            originalPathLabel.Content = "";
+            destPathLabel.Content = "";
+            ogDateTakenLabel.Content = "";
+            newDateTakenLabel.Content = "";
+            dateTakenSrcLabel.Content = "";
+        }
+
         private async void SkipBtn_Click(object sender, RoutedEventArgs e)
         {
             unsortedFiles.RemoveAt(0);
-            
+
             if (unsortedFiles.Count > 0)
                 await LoadItem(unsortedFiles[0]);
             else if (unsortedFiles.Count == 0)
-            {
-                itemPreview.LoadedBehavior = MediaState.Manual;
-                itemPreview.Opacity = 0;
-                itemPreview.IsMuted = true;
-                itemPreview.Stop();
+                ClearItemPreview();
 
-                filenameTextBox.Text = "";
-                originalPathLabel.Content = "";
-                destPathLabel.Content = "";
-                ogDateTakenLabel.Content = "";
-                newDateTakenLabel.Content = "";
-                dateTakenSrcLabel.Content = "";
-            }
-            
             amountSkipped++;
             UpdateStats();
         }
@@ -247,19 +251,7 @@ namespace Graphical_Photo_Organizer
                 if (unsortedFiles.Count >= 2)
                     itemPreview.Source = new Uri(unsortedFiles[1]);
                 else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
-                {
-                    itemPreview.LoadedBehavior = MediaState.Manual;
-                    itemPreview.Opacity = 0;
-                    itemPreview.IsMuted = true;
-                    itemPreview.Stop();
-
-                    filenameTextBox.Text = "";
-                    originalPathLabel.Content = "";
-                    destPathLabel.Content = "";
-                    ogDateTakenLabel.Content = "";
-                    newDateTakenLabel.Content = "";
-                    dateTakenSrcLabel.Content = "";
-                }
+                    ClearItemPreview();
 
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             }
@@ -282,7 +274,7 @@ namespace Graphical_Photo_Organizer
             }
 
             LoadNextItem();
-            
+
             if (unsortedFiles.Count == 0)
             {
                 currentItemGroupBox.IsEnabled = false;
@@ -301,6 +293,23 @@ namespace Graphical_Photo_Organizer
 
             if (unsortedFiles.Count > 0)
                 await LoadItem(unsortedFiles[0]);
+        }
+
+        private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this photo?", "Delete this photo?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                File.Delete(unsortedFiles[0]);
+                unsortedFiles.RemoveAt(0);
+                amountDeleted++;
+                UpdateStats();
+
+                if (unsortedFiles.Count > 0)
+                    await LoadItem(unsortedFiles[0]);
+                else
+                    ClearItemPreview();
+            }
         }
     }
 }
