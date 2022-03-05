@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Graphical-Photo-Organizer", "Graphical-Photo-Organizer.csproj", "{EE9DB273-61D8-4A26-998E-5120F4906997}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphical-Photo-Organizer", "..\..\GitHub\Graphical-Photo-Organizer\Graphical-Photo-Organizer\Graphical-Photo-Organizer.csproj", "{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EE9DB273-61D8-4A26-998E-5120F4906997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE9DB273-61D8-4A26-998E-5120F4906997}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE9DB273-61D8-4A26-998E-5120F4906997}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE9DB273-61D8-4A26-998E-5120F4906997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B8786D95-9F22-4B27-8F53-937A818AA527}
+		SolutionGuid = {22AAFE90-4871-4165-952A-5CECE48E4790}
 	EndGlobalSection
 EndGlobal

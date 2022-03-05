@@ -1,3 +1,7 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using ExifLib;
 using MetadataExtractor;
 using MetadataExtractor.Formats.QuickTime;
@@ -80,7 +84,7 @@ namespace Graphical_Photo_Organizer
         private static bool GetMp4Date(string path, out DateTime dateTaken, out DateTakenSrc src)
         {
             IEnumerable<MetadataExtractor.Directory> directories = QuickTimeMetadataReader.ReadMetadata(new FileStream(path, FileMode.Open));
-            QuickTimeMovieHeaderDirectory directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
+            QuickTimeMovieHeaderDirectory? directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
 
             if (directory == null)
             {
@@ -177,7 +181,7 @@ namespace Graphical_Photo_Organizer
         //Returns false if unable to parse.
         private static bool ParseTimestamp(string timestamp, out DateTime dateTime, ref DateTakenSrc src)
         {
-            if (DateTime.TryParse(timestamp, out dateTime) || timestamp!.Length != 14) return false;
+            if (DateTime.TryParse(timestamp, out dateTime) || timestamp.Length != 14) return false;
             
             int year = Parse(timestamp[..4]);
             int month = Parse(timestamp[4..6]);
