@@ -205,7 +205,7 @@ public partial class GPO
         }
     }
 
-    private void UpdateStats() => statsLabel.Content = $"Amount Sorted: {amountSorted}    Amount Skipped: {amountSkipped}    Amount Deleted: {amountDeleted}    Amount Left: {unsortedFiles.Count}";
+    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
 
     private void UpdateMuteBtn() => muteUnmuteBtn.Visibility = videoFileExts.Contains(ext) ? Visibility.Visible : Visibility.Hidden;
 
