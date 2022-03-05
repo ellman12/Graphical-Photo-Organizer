@@ -14,7 +14,7 @@ With Graphical Photo Organizer (GPO), organizing messy folders of pictures and v
 
 ## Installation
 Check the [Releases](https://github.com/ellman12/Graphical-Photo-Organizer/releases) and download the latest version. **GPO requires .NET 6**.<br>
-From there it should be able to run wherever you download it to.
+Unzip the file and find the .exe. From there it should be able to run wherever you downloaded it to.
 
 ## Using Graphical Photo Organizer
 GPO was designed to be fast, simple, and easy to use. What follows is a guide for your first time use.<br>
@@ -34,6 +34,17 @@ The text next to the OG (original) date taken is where it found the date taken d
 
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
+
+## Contributing to Graphical Photo Organizer
+To contribute to Graphical Photo Organizer, follow these steps:
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin Graphical-Photo-Organizer/<location>`
+5. Create the pull request.
+
+Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
 ## Contact
 If you want to contact me you can reach me at either ellduc4@gmail.com or elliott.ducharme@trojans.dsu.edu
