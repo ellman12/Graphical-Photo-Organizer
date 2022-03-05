@@ -53,7 +53,7 @@
                 <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
-                    <Button FontSize="13" Content="Skip" Height="26" Width="88"/>
+                    <Button FontSize="13" Content="Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click"/>
                     <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="Next" Height="26" Width="88" Margin="4,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">

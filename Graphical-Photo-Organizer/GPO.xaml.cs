@@ -206,6 +206,31 @@ namespace Graphical_Photo_Organizer
             newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             UpdateDestPath();
         }
+        
+        private async void SkipBtn_Click(object sender, RoutedEventArgs e)
+        {
+            unsortedFiles.RemoveAt(0);
+            
+            if (unsortedFiles.Count > 0)
+                await LoadItem(unsortedFiles[0]);
+            else if (unsortedFiles.Count == 0)
+            {
+                itemPreview.LoadedBehavior = MediaState.Manual;
+                itemPreview.Opacity = 0;
+                itemPreview.IsMuted = true;
+                itemPreview.Stop();
+
+                filenameTextBox.Text = "";
+                originalPathLabel.Content = "";
+                destPathLabel.Content = "";
+                ogDateTakenLabel.Content = "";
+                newDateTakenLabel.Content = "";
+                dateTakenSrcLabel.Content = "";
+            }
+            
+            amountSkipped++;
+            UpdateStats();
+        }
 
         ///<summary>Moves the current item to its new home and loads the next item.</summary>
         private async void nextItemBtn_Click(object sender, EventArgs e)
