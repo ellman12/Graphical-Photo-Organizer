@@ -167,7 +167,7 @@ public partial class GPO
         dateTakenSrcLabel.Foreground = dateTakenSrc switch
         {
             M.DateTakenSrc.Metadata => Brushes.Green,
-            M.DateTakenSrc.Filename => Brushes.Yellow,
+            M.DateTakenSrc.Filename => Brushes.Goldenrod,
             M.DateTakenSrc.Now => Brushes.Red,
             _ => throw new ArgumentOutOfRangeException()
         };
