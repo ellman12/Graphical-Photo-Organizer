@@ -116,11 +116,6 @@ namespace Graphical_Photo_Organizer
                 if (filename.StartsWith("Screenshot_")) //If Android screenshot. E.g., 'Screenshot_20201028-141626_Messages.jpg'
                 {
                     timestamp = filename.Substring(11, 8) + filename.Substring(20, 6); //Strip the chars we don't want.
-                    timestamp = timestamp.Insert(4, "-");
-                    timestamp = timestamp.Insert(7, "-");
-                    timestamp = timestamp.Insert(10, " ");
-                    timestamp = timestamp.Insert(13, ":");
-                    timestamp = timestamp.Insert(16, ":");
                 }
                 else if (filename.StartsWith("IMG_") || filename.StartsWith("VID_"))
                 {
