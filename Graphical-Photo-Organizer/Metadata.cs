@@ -132,7 +132,7 @@ namespace Graphical_Photo_Organizer
                     timestamp = filename[..(timestamp.Length - 4)]; //Remove extension https://stackoverflow.com/questions/15564944/remove-the-last-three-characters-from-a-string
                     timestamp = timestamp.Replace("-", "").Replace(" ", "");
                 }
-                else if (filename[8] == '_') //A filename like this: '20201031_090459.jpg'. I think these come from (Android(?)) phones. Not 100% sure.
+                else if (filename[8] == '_' && !filename.StartsWith("messages")) //A filename like this: '20201031_090459.jpg'. I think these come from (Android(?)) phones. Not 100% sure.
                 {
                     timestamp = filename[..8] + filename.Substring(9, 6);
                 }
@@ -181,8 +181,12 @@ namespace Graphical_Photo_Organizer
         //Returns false if unable to parse.
         private static bool ParseTimestamp(string timestamp, out DateTime dateTime, ref DateTakenSrc src)
         {
-            if (DateTime.TryParse(timestamp, out dateTime) || timestamp.Length != 14) return false;
-            
+            if (timestamp.Length < 14 || DateTime.TryParse(timestamp, out dateTime))
+            {
+                dateTime = DateTime.Now;
+                return false;
+            }
+
             int year = Parse(timestamp[..4]);
             int month = Parse(timestamp[4..6]);
             int day = Parse(timestamp[6..8]);
