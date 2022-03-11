@@ -326,7 +326,7 @@ public partial class GPO
         MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this photo?", "Delete this photo?", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
-            File.Delete(unsortedFiles[0]);
+            string deletePath = unsortedFiles[0];
             unsortedFiles.RemoveAt(0);
             amountDeleted++;
             UpdateStats();
@@ -336,6 +336,17 @@ public partial class GPO
                 await LoadItem(unsortedFiles[0]);
             else
                 ClearItemPreview();
+
+            try
+            {
+                File.Delete(deletePath);
+            }
+            catch (IOException)
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Delete(deletePath);
+            }
         }
     }
 
