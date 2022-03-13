@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graphical_Photo_Organizer"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="634" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer" Width="1000" Height="630" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -26,7 +26,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="45"/>
-            <RowDefinition Height="34"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -42,8 +42,7 @@
 
         <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="False">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
-                <Label Content="Filename" FontSize="9"/>
-                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,0,0,3" FontSize="9" />
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="6,6,4,3" FontSize="9" />
                 <StackPanel Orientation="Horizontal">
                     <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
                     <Label Name="dateTakenSrcLabel" Content="src"/>
@@ -53,20 +52,24 @@
                 <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
-                    <Button FontSize="13" Content="_Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click"/>
-                    <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0"/>
+                    <Button FontSize="13" Content="_Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click" ToolTip="This item will not be moved and will remain where it is."/>
+                    <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0" ToolTip="Sort this item based on what Date Taken it was given by you or that was found in the file."/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
+                    <Button FontSize="13" Content="_Unknown DT" Height="26" Width="88" Name="unknownDateBtn" ToolTip="If you aren't sure when this item was taken, click to move it to a special folder away from the others that do have a DT."/>
+                    <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0" Click="resetBtn_Click" ToolTip="Undo any changes made to the filename and Date Taken and reset to what they were originally."/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
-                    <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click"/>
-                    <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0" Click="resetBtn_Click"/>
+                    <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click" ToolTip="Send this file to the Recycle Bin"/>
+                    <CheckBox FontSize="12" VerticalAlignment="Center" VerticalContentAlignment="Center"  Content="Del Warning" Margin="4,0,0,0" ToolTip="Should a warning be shown when deleting items?"/>
                 </StackPanel>
-
+                
             </StackPanel>
         </GroupBox>
 
-        <Label Grid.Column="1" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="OG Path: " />
-        <Label MouseDoubleClick="OriginalPathLabel_OnMouseDoubleClick" x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="path" />
-        <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="New Path: " />
+        <Label Grid.Column="1" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
+        <Label MouseDoubleClick="OriginalPathLabel_OnMouseDoubleClick" x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="path"/>
+        <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
         <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
