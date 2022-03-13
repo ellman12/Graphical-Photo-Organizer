@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace Graphical_Photo_Organizer
             Filename,
             Now //DateTime.Now
         }
-        
+
         //Get the Date Taken for an item, if possible.
         //Return true if data was found or false if using DateTime.Now
         //Steps:
@@ -83,23 +83,31 @@ namespace Graphical_Photo_Organizer
         ///<returns>True if this file had data.</returns>
         private static bool GetMp4Date(string path, out DateTime dateTaken, out DateTakenSrc src)
         {
-            IEnumerable<MetadataExtractor.Directory> directories = QuickTimeMetadataReader.ReadMetadata(new FileStream(path, FileMode.Open));
-            QuickTimeMovieHeaderDirectory? directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
-
-            if (directory == null)
+            dateTaken = DateTime.Now;
+            src = DateTakenSrc.Now;
+            
+            try
             {
+                IEnumerable<MetadataExtractor.Directory> directories = QuickTimeMetadataReader.ReadMetadata(new FileStream(path, FileMode.Open));
+                QuickTimeMovieHeaderDirectory? directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
+
+                if (directory != null && directory.TryGetDateTime(QuickTimeMovieHeaderDirectory.TagCreated, out dateTaken))
+                {
+                    src = DateTakenSrc.Metadata;
+                    return true;
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                src = DateTakenSrc.Now;
+                bool hasData = GetFilenameTimestamp(Path.GetFileName(path), out dateTaken, ref src);
+                if (hasData) return true;
+                
                 dateTaken = DateTime.Now;
                 src = DateTakenSrc.Now;
                 return false;
             }
 
-            if (directory.TryGetDateTime(QuickTimeMovieHeaderDirectory.TagCreated, out dateTaken))
-            {
-                src = DateTakenSrc.Metadata;
-                return true;
-            }
-
-            src = DateTakenSrc.Now;
             return false;
         }
 
@@ -173,6 +181,7 @@ namespace Graphical_Photo_Organizer
                 else
                     hasData = ParseTimestamp(timestamp, out dateTaken, ref src);
             }
+
             return hasData;
         }
 
