@@ -61,7 +61,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
                     <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click" ToolTip="Send this file to the Recycle Bin"/>
-                    <CheckBox FontSize="12" VerticalAlignment="Center" VerticalContentAlignment="Center"  Content="Del Warning" Margin="4,0,0,0" ToolTip="Should a warning be shown when deleting items?"/>
+                    <CheckBox FontSize="12" VerticalAlignment="Center" VerticalContentAlignment="Center" Name="delWarnCheckBox" Content="Del Warning" Margin="4,0,0,0" ToolTip="Should a warning be shown when deleting items?"/>
                 </StackPanel>
                 
             </StackPanel>
