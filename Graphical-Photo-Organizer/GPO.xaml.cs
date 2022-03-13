@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
@@ -358,5 +359,16 @@ public partial class GPO
         newDateTakenLabel.Content = "New: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
         datePicker.DisplayDate = ogDateTaken;
         datePicker.SelectedDate = ogDateTaken;
+    }
+
+    private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        //https://stackoverflow.com/a/1132559
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = Path.GetDirectoryName(unsortedFiles[0]),
+            UseShellExecute = true,
+            Verb = "open"
+        });
     }
 }

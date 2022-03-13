@@ -65,7 +65,7 @@
         </GroupBox>
 
         <Label Grid.Column="1" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="OG Path: " />
-        <Label x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="path" />
+        <Label MouseDoubleClick="OriginalPathLabel_OnMouseDoubleClick" x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="path" />
         <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="New Path: " />
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
