@@ -8,9 +8,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using M = Graphical_Photo_Organizer.Metadata;
+using SearchOption = System.IO.SearchOption;
 
 namespace Graphical_Photo_Organizer;
 
@@ -280,7 +282,7 @@ public partial class GPO
 
             if (result == MessageBoxResult.Yes)
             {
-                File.Delete(destFilePath); //Delete the original
+                RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
             }
             else if (result == MessageBoxResult.No)
@@ -333,15 +335,21 @@ public partial class GPO
 
             try
             {
-                File.Delete(deletePath);
+                RecycleFile(deletePath);
             }
-            catch (IOException)
+            catch (Exception ex)
             {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                File.Delete(deletePath);
+                MessageBox.Show("An error occurred when deleting that item", ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
+
+    ///<summary>Runs garbage collection and recycles the file specified</summary>
+    private static void RecycleFile(string path)
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin); //https://stackoverflow.com/a/3282456
     }
 
     private void resetBtn_Click(object sender, RoutedEventArgs e)
