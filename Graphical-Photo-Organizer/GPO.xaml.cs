@@ -372,4 +372,54 @@ public partial class GPO
             Verb = "open"
         });
     }
+
+    private async void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        destFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
+        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+        destPathLabel.Content = destFilePath;
+        
+        if (!File.Exists(destFilePath))
+        {
+            Directory.CreateDirectory(destFolderPath);
+
+            //Stupid but fixes file in use error
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            if (unsortedFiles.Count >= 2)
+                itemPreview.Source = new Uri(unsortedFiles[1]);
+            else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
+                ClearItemPreview();
+
+            await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
+        }
+        else
+        {
+            MessageBoxResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                RecycleFile(destFilePath); //Delete the original
+                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
+            }
+            else if (result == MessageBoxResult.No)
+            {
+                LoadNextItem();
+                return;
+            }
+            else if (result == MessageBoxResult.Cancel)
+                return;
+        }
+
+        LoadNextItem();
+
+        if (unsortedFiles.Count == 0)
+        {
+            currentItemGroupBox.IsEnabled = false;
+            setupGroupBox.IsEnabled = true;
+            srcDirLabel.Content = srcDirRootPath = "";
+            destDirLabel.Content = destDirRootPath = "";
+        }
+    }
 }

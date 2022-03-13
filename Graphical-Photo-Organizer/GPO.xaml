@@ -56,7 +56,7 @@
                     <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0" ToolTip="Sort this item based on what Date Taken it was given by you or that was found in the file."/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
-                    <Button FontSize="13" Content="_Unknown DT" Height="26" Width="88" Name="unknownDateBtn" ToolTip="If you aren't sure when this item was taken, click to move it to a special folder away from the others that do have a DT."/>
+                    <Button FontSize="13" Content="_Unknown DT" Height="26" Width="88" Click="UnknownDateBtn_OnClick" Name="unknownDateBtn" ToolTip="If you aren't sure when this item was taken, click to move it to a special folder away from the others that do have a DT."/>
                     <Button FontSize="13" Content="_Reset" Height="26" Width="88" Margin="4,0,0,0" Click="resetBtn_Click" ToolTip="Undo any changes made to the filename and Date Taken and reset to what they were originally."/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,0">
