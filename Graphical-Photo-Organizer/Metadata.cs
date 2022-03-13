@@ -97,7 +97,7 @@ namespace Graphical_Photo_Organizer
                     return true;
                 }
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception)
             {
                 src = DateTakenSrc.Now;
                 bool hasData = GetFilenameTimestamp(Path.GetFileName(path), out dateTaken, ref src);
