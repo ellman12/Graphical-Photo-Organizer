@@ -59,6 +59,19 @@ public partial class GPO
         statsLabel.Content = "";
         dateTakenSrcLabel.Content = "";
         muteUnmuteBtn.Visibility = Visibility.Hidden;
+
+        //Debugging stuff
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/tmp/Pics and Vids Folder From HDD";
+        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Pictures/Sorted Pics and Vids From HDD";
+        //
+        // unsortedFiles.Clear(); //Clear if user changed to different src folder
+        // unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
+        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
+        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
+        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToList();
+        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
+        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mov", SearchOption.AllDirectories)).ToList();
+        // ValidateFolderDirs();
     }
 
     ///<summary>
