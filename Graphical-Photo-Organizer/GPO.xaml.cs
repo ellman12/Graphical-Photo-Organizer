@@ -334,14 +334,7 @@ public partial class GPO
             else
                 ClearItemPreview();
 
-            try
-            {
-                RecycleFile(deletePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred when deleting that item", ex.Message, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            RecycleFile(deletePath);
         }
     }
 
