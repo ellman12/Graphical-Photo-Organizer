@@ -320,7 +320,7 @@ public partial class GPO
 
     private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
     {
-        MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this photo?", "Delete this photo?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Delete this item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
             string deletePath = unsortedFiles[0];
