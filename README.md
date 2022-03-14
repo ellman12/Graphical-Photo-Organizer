@@ -1,5 +1,5 @@
 # Graphical-Photo-Organizer
-A convenient C# WPF utility for organizing photos and videos based on when they were taken.
+**A convenient C# WPF utility for organizing photos and videos based on when they were taken.**
 
 Problem: Your folder of pictures and videos looks like this:
 ![image](https://user-images.githubusercontent.com/56001219/156902615-aad8f019-0719-4e37-ac2a-bd57f4133d89.png)
@@ -22,7 +22,7 @@ GPO was designed to be fast, simple, and easy to use. What follows is a guide fo
 2. Choose where sorted items will end up.
 3. Once you've done that, hit the begin button to start sorting. One important thing to note is you can quit sorting whenever you want; GPO moves each file individually as you sort so there's no need to "save" or "apply" or anything.
 
-![image](https://user-images.githubusercontent.com/56001219/156902959-84fe5dcf-a109-40e5-9860-68584933bb37.png)
+![image](https://user-images.githubusercontent.com/56001219/158085893-a52dc38f-10fb-4141-9629-33058ffc225b.png)
 When you're viewing a single item, you can change its filename, and also when it was taken (thus affecting where it will end up).
 Also when viewing an item, you can
 * Skip it and not move it
@@ -34,6 +34,7 @@ GPO also has several keyboard shortcuts. Press Alt + a letter:
 * B to Begin Sorting
 * N for Next Item
 * M to Mute/unmute Video
+* U to move the current item to the Unknown Date Taken folder
 * S to Skip the Current Item
 * D to Delete the Current Item
 * R to Reset Changes to Current Item
