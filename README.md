@@ -41,6 +41,13 @@ GPO also has several keyboard shortcuts. Press Alt + a letter:
 
 The text next to the OG (original) date taken is where it found the date taken data, which can either be Metadata, the Filename, or if neither of those, the date right now.
 
+GPO supports several common photo and video file types:
+* JPG (and JPEG)
+* PNG
+* GIF
+* MP4
+* MKV
+
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
 
