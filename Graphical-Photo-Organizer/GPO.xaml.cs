@@ -364,7 +364,7 @@ public partial class GPO
     {
         GC.Collect();
         GC.WaitForPendingFinalizers();
-        FileSystem.DeleteFile(path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin); //https://stackoverflow.com/a/3282456
+        FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); //https://stackoverflow.com/a/3282456
     }
 
     private void resetBtn_Click(object sender, RoutedEventArgs e)
