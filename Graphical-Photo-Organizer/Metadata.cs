@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ExifLib;
 using MetadataExtractor;
@@ -6,7 +8,7 @@ using MetadataExtractor.Formats.QuickTime;
 using static System.Int32;
 using ExifReader = ExifLib.ExifReader;
 
-namespace PSS.Backend
+namespace Graphical_Photo_Organizer
 {
     public static class Metadata
     {

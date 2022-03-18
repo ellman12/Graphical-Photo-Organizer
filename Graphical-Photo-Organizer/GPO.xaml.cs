@@ -186,7 +186,7 @@ public partial class GPO
         ogFilename = Path.GetFileNameWithoutExtension(path);
         ext = Path.GetExtension(path);
 
-        (_, dateTakenSrc) = M.GetDateTaken(path, out ogDateTaken);
+        M.GetDateTaken(path, out ogDateTaken, out dateTakenSrc);
 
         filenameTextBox.Text = ogFilename;
         ogDateTakenLabel.Content = "OG: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
