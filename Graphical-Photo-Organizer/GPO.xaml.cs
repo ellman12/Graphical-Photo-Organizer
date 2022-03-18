@@ -157,6 +157,24 @@ public partial class GPO
         EnableItemPreview();
         setupGroupBox.IsEnabled = false;
         currentItemGroupBox.IsEnabled = true;
+
+        //Experimental!
+        // int numPossDupes = 0;
+        // foreach (string unsortedFile in unsortedFiles)
+        // {
+            // foreach (string sortedFile in GetSortedFiles())
+            // {
+                // if (sortedFile.EndsWith(Path.GetFileName(unsortedFile)))
+                // {
+                    // numPossDupes++;
+                    // Thread t = new(() => File.Move(unsortedFile, Path.Combine("C:/Users/Elliott/Pictures/Potential Dupes", Path.GetFileName(unsortedFile))));
+                    // t.Start();
+                // }
+            // }
+        // }
+        // if (numPossDupes > 0)
+            // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
+        
         await LoadItem(unsortedFiles[0]);
         UpdateStats();
         UpdateMuteBtn();
@@ -198,8 +216,7 @@ public partial class GPO
         destPathLabel.Content = destFilePath;
     }
 
-    ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
-    private void CheckForDuplicates()
+    private IEnumerable<string> GetSortedFiles()
     {
         string[] sortedFiles = Directory.GetFiles(destDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToArray();
         sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
@@ -207,8 +224,13 @@ public partial class GPO
         sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToArray();
         sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToArray();
         sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mov", SearchOption.AllDirectories)).ToArray();
+        return sortedFiles;
+    }
 
-        foreach (string file in sortedFiles)
+    ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
+    private void CheckForDuplicates()
+    {
+        foreach (string file in GetSortedFiles())
         {
             if (file.EndsWith(Path.GetFileName(destFilePath)))
                 MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
