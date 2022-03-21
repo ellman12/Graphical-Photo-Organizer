@@ -158,19 +158,22 @@ public partial class GPO
         setupGroupBox.IsEnabled = false;
         currentItemGroupBox.IsEnabled = true;
 
-        //Experimental!
+        //Experimental! Use to automatically move potential dupes out of unsorted folder.
         // int numPossDupes = 0;
-        // foreach (string unsortedFile in unsortedFiles)
+        // foreach (string unsortedFile in unsortedFiles.ToList())
         // {
-            // foreach (string sortedFile in GetSortedFiles())
-            // {
-                // if (sortedFile.EndsWith(Path.GetFileName(unsortedFile)))
-                // {
-                    // numPossDupes++;
-                    // Thread t = new(() => File.Move(unsortedFile, Path.Combine("C:/Users/Elliott/Pictures/Potential Dupes", Path.GetFileName(unsortedFile))));
-                    // t.Start();
-                // }
-            // }
+        //     foreach (string sortedFile in GetSortedFiles())
+        //     {
+        //         if (sortedFile.EndsWith(Path.GetFileName(unsortedFile)))
+        //         {
+        //             numPossDupes++;
+        //             //Threads are used to move any items that are potential dupes out of the folder to be sorted, making life easier.
+        //             System.Threading.Thread t = new(() => File.Move(unsortedFile, Path.Combine("C:/Users/Elliott/Pictures/Potential Dupes", Path.GetFileName(unsortedFile))));
+        //             System.Threading.Thread t = new(() => FileSystem.DeleteFile(unsortedFile, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin));
+        //             unsortedFiles.Remove(unsortedFile);
+        //             t.Start();
+        //         }
+        //     }
         // }
         // if (numPossDupes > 0)
             // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
