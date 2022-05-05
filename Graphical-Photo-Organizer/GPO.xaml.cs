@@ -117,20 +117,33 @@ public partial class GPO
             beginBtn.IsEnabled = false;
         }
     }
+    
+    ///<summary>
+    ///<para>Get the full paths of all supported file types in a root path.</para>
+    ///Supported file types are: ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"
+    ///</summary>
+    private static List<string> GetSupportedFiles(string rootPath)
+    {
+        string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
+        string[] allPaths = Directory.GetFiles(rootPath, "*.*", SearchOption.AllDirectories);
+        List<string> goodPaths = new();
+        
+        foreach (string path in allPaths)
+        {
+            if (validExts.Contains(Path.GetExtension(path)))
+                goodPaths.Add(path);
+        }
+
+        return goodPaths;
+    }
 
     private void chooseSrcBtn_Click(object sender, RoutedEventArgs e)
     {
         string path = SelectFolder("Select Folder of Images to Sort");
-
         if (path == "") return;
 
         unsortedFiles.Clear(); //Clear if user changed to different src folder
-        unsortedFiles = Directory.GetFiles(path, "*.jp*g", SearchOption.AllDirectories).ToList();
-        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.png", SearchOption.AllDirectories)).ToList();
-        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.gif", SearchOption.AllDirectories)).ToList();
-        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.mp4", SearchOption.AllDirectories)).ToList();
-        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.mkv", SearchOption.AllDirectories)).ToList();
-        unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(path, "*.mov", SearchOption.AllDirectories)).ToList();
+        unsortedFiles = GetSupportedFiles(path);
 
         srcDirRootPath = path;
         srcDirLabel.ToolTip = srcDirRootPath.Replace('\\', '/');
@@ -141,6 +154,7 @@ public partial class GPO
     private void chooseDestBtn_Click(object sender, RoutedEventArgs e)
     {
         string path = SelectFolder("Select Root Folder Where Sorted Items Will Go");
+        if (path == "") return;
 
         destDirRootPath = path;
         destDirLabel.Content = destDirRootPath.Replace('\\', '/');
@@ -215,21 +229,10 @@ public partial class GPO
         destPathLabel.Content = destFilePath;
     }
 
-    private IEnumerable<string> GetSortedFiles()
-    {
-        string[] sortedFiles = Directory.GetFiles(destDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToArray();
-        sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.png", SearchOption.AllDirectories)).ToArray();
-        sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.gif", SearchOption.AllDirectories)).ToArray();
-        sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToArray();
-        sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToArray();
-        sortedFiles = sortedFiles.Concat(Directory.GetFiles(destDirRootPath, "*.mov", SearchOption.AllDirectories)).ToArray();
-        return sortedFiles;
-    }
-
     ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
     private void CheckForDuplicates()
     {
-        foreach (string file in GetSortedFiles())
+        foreach (string file in GetSupportedFiles(destDirRootPath))
         {
             if (file.EndsWith(Path.GetFileName(destFilePath)))
                 MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
