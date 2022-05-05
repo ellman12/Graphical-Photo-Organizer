@@ -18,7 +18,7 @@ Unzip the file and find the .exe. From there it should be able to run wherever y
 
 ## Using Graphical Photo Organizer
 GPO was designed to be fast, simple, and easy to use. What follows is a guide for your first time use.<br>
-1. In the first GroupBox, choose the folder you want to sort.
+1. In Setup, choose the folder you want to sort.
 2. Choose where sorted items will end up.
 3. Once you've done that, hit the begin button to start sorting. One important thing to note is you can quit sorting whenever you want; GPO moves each file individually as you sort so there's no need to "save" or "apply" or anything.
 
@@ -39,14 +39,15 @@ GPO also has several keyboard shortcuts. Press Alt + a letter:
 * D to Delete the Current Item
 * R to Reset Changes to Current Item
 
-The text next to the OG (original) date taken is where it found the date taken data, which can either be Metadata, the Filename, or if neither of those, the date right now.
+The colored text next to the OG (original) date taken is where it found the date taken data, which can either be Metadata, the Filename, or if neither of those, the date right now.
 
 GPO supports several common photo and video file types:
-* JPG (and JPEG)
+* JPG/JPEG
 * PNG
 * GIF
 * MP4
 * MKV
+* MOV
 
 And I think that's it. GPO is designed to be as simple as possible, while still being fast and efficient.
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
