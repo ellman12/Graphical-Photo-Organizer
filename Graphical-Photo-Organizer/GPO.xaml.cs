@@ -22,8 +22,6 @@ namespace Graphical_Photo_Organizer;
 ///</summary>
 public partial class GPO
 {
-    private static readonly string[] videoFileExts = {".mp4", ".mkv", ".mov"};
-
     //Set during setup
     private List<string> unsortedFiles = new();
     private string srcDirRootPath = "", destDirRootPath = "";
@@ -58,7 +56,6 @@ public partial class GPO
         destPathLabel.Content = "";
         statsLabel.Content = "";
         dateTakenSrcLabel.Content = "";
-        muteUnmuteBtn.Visibility = Visibility.Hidden;
 
         //Debugging stuff
         // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/tmp/Pics and Vids Folder From HDD";
@@ -180,7 +177,6 @@ public partial class GPO
         
         await LoadItem(unsortedFiles[0]);
         UpdateStats();
-        UpdateMuteBtn();
     }
 
     private async Task LoadItem(string path)
@@ -242,8 +238,6 @@ public partial class GPO
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
 
-    private void UpdateMuteBtn() => muteUnmuteBtn.Visibility = videoFileExts.Contains(ext) ? Visibility.Visible : Visibility.Hidden;
-
     private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
     {
         itemPreview.IsMuted = !itemPreview.IsMuted;
@@ -265,6 +259,7 @@ public partial class GPO
         itemPreview.LoadedBehavior = MediaState.Manual;
         itemPreview.Visibility = Visibility.Hidden;
         itemPreview.IsMuted = true;
+        muteUnmuteBtn.Content = "Un_mute";
         itemPreview.Stop();
 
         filenameTextBox.Text = "";
@@ -293,7 +288,6 @@ public partial class GPO
 
         amountSkipped++;
         UpdateStats();
-        UpdateMuteBtn();
     }
 
     ///<summary>Moves the current item to its new home and loads the next item.</summary>
@@ -350,7 +344,6 @@ public partial class GPO
         unsortedFiles.RemoveAt(0);
         amountSorted++;
         UpdateStats();
-        UpdateMuteBtn();
 
         if (unsortedFiles.Count > 0)
             await LoadItem(unsortedFiles[0]);
@@ -373,7 +366,6 @@ public partial class GPO
             unsortedFiles.RemoveAt(0);
             amountDeleted++;
             UpdateStats();
-            UpdateMuteBtn();
 
             if (unsortedFiles.Count > 0)
                 await LoadItem(unsortedFiles[0]);
