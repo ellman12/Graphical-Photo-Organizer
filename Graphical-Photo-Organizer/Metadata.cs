@@ -73,7 +73,7 @@ namespace Graphical_Photo_Organizer
             try
             {
                 IEnumerable<MetadataExtractor.Directory> directories = QuickTimeMetadataReader.ReadMetadata(new FileStream(path, FileMode.Open));
-                QuickTimeMovieHeaderDirectory directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
+                QuickTimeMovieHeaderDirectory? directory = directories.OfType<QuickTimeMovieHeaderDirectory>().FirstOrDefault();
 
                 if (directory != null && directory.TryGetDateTime(QuickTimeMovieHeaderDirectory.TagCreated, out dateTaken))
                 {

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Graphical_Photo_Organizer"
         mc:Ignorable="d"
         Title="Graphical Photo Organizer" Width="1000" Height="630" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
@@ -72,7 +71,7 @@
         <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
-        <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
+        <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
         <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />

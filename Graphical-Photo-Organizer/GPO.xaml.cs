@@ -17,9 +17,7 @@ using SearchOption = System.IO.SearchOption;
 
 namespace Graphical_Photo_Organizer;
 
-///<summary>
-///Interaction logic for GPO.xaml
-///</summary>
+///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
     //Set during setup
@@ -37,19 +35,17 @@ public partial class GPO
     private DateTime ogDateTaken;
 
     //Stats
-    private int amountSorted = 0;
-    private int amountSkipped = 0;
-    private int amountDeleted = 0;
+    private int amountSorted;
+    private int amountSkipped;
+    private int amountDeleted;
 
     public GPO()
     {
         InitializeComponent();
     }
-
+    
     private void Window_Initialized(object sender, EventArgs e)
     {
-        datePicker.DisplayDate = DateTime.Now;
-        datePicker.SelectedDate = DateTime.Now;
         srcDirLabel.Content = "";
         destDirLabel.Content = "";
         originalPathLabel.Content = "";
