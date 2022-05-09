@@ -72,7 +72,7 @@
         <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
 
         <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
-        <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
+        <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />
     </Grid>

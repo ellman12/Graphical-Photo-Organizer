@@ -1,1 +1,2 @@
 Remove a few useless things and address a few warnings.
+Mute button now is only enabled when sorting is taking place.

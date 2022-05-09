@@ -168,6 +168,7 @@ public partial class GPO
         EnableItemPreview();
         setupGroupBox.IsEnabled = false;
         currentItemGroupBox.IsEnabled = true;
+        muteUnmuteBtn.IsEnabled = true;
 
         //Experimental! Use to automatically move potential dupes out of unsorted folder.
         // int numPossDupes = 0;
@@ -262,7 +263,6 @@ public partial class GPO
         itemPreview.LoadedBehavior = MediaState.Manual;
         itemPreview.Visibility = Visibility.Hidden;
         itemPreview.IsMuted = true;
-        muteUnmuteBtn.Content = "Un_mute";
         itemPreview.Stop();
 
         filenameTextBox.Text = "";
@@ -271,6 +271,7 @@ public partial class GPO
         ogDateTakenLabel.Content = "";
         newDateTakenLabel.Content = "";
         dateTakenSrcLabel.Content = "";
+        muteUnmuteBtn.IsEnabled = false;
     }
 
     ///<summary>If starting another round of sorting after finishing one, re-enable and show the item preview.</summary>
