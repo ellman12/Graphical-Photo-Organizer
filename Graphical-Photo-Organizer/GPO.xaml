@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="630" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="630" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
