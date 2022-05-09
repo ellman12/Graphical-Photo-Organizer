@@ -46,6 +46,10 @@ public partial class GPO
     
     private void Window_Initialized(object sender, EventArgs e)
     {
+        //These are necessary.
+        datePicker.DisplayDate = DateTime.Now;
+        datePicker.SelectedDate = DateTime.Now;
+
         srcDirLabel.Content = "";
         destDirLabel.Content = "";
         originalPathLabel.Content = "";
