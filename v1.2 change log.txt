@@ -1,2 +1,3 @@
 Remove a few useless things and address a few warnings.
 Mute button now is only enabled when sorting is taking place.
+Implemented a HashSet that stores the filenames in the destination folder. Should hopefully be more efficient than the old foreach loop every time an item was loaded.

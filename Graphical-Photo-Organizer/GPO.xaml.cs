@@ -20,6 +20,9 @@ namespace Graphical_Photo_Organizer;
 ///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
+    ///Tracks every filename in the destination folder and used to warn user of potential or confirmed duplicate file.
+    private readonly HashSet<string> destFolderFilenames = new();
+
     //Set during setup
     private List<string> unsortedFiles = new();
     private string srcDirRootPath = "", destDirRootPath = "";
@@ -163,7 +166,7 @@ public partial class GPO
         ValidateFolderDirs();
     }
 
-    private async void beginBtn_Click(object sender, RoutedEventArgs e)
+    private void beginBtn_Click(object sender, RoutedEventArgs e)
     {
         EnableItemPreview();
         setupGroupBox.IsEnabled = false;
@@ -189,12 +192,14 @@ public partial class GPO
         // }
         // if (numPossDupes > 0)
             // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
-        
-        await LoadItem(unsortedFiles[0]);
+
+        //Add any filenames in the destination folder for dupe checking.
+        foreach(string filename in GetSupportedFiles(destDirRootPath)) destFolderFilenames.Add(Path.GetFileName(filename));
+        LoadItem(unsortedFiles[0]);
         UpdateStats();
     }
 
-    private async Task LoadItem(string path)
+    private void LoadItem(string path)
     {
         originalPathLabel.Content = unsortedFiles[0].Replace('\\', '/');
         ogFilename = Path.GetFileNameWithoutExtension(path);
@@ -219,7 +224,7 @@ public partial class GPO
         itemPreview.Source = new Uri(path);
 
         UpdateDestPath();
-        await Task.Run(CheckForDuplicates);
+        CheckForDuplicates();
     }
 
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
@@ -233,11 +238,9 @@ public partial class GPO
     ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
     private void CheckForDuplicates()
     {
-        foreach (string file in GetSupportedFiles(destDirRootPath))
-        {
-            if (file.EndsWith(Path.GetFileName(destFilePath)))
-                MessageBox.Show("The current file might already be in the sorted folder at the path\n " + file.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
+        string filename = Path.GetFileName(destFilePath);
+        if (destFolderFilenames.Contains(filename))
+            MessageBox.Show("The current file might already be in the sorted folder at the path\n " + filename.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
@@ -281,12 +284,12 @@ public partial class GPO
         itemPreview.Visibility = Visibility.Visible;
     }
 
-    private async void SkipBtn_Click(object sender, RoutedEventArgs e)
+    private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
         unsortedFiles.RemoveAt(0);
 
         if (unsortedFiles.Count > 0)
-            await LoadItem(unsortedFiles[0]);
+            LoadItem(unsortedFiles[0]);
         else if (unsortedFiles.Count == 0)
             ClearItemPreview();
 
@@ -312,6 +315,7 @@ public partial class GPO
                 ClearItemPreview();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
+            destFolderFilenames.Add(filenameTextBox.Text);
         }
         else
         {
@@ -321,6 +325,7 @@ public partial class GPO
             {
                 RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
+                destFolderFilenames.Add(filenameTextBox.Text);
             }
             else if (result == MessageBoxResult.No)
             {
@@ -343,28 +348,28 @@ public partial class GPO
     }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
-    private async void LoadNextItem()
+    private void LoadNextItem()
     {
         unsortedFiles.RemoveAt(0);
         amountSorted++;
         UpdateStats();
 
         if (unsortedFiles.Count > 0)
-            await LoadItem(unsortedFiles[0]);
+            LoadItem(unsortedFiles[0]);
     }
 
-    private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
+    private void DeleteBtn_Click(object sender, RoutedEventArgs e)
     {
         if (delWarnCheckBox.IsChecked == false)
-            await Recycle();
+            Recycle();
         else if (delWarnCheckBox.IsChecked == true)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Delete this item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
-                await Recycle();
+                Recycle();
         }
 
-        async Task Recycle()
+        void Recycle()
         {
             string deletePath = unsortedFiles[0];
             unsortedFiles.RemoveAt(0);
@@ -372,7 +377,7 @@ public partial class GPO
             UpdateStats();
 
             if (unsortedFiles.Count > 0)
-                await LoadItem(unsortedFiles[0]);
+                LoadItem(unsortedFiles[0]);
             else
                 ClearItemPreview();
 
