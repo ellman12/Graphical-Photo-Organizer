@@ -59,6 +59,8 @@ public partial class GPO
         destPathLabel.Content = "";
         statsLabel.Content = "";
         dateTakenSrcLabel.Content = "";
+        warningLabel.Content = "";
+        warningTextLabel.Content = "";
 
         //Debugging stuff
         // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/tmp/Pics and Vids Folder From HDD";
