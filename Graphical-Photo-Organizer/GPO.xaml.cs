@@ -42,17 +42,14 @@ public partial class GPO
     private int amountSkipped;
     private int amountDeleted;
 
-    public GPO()
-    {
-        InitializeComponent();
-    }
-    
+    public GPO() => InitializeComponent();
+
     private void Window_Initialized(object sender, EventArgs e)
     {
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
-
+        
         srcDirLabel.Content = "";
         destDirLabel.Content = "";
         originalPathLabel.Content = "";
@@ -63,17 +60,16 @@ public partial class GPO
         warningTextLabel.Content = "";
 
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/tmp/Pics and Vids Folder From HDD";
-        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Pictures/Sorted Pics and Vids From HDD";
-        //
-        // unsortedFiles.Clear(); //Clear if user changed to different src folder
-        // unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mov", SearchOption.AllDirectories)).ToList();
-        // ValidateFolderDirs();
+        srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+        unsortedFiles = GetSupportedFiles(srcDirRootPath);
+        ValidateFolderDirs();
+    }
+
+    private void SetWarning(string? newText)
+    {
+        warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
+        warningTextLabel.Content = newText;
     }
 
     ///<summary>
@@ -240,9 +236,12 @@ public partial class GPO
     ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
     private void CheckForDuplicates()
     {
-        string filename = Path.GetFileName(destFilePath);
-        if (destFolderFilenames.Contains(filename))
-            MessageBox.Show("The current file might already be in the sorted folder at the path\n " + filename.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+        if (destFolderFilenames.Contains(Path.GetFileName(destFilePath)))
+        {
+            string shortPath = destFilePath.Replace(destDirRootPath, "");
+            SetWarning($"A file with the same name already exists at {shortPath}.");
+        }
+        else SetWarning(null);
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
