@@ -20,7 +20,8 @@ namespace Graphical_Photo_Organizer;
 public partial class GPO
 {
     //Set once during setup by user.
-    private readonly HashSet<string> destFolderFilenames = new();
+    ///Stores every short path (relative to destDirRootPath) and its filename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
+    private readonly Dictionary<string, string> destDirContents = new();
 
     ///Every full path in the unsorted folder needing sorting.
     private List<string> unsortedFiles = new();
@@ -203,7 +204,10 @@ public partial class GPO
             // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
 
         //Add any filenames in the destination folder for dupe checking.
-        foreach(string filename in GetSupportedFiles(destDirRootPath)) destFolderFilenames.Add(Path.GetFileName(filename));
+        foreach(string fullPath in GetSupportedFiles(destDirRootPath))
+        {
+            destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
+        }
         LoadItem(unsortedFiles[0]);
         UpdateStats();
     }
@@ -247,12 +251,8 @@ public partial class GPO
     ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
     private void CheckForDuplicates()
     {
-        if (destFolderFilenames.Contains(Path.GetFileName(destFilePath)))
-        {
-            string shortPath = destFilePath.Replace(destDirRootPath, "");
-            SetWarning($"A file with the same name already exists at {shortPath}.");
-        }
-        else SetWarning(null);
+        string destFilename = Path.GetFileName(destFilePath);
+        SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
@@ -327,7 +327,7 @@ public partial class GPO
                 ClearItemPreview();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
-            destFolderFilenames.Add(filenameTextBox.Text);
+            destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
         }
         else
         {
@@ -337,7 +337,7 @@ public partial class GPO
             {
                 RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
-                destFolderFilenames.Add(filenameTextBox.Text);
+                destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
             }
             else if (result == MessageBoxResult.No)
             {
@@ -444,6 +444,7 @@ public partial class GPO
                 ClearItemPreview();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
+            destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
         }
         else
         {
@@ -453,6 +454,7 @@ public partial class GPO
             {
                 RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
+                destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
             }
             else if (result == MessageBoxResult.No)
             {
