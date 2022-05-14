@@ -13,7 +13,6 @@ using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using M = Graphical_Photo_Organizer.Metadata;
-using SearchOption = System.IO.SearchOption;
 
 namespace Graphical_Photo_Organizer;
 
@@ -138,7 +137,7 @@ public partial class GPO
     private static List<string> GetSupportedFiles(string rootPath)
     {
         string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
-        string[] allPaths = Directory.GetFiles(rootPath, "*.*", SearchOption.AllDirectories);
+        string[] allPaths = Directory.GetFiles(rootPath, "*.*", System.IO.SearchOption.AllDirectories);
         List<string> goodPaths = new();
         
         foreach (string path in allPaths)
