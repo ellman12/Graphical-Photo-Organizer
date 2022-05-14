@@ -78,16 +78,8 @@ public partial class GPO
         // ValidateFolderDirs();
     }
 
-    private void SetWarning(string? newText)
-    {
-        warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
-        warningTextLabel.Content = newText;
-    }
-
-    ///<summary>
-    ///Used for getting the source and destination folders. Uses a WinForms folder browser dialog.
-    ///</summary>
-    ///<param name="winTitle">What the folder browser dialog should display</param>
+    ///<summary>Used for getting the source and destination folders. Uses a WinForms folder browser dialog.</summary>
+    ///<param name="winTitle">What the folder browser dialog should display in the window title.</param>
     ///<returns>The selected folder path.</returns>
     private static string SelectFolder(string winTitle)
     {
@@ -178,40 +170,20 @@ public partial class GPO
 
     private void beginBtn_Click(object sender, RoutedEventArgs e)
     {
-        EnableItemPreview();
+        itemPreview.LoadedBehavior = MediaState.Play;
+        itemPreview.Visibility = Visibility.Visible;
         setupGroupBox.IsEnabled = false;
         currentItemGroupBox.IsEnabled = true;
         muteUnmuteBtn.IsEnabled = true;
 
-        //Experimental! Use to automatically move potential dupes out of unsorted folder.
-        // int numPossDupes = 0;
-        // foreach (string unsortedFile in unsortedFiles.ToList())
-        // {
-        //     foreach (string sortedFile in GetSortedFiles())
-        //     {
-        //         if (sortedFile.EndsWith(Path.GetFileName(unsortedFile)))
-        //         {
-        //             numPossDupes++;
-        //             //Threads are used to move any items that are potential dupes out of the folder to be sorted, making life easier.
-        //             System.Threading.Thread t = new(() => File.Move(unsortedFile, Path.Combine("C:/Users/Elliott/Pictures/Potential Dupes", Path.GetFileName(unsortedFile))));
-        //             System.Threading.Thread t = new(() => FileSystem.DeleteFile(unsortedFile, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin));
-        //             unsortedFiles.Remove(unsortedFile);
-        //             t.Start();
-        //         }
-        //     }
-        // }
-        // if (numPossDupes > 0)
-            // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
-
         //Add any filenames in the destination folder for dupe checking.
         foreach(string fullPath in GetSupportedFiles(destDirRootPath))
-        {
             destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
-        }
         LoadItem(unsortedFiles[0]);
         UpdateStats();
     }
 
+    
     private void LoadItem(string path)
     {
         originalPathLabel.Content = unsortedFiles[0].Replace('\\', '/');
@@ -247,37 +219,36 @@ public partial class GPO
         destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
         destPathLabel.Content = destFilePath;
     }
+    
+    ///Set value in warning label. Pass in "" or null to clear warning labels.
+    private void SetWarning(string? newText)
+    {
+        warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
+        warningTextLabel.Content = newText;
+    }
 
-    ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
+    ///<summary>Checks the destination folder to see if the current item is/might be a duplicate.</summary>
     private void CheckForDuplicates()
     {
         string destFilename = Path.GetFileName(destFilePath);
         SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
-
-    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
-
-    private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
-    {
-        itemPreview.IsMuted = !itemPreview.IsMuted;
-        muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
-    }
-
-    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
-
-    private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        UpdateDestPath();
-        nextItemBtn.Focus();
-    }
-
-    ///<summary>If nothing left to sort, clear the item preview, List, Dict, and other cleanup.</summary>
+    
     private void Cleanup()
     {
         itemPreview.LoadedBehavior = MediaState.Manual;
         itemPreview.Visibility = Visibility.Hidden;
         itemPreview.Stop();
+        
+        // unsortedFiles.Clear(); probs don't need
+        //TODO: uncomment later
+        // srcDirRootPath = destDirRootPath = ext = "";
+        // dateTakenSrc = M.DateTakenSrc.Now;
+        // filename = destFolderPath = destFilePath = "";
+        // dateTaken = DateTime.Now;
+        // amountSorted = 0;
+        // amountSkipped = 0;
+        // amountDeleted = 0;
 
         filenameTextBox.Text = "";
         originalPathLabel.Content = "";
@@ -292,13 +263,6 @@ public partial class GPO
         muteUnmuteBtn.IsEnabled = false;
         SetWarning(null);
         destDirContents.Clear();
-    }
-
-    ///<summary>If starting another round of sorting after finishing one, re-enable and show the item preview.</summary>
-    private void EnableItemPreview()
-    {
-        itemPreview.LoadedBehavior = MediaState.Play;
-        itemPreview.Visibility = Visibility.Visible;
     }
 
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
@@ -467,5 +431,22 @@ public partial class GPO
 
         if (unsortedFiles.Count == 0)
             Cleanup();
+    }
+
+    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
+
+    private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
+    {
+        itemPreview.IsMuted = !itemPreview.IsMuted;
+        muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
+    }
+
+    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
+
+    private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        UpdateDestPath();
+        nextItemBtn.Focus();
     }
 }
