@@ -336,8 +336,7 @@ public partial class GPO
             if (result == MessageBoxResult.Yes)
             {
                 RecycleFile(destFilePath); //Delete the original
-                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
-                destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
+                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one. Don't need to add to Dict because it already has this in it from before.
             }
             else if (result == MessageBoxResult.No)
             {
@@ -453,8 +452,7 @@ public partial class GPO
             if (result == MessageBoxResult.Yes)
             {
                 RecycleFile(destFilePath); //Delete the original
-                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
-                destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
+                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one. Don't need to add to Dict because it already has this in it from before.
             }
             else if (result == MessageBoxResult.No)
             {
