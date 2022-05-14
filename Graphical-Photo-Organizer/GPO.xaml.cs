@@ -136,7 +136,7 @@ public partial class GPO
         foreach (string path in allPaths)
         {
             if (validExts.Contains(Path.GetExtension(path)))
-                goodPaths.Enqueue(path);
+                goodPaths.Enqueue(path.Replace('\\', '/'));
         }
 
         return goodPaths;
@@ -179,21 +179,23 @@ public partial class GPO
         //Add any filenames in the destination folder for dupe checking.
         foreach(string fullPath in GetSupportedFiles(destDirRootPath))
             destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
-        LoadItem(unsortedFiles[0]);
+        LoadItem();
         UpdateStats();
     }
 
-    
-    private void LoadItem(string path)
+    ///<summary>Dequeue the full path at the front and populate the GUI controls with values</summary>
+    private void LoadItem()
     {
-        originalPathLabel.Content = unsortedFiles[0].Replace('\\', '/');
-        filename = Path.GetFileNameWithoutExtension(path);
-        ext = Path.GetExtension(path);
+        string fullPath = unsortedFiles.Dequeue(); //The item to load.
+        originalPathLabel.Content = fullPath;
+        filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(fullPath);
+        ext = Path.GetExtension(fullPath);
+        itemPreview.Source = new Uri(fullPath);
 
-        M.GetDateTaken(path, out dateTaken, out dateTakenSrc);
-
-        filenameTextBox.Text = filename;
+        M.GetDateTaken(fullPath, out dateTaken, out dateTakenSrc);
         ogDateTakenLabel.Content = "OG: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        datePicker.DisplayDate = dateTaken;
+        datePicker.SelectedDate = dateTaken;
 
         dateTakenSrcLabel.Content = dateTakenSrc;
         dateTakenSrcLabel.Foreground = dateTakenSrc switch
@@ -203,11 +205,7 @@ public partial class GPO
             M.DateTakenSrc.Now => Brushes.Red,
             _ => throw new ArgumentOutOfRangeException()
         };
-
-        datePicker.DisplayDate = dateTaken;
-        datePicker.SelectedDate = dateTaken;
-        itemPreview.Source = new Uri(path);
-
+        
         UpdateDestPath();
         CheckForDuplicates();
     }
@@ -309,21 +307,21 @@ public partial class GPO
             }
             else if (result == MessageBoxResult.No)
             {
-                LoadNextItem();
+                ReplaceMeLol();
                 return;
             }
             else if (result == MessageBoxResult.Cancel)
                 return;
         }
 
-        LoadNextItem();
+        ReplaceMeLol();
 
         if (unsortedFiles.Count == 0)
             Cleanup();
     }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
-    private void LoadNextItem()
+    private void ReplaceMeLol()
     {
         unsortedFiles.RemoveAt(0);
         amountSorted++;
@@ -420,14 +418,14 @@ public partial class GPO
             }
             else if (result == MessageBoxResult.No)
             {
-                LoadNextItem();
+                ReplaceMeLol();
                 return;
             }
             else if (result == MessageBoxResult.Cancel)
                 return;
         }
 
-        LoadNextItem();
+        ReplaceMeLol();
 
         if (unsortedFiles.Count == 0)
             Cleanup();
