@@ -272,12 +272,11 @@ public partial class GPO
         nextItemBtn.Focus();
     }
 
-    ///<summary>If nothing left to sort, clear the item preview</summary>
-    private void ClearItemPreview()
+    ///<summary>If nothing left to sort, clear the item preview, List, Dict, and other cleanup.</summary>
+    private void Cleanup()
     {
         itemPreview.LoadedBehavior = MediaState.Manual;
         itemPreview.Visibility = Visibility.Hidden;
-        itemPreview.IsMuted = true;
         itemPreview.Stop();
 
         filenameTextBox.Text = "";
@@ -286,7 +285,14 @@ public partial class GPO
         ogDateTakenLabel.Content = "";
         newDateTakenLabel.Content = "";
         dateTakenSrcLabel.Content = "";
+        currentItemGroupBox.IsEnabled = false;
+        setupGroupBox.IsEnabled = true;
+        srcDirLabel.Content = srcDirRootPath = "";
+        destDirLabel.Content = destDirRootPath = "";
         muteUnmuteBtn.IsEnabled = false;
+        SetWarning(null);
+        destDirContents.Clear();
+        unsortedFiles.Clear();
     }
 
     ///<summary>If starting another round of sorting after finishing one, re-enable and show the item preview.</summary>
@@ -303,7 +309,7 @@ public partial class GPO
         if (unsortedFiles.Count > 0)
             LoadItem(unsortedFiles[0]);
         else if (unsortedFiles.Count == 0)
-            ClearItemPreview();
+            Cleanup();
 
         amountSkipped++;
         UpdateStats();
@@ -324,7 +330,7 @@ public partial class GPO
             if (unsortedFiles.Count >= 2)
                 itemPreview.Source = new Uri(unsortedFiles[1]);
             else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
-                ClearItemPreview();
+                Cleanup();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
@@ -350,12 +356,7 @@ public partial class GPO
         LoadNextItem();
 
         if (unsortedFiles.Count == 0)
-        {
-            currentItemGroupBox.IsEnabled = false;
-            setupGroupBox.IsEnabled = true;
-            srcDirLabel.Content = srcDirRootPath = "";
-            destDirLabel.Content = destDirRootPath = "";
-        }
+            Cleanup();
     }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
@@ -390,7 +391,7 @@ public partial class GPO
             if (unsortedFiles.Count > 0)
                 LoadItem(unsortedFiles[0]);
             else
-                ClearItemPreview();
+                Cleanup();
 
             RecycleFile(deletePath);
         }
@@ -440,7 +441,7 @@ public partial class GPO
             if (unsortedFiles.Count >= 2)
                 itemPreview.Source = new Uri(unsortedFiles[1]);
             else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
-                ClearItemPreview();
+                Cleanup();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
             destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
@@ -466,11 +467,6 @@ public partial class GPO
         LoadNextItem();
 
         if (unsortedFiles.Count == 0)
-        {
-            currentItemGroupBox.IsEnabled = false;
-            setupGroupBox.IsEnabled = true;
-            srcDirLabel.Content = srcDirRootPath = "";
-            destDirLabel.Content = destDirRootPath = "";
-        }
+            Cleanup();
     }
 }
