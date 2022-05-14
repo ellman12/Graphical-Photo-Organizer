@@ -292,7 +292,6 @@ public partial class GPO
         muteUnmuteBtn.IsEnabled = false;
         SetWarning(null);
         destDirContents.Clear();
-        unsortedFiles.Clear();
     }
 
     ///<summary>If starting another round of sorting after finishing one, re-enable and show the item preview.</summary>
