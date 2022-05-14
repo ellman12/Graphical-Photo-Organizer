@@ -13,65 +13,75 @@ using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using M = Graphical_Photo_Organizer.Metadata;
-using SearchOption = System.IO.SearchOption;
 
 namespace Graphical_Photo_Organizer;
 
 ///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
-    ///Tracks every filename in the destination folder and used to warn user of potential or confirmed duplicate file.
-    private readonly HashSet<string> destFolderFilenames = new();
+    //Set once during setup by user.
+    ///Stores every short path (relative to destDirRootPath) and its filename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
+    private readonly Dictionary<string, string> destDirContents = new();
 
-    //Set during setup
+    ///Every full path in the unsorted folder needing sorting.
     private List<string> unsortedFiles = new();
+    
+    ///Full path of folder to sort and full path of where to send sorted items.
     private string srcDirRootPath = "", destDirRootPath = "";
 
-    //Set on file load and stays constant
+    //Set when current file loads and stays constant until next file loaded or finish sorting.
+    ///Current file's file extension. This is not included in the filename TextBox but is appended when the file is moving.
     private string ext = "";
+    
+    ///Where the DT GPO found came from.
     private M.DateTakenSrc dateTakenSrc;
 
-    //Set on load and can be changed by user
+    //Set when current file loads and can be changed by user
+    ///What the filename was when file loaded.
     private string ogFilename = "";
-    private string destFolderPath = ""; //Folder where the current photo will end
-    private string destFilePath = ""; //The full final path to it.
+    
+    ///Full path to folder where the current item will be sent.
+    private string destFolderPath = "";
+    
+    ///The full final path of current item (destFolderPath + filename).
+    private string destFilePath = "";
+    
+    ///The DT that was found (or not) when first loaded.
     private DateTime ogDateTaken;
 
-    //Stats
+    //Stats that are updated automatically as user sorts the folder.
     private int amountSorted;
     private int amountSkipped;
     private int amountDeleted;
 
-    public GPO()
-    {
-        InitializeComponent();
-    }
-    
+    public GPO() => InitializeComponent();
+
     private void Window_Initialized(object sender, EventArgs e)
     {
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
-
+        
         srcDirLabel.Content = "";
         destDirLabel.Content = "";
         originalPathLabel.Content = "";
         destPathLabel.Content = "";
         statsLabel.Content = "";
         dateTakenSrcLabel.Content = "";
+        warningLabel.Content = "";
+        warningTextLabel.Content = "";
 
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/tmp/Pics and Vids Folder From HDD";
-        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Pictures/Sorted Pics and Vids From HDD";
-        //
-        // unsortedFiles.Clear(); //Clear if user changed to different src folder
-        // unsortedFiles = Directory.GetFiles(srcDirRootPath, "*.jp*g", SearchOption.AllDirectories).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.png", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.gif", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mp4", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mkv", SearchOption.AllDirectories)).ToList();
-        // unsortedFiles = unsortedFiles.Concat(Directory.GetFiles(srcDirRootPath, "*.mov", SearchOption.AllDirectories)).ToList();
-        // ValidateFolderDirs();
+        srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+        unsortedFiles = GetSupportedFiles(srcDirRootPath);
+        ValidateFolderDirs();
+    }
+
+    private void SetWarning(string? newText)
+    {
+        warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
+        warningTextLabel.Content = newText;
     }
 
     ///<summary>
@@ -128,7 +138,7 @@ public partial class GPO
     private static List<string> GetSupportedFiles(string rootPath)
     {
         string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
-        string[] allPaths = Directory.GetFiles(rootPath, "*.*", SearchOption.AllDirectories);
+        string[] allPaths = Directory.GetFiles(rootPath, "*.*", System.IO.SearchOption.AllDirectories);
         List<string> goodPaths = new();
         
         foreach (string path in allPaths)
@@ -194,7 +204,10 @@ public partial class GPO
             // MessageBox.Show($"There are {numPossDupes} potential duplicates", $"{numPossDupes} Potential Duplicates", MessageBoxButton.OK, MessageBoxImage.Information);
 
         //Add any filenames in the destination folder for dupe checking.
-        foreach(string filename in GetSupportedFiles(destDirRootPath)) destFolderFilenames.Add(Path.GetFileName(filename));
+        foreach(string fullPath in GetSupportedFiles(destDirRootPath))
+        {
+            destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
+        }
         LoadItem(unsortedFiles[0]);
         UpdateStats();
     }
@@ -238,9 +251,8 @@ public partial class GPO
     ///<summary>Checks the destination folder for items that either might be or are duplicates.</summary>
     private void CheckForDuplicates()
     {
-        string filename = Path.GetFileName(destFilePath);
-        if (destFolderFilenames.Contains(filename))
-            MessageBox.Show("The current file might already be in the sorted folder at the path\n " + filename.Replace('\\', '/') + "\nA file with the same name already is in the sorted folder.", "Possible Duplicate", MessageBoxButton.OK, MessageBoxImage.Warning);
+        string destFilename = Path.GetFileName(destFilePath);
+        SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
@@ -315,7 +327,7 @@ public partial class GPO
                 ClearItemPreview();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
-            destFolderFilenames.Add(filenameTextBox.Text);
+            destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
         }
         else
         {
@@ -325,7 +337,7 @@ public partial class GPO
             {
                 RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
-                destFolderFilenames.Add(filenameTextBox.Text);
+                destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
             }
             else if (result == MessageBoxResult.No)
             {
@@ -432,6 +444,7 @@ public partial class GPO
                 ClearItemPreview();
 
             await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
+            destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
         }
         else
         {
@@ -441,6 +454,7 @@ public partial class GPO
             {
                 RecycleFile(destFilePath); //Delete the original
                 await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one
+                destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
             }
             else if (result == MessageBoxResult.No)
             {
