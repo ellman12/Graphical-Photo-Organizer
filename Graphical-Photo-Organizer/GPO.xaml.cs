@@ -72,10 +72,10 @@ public partial class GPO
         warningTextLabel.Content = "";
 
         //Debugging stuff
-        srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
-        destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
-        unsortedFiles = GetSupportedFiles(srcDirRootPath);
-        ValidateFolderDirs();
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+        // unsortedFiles = GetSupportedFiles(srcDirRootPath);
+        // ValidateFolderDirs();
     }
 
     private void SetWarning(string? newText)
