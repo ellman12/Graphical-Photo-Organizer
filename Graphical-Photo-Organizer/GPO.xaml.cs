@@ -24,7 +24,7 @@ public partial class GPO
     private readonly Dictionary<string, string> destDirContents = new();
 
     ///Every full path in the unsorted folder needing sorting.
-    private List<string> unsortedFiles = new();
+    private Queue<string> unsortedFiles = new();
     
     ///Full path of folder to sort and full path of where to send sorted items.
     private string srcDirRootPath = "", destDirRootPath = "";
@@ -127,16 +127,16 @@ public partial class GPO
     ///<para>Get the full paths of all supported file types in a root path.</para>
     ///Supported file types are: ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"
     ///</summary>
-    private static List<string> GetSupportedFiles(string rootPath)
+    private static Queue<string> GetSupportedFiles(string rootPath)
     {
         string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
         string[] allPaths = Directory.GetFiles(rootPath, "*.*", System.IO.SearchOption.AllDirectories);
-        List<string> goodPaths = new();
+        Queue<string> goodPaths = new();
         
         foreach (string path in allPaths)
         {
             if (validExts.Contains(Path.GetExtension(path)))
-                goodPaths.Add(path);
+                goodPaths.Enqueue(path);
         }
 
         return goodPaths;
