@@ -30,15 +30,15 @@ public partial class GPO
     private string srcDirRootPath = "", destDirRootPath = "";
 
     //Set when current file loads and stays constant until next file loaded or finish sorting.
-    ///Current file's file extension. This is not included in the filename TextBox but is appended when the file is moving.
+    ///Current file's extension. This is not included in the filename TextBox but is appended when the file is moving.
     private string ext = "";
     
     ///Where the DT GPO found came from.
     private M.DateTakenSrc dateTakenSrc;
 
-    //Set when current file loads and can be changed by user
-    ///What the filename was when file loaded.
-    private string ogFilename = "";
+    //Set when current file loads and may change based on user's actions.
+    ///What the filename was when file loaded, and can user can change.
+    private string filename = "";
     
     ///Full path to folder where the current item will be sent.
     private string destFolderPath = "";
@@ -46,8 +46,8 @@ public partial class GPO
     ///The full final path of current item (destFolderPath + filename).
     private string destFilePath = "";
     
-    ///The DT that was found (or not) when first loaded.
-    private DateTime ogDateTaken;
+    ///The Date Taken that was found (or not) when first loaded.
+    private DateTime dateTaken;
 
     //Stats that are updated automatically as user sorts the folder.
     private int amountSorted;
@@ -215,13 +215,13 @@ public partial class GPO
     private void LoadItem(string path)
     {
         originalPathLabel.Content = unsortedFiles[0].Replace('\\', '/');
-        ogFilename = Path.GetFileNameWithoutExtension(path);
+        filename = Path.GetFileNameWithoutExtension(path);
         ext = Path.GetExtension(path);
 
-        M.GetDateTaken(path, out ogDateTaken, out dateTakenSrc);
+        M.GetDateTaken(path, out dateTaken, out dateTakenSrc);
 
-        filenameTextBox.Text = ogFilename;
-        ogDateTakenLabel.Content = "OG: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        filenameTextBox.Text = filename;
+        ogDateTakenLabel.Content = "OG: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
 
         dateTakenSrcLabel.Content = dateTakenSrc;
         dateTakenSrcLabel.Foreground = dateTakenSrc switch
@@ -232,8 +232,8 @@ public partial class GPO
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        datePicker.DisplayDate = ogDateTaken;
-        datePicker.SelectedDate = ogDateTaken;
+        datePicker.DisplayDate = dateTaken;
+        datePicker.SelectedDate = dateTaken;
         itemPreview.Source = new Uri(path);
 
         UpdateDestPath();
@@ -406,10 +406,10 @@ public partial class GPO
 
     private void resetBtn_Click(object sender, RoutedEventArgs e)
     {
-        filenameTextBox.Text = ogFilename;
-        newDateTakenLabel.Content = "New: " + ogDateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        datePicker.DisplayDate = ogDateTaken;
-        datePicker.SelectedDate = ogDateTaken;
+        filenameTextBox.Text = filename;
+        newDateTakenLabel.Content = "New: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        datePicker.DisplayDate = dateTaken;
+        datePicker.SelectedDate = dateTaken;
     }
 
     private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
