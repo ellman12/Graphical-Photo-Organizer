@@ -20,24 +20,36 @@ namespace Graphical_Photo_Organizer;
 ///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
-    ///Tracks every filename in the destination folder and used to warn user of potential or confirmed duplicate file.
+    //Set once during setup by user.
     private readonly HashSet<string> destFolderFilenames = new();
 
-    //Set during setup
+    ///Every full path in the unsorted folder needing sorting.
     private List<string> unsortedFiles = new();
+    
+    ///Full path of folder to sort and full path of where to send sorted items.
     private string srcDirRootPath = "", destDirRootPath = "";
 
-    //Set on file load and stays constant
+    //Set when current file loads and stays constant until next file loaded or finish sorting.
+    ///Current file's file extension. This is not included in the filename TextBox but is appended when the file is moving.
     private string ext = "";
+    
+    ///Where the DT GPO found came from.
     private M.DateTakenSrc dateTakenSrc;
 
-    //Set on load and can be changed by user
+    //Set when current file loads and can be changed by user
+    ///What the filename was when file loaded.
     private string ogFilename = "";
-    private string destFolderPath = ""; //Folder where the current photo will end
-    private string destFilePath = ""; //The full final path to it.
+    
+    ///Full path to folder where the current item will be sent.
+    private string destFolderPath = "";
+    
+    ///The full final path of current item (destFolderPath + filename).
+    private string destFilePath = "";
+    
+    ///The DT that was found (or not) when first loaded.
     private DateTime ogDateTaken;
 
-    //Stats
+    //Stats that are updated automatically as user sorts the folder.
     private int amountSorted;
     private int amountSkipped;
     private int amountDeleted;
