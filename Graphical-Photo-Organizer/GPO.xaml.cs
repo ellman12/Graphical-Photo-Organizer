@@ -228,14 +228,38 @@ public partial class GPO
         warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
         warningTextLabel.Content = newText;
     }
-
+    
+    ///Leaves the current item where it is and loads the next item.
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
-        // unsortedFiles.Dequeue(); TODO: might not be needed
+        amountSkipped++;
+        UpdateStats();
+        
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
+    }
+    
+    ///Undoes any modifications made to the file by the user. The filename and Date Taken are set to what they were when file first loaded.
+    private void resetBtn_Click(object sender, RoutedEventArgs e)
+    {
+        filenameTextBox.Text = filename;
+        newDateTakenLabel.Content = "New: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        datePicker.DisplayDate = dateTaken;
+        datePicker.SelectedDate = dateTaken;
+    }
 
-        amountSkipped++;
+    ///Deletes the current item, and, if enabled, prompts the user to confirm recycling of the item.
+    private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+    {
+        if (delWarnCheckBox.IsChecked == true)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Delete this item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.No) return;
+        }
+        
+        RecycleFile(currItemFullPath);
+        LoadItem();
+        amountDeleted++;
         UpdateStats();
     }
 
@@ -268,21 +292,6 @@ public partial class GPO
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
     }
-    
-    ///Deletes the current item, and, if enabled, prompts the user to confirm recycling of the item.
-    private void DeleteBtn_Click(object sender, RoutedEventArgs e)
-    {
-        if (delWarnCheckBox.IsChecked == true)
-        {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Delete this item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.No) return;
-        }
-        
-        RecycleFile(currItemFullPath);
-        LoadItem();
-        amountDeleted++;
-        UpdateStats();
-    }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
     private void ReplaceMeLol()
@@ -301,14 +310,6 @@ public partial class GPO
         // GC.Collect(); TODO: needed?
         // GC.WaitForPendingFinalizers();
         new System.Threading.Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
-    }
-
-    private void resetBtn_Click(object sender, RoutedEventArgs e)
-    {
-        filenameTextBox.Text = filename;
-        newDateTakenLabel.Content = "New: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        datePicker.DisplayDate = dateTaken;
-        datePicker.SelectedDate = dateTaken;
     }
 
     private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
