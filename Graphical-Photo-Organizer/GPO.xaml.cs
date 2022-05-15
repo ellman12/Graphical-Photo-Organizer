@@ -269,31 +269,19 @@ public partial class GPO
         else if (unsortedFiles.Count == 0) Cleanup();
     }
     
+    ///Deletes the current item, and, if enabled, prompts the user to confirm recycling of the item.
     private void DeleteBtn_Click(object sender, RoutedEventArgs e)
     {
-        if (delWarnCheckBox.IsChecked == false)
-            Recycle();
-        else if (delWarnCheckBox.IsChecked == true)
+        if (delWarnCheckBox.IsChecked == true)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this item?", "Delete this item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-                Recycle();
+            if (result == MessageBoxResult.No) return;
         }
-
-        void Recycle()
-        {
-            string deletePath = unsortedFiles[0];
-            unsortedFiles.RemoveAt(0);
-            amountDeleted++;
-            UpdateStats();
-
-            if (unsortedFiles.Count > 0)
-                LoadItem(unsortedFiles[0]);
-            else
-                Cleanup();
-
-            RecycleFile(deletePath);
-        }
+        
+        RecycleFile(currItemFullPath);
+        LoadItem();
+        amountDeleted++;
+        UpdateStats();
     }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
