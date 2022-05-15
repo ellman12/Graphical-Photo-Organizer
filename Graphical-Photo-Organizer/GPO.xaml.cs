@@ -312,17 +312,6 @@ public partial class GPO
         else if (unsortedFiles.Count == 0) Cleanup();
     }
 
-    ///<summary>Removes the current image from the List and loads the next one.</summary>
-    private void ReplaceMeLol()
-    {
-        unsortedFiles.RemoveAt(0);
-        amountSorted++;
-        UpdateStats();
-
-        if (unsortedFiles.Count > 0)
-            LoadItem(unsortedFiles[0]);
-    }
-
     ///<summary>Runs garbage collection and recycles the file specified</summary>
     private static void RecycleFile(string path)
     {
