@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -78,8 +78,8 @@ public partial class GPO
         warningTextLabel.Content = "";
             
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
-        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/yes/unsorted";
+        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/yes/sorted";
         // unsortedFiles = GetSupportedFiles(srcDirRootPath);
         // ValidateFolderDirs();
     }
@@ -305,8 +305,9 @@ public partial class GPO
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
             destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
         }
-        new Thread(() => File.Move(currItemFullPath, destFilePath)).Start();
+        Task.Run(() => File.Move(currItemFullPath, destFilePath));
         amountSorted++;
+        UpdateStats();
         
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
@@ -317,7 +318,7 @@ public partial class GPO
     {
         // GC.Collect(); TODO: needed?
         // GC.WaitForPendingFinalizers();
-        new Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
+        Task.Run(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)); //https://stackoverflow.com/a/3282456
     }
 
     private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
