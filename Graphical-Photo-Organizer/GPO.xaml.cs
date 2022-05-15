@@ -29,6 +29,9 @@ public partial class GPO
     ///Full path of folder to sort and full path of where to send sorted items.
     private string srcDirRootPath = "", destDirRootPath = "";
 
+    ///The current item's full original path.
+    private string currItemFullPath = "";
+
     //Set when current file loads and stays constant until next file loaded or finish sorting.
     ///Current file's extension. This is not included in the filename TextBox but is appended when the file is moving.
     private string ext = "";
@@ -186,13 +189,13 @@ public partial class GPO
     ///<summary>Dequeue the full path at the front and populate the GUI controls with values</summary>
     private void LoadItem()
     {
-        string fullPath = unsortedFiles.Dequeue(); //The item to load.
-        originalPathLabel.Content = fullPath;
-        filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(fullPath);
-        ext = Path.GetExtension(fullPath);
-        itemPreview.Source = new Uri(fullPath);
+        currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
+        originalPathLabel.Content = currItemFullPath;
+        filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(currItemFullPath);
+        ext = Path.GetExtension(currItemFullPath);
+        itemPreview.Source = new Uri(currItemFullPath);
 
-        M.GetDateTaken(fullPath, out dateTaken, out dateTakenSrc);
+        M.GetDateTaken(currItemFullPath, out dateTaken, out dateTakenSrc);
         ogDateTakenLabel.Content = "OG: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
         datePicker.DisplayDate = dateTaken;
         datePicker.SelectedDate = dateTaken;
@@ -231,46 +234,13 @@ public partial class GPO
         string destFilename = Path.GetFileName(destFilePath);
         SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
-    
-    private void Cleanup()
-    {
-        itemPreview.LoadedBehavior = MediaState.Manual;
-        itemPreview.Visibility = Visibility.Hidden;
-        itemPreview.Stop();
-        
-        // unsortedFiles.Clear(); probs don't need
-        //TODO: uncomment later
-        // srcDirRootPath = destDirRootPath = ext = "";
-        // dateTakenSrc = M.DateTakenSrc.Now;
-        // filename = destFolderPath = destFilePath = "";
-        // dateTaken = DateTime.Now;
-        // amountSorted = 0;
-        // amountSkipped = 0;
-        // amountDeleted = 0;
-
-        filenameTextBox.Text = "";
-        originalPathLabel.Content = "";
-        destPathLabel.Content = "";
-        ogDateTakenLabel.Content = "";
-        newDateTakenLabel.Content = "";
-        dateTakenSrcLabel.Content = "";
-        currentItemGroupBox.IsEnabled = false;
-        setupGroupBox.IsEnabled = true;
-        srcDirLabel.Content = srcDirRootPath = "";
-        destDirLabel.Content = destDirRootPath = "";
-        muteUnmuteBtn.IsEnabled = false;
-        SetWarning(null);
-        destDirContents.Clear();
-    }
 
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
-        unsortedFiles.RemoveAt(0);
+        unsortedFiles.Dequeue();
 
-        if (unsortedFiles.Count > 0)
-            LoadItem(unsortedFiles[0]);
-        else if (unsortedFiles.Count == 0)
-            Cleanup();
+        if (unsortedFiles.Count > 0) LoadItem();
+        else if (unsortedFiles.Count == 0) Cleanup();
 
         amountSkipped++;
         UpdateStats();
@@ -429,6 +399,37 @@ public partial class GPO
 
         if (unsortedFiles.Count == 0)
             Cleanup();
+    }
+    
+    private void Cleanup()
+    {
+        itemPreview.LoadedBehavior = MediaState.Manual;
+        itemPreview.Visibility = Visibility.Hidden;
+        itemPreview.Stop();
+        
+        // unsortedFiles.Clear(); probs don't need
+        //TODO: uncomment later
+        // srcDirRootPath = destDirRootPath = ext = "";
+        // dateTakenSrc = M.DateTakenSrc.Now;
+        // filename = destFolderPath = destFilePath = "";
+        // dateTaken = DateTime.Now;
+        // amountSorted = 0;
+        // amountSkipped = 0;
+        // amountDeleted = 0;
+
+        filenameTextBox.Text = "";
+        originalPathLabel.Content = "";
+        destPathLabel.Content = "";
+        ogDateTakenLabel.Content = "";
+        newDateTakenLabel.Content = "";
+        dateTakenSrcLabel.Content = "";
+        currentItemGroupBox.IsEnabled = false;
+        setupGroupBox.IsEnabled = true;
+        srcDirLabel.Content = srcDirRootPath = "";
+        destDirLabel.Content = destDirRootPath = "";
+        muteUnmuteBtn.IsEnabled = false;
+        SetWarning(null);
+        destDirContents.Clear();
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
