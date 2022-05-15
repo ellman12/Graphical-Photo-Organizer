@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -223,8 +224,7 @@ public partial class GPO
     private void UpdateDestPath()
     {
         destFolderPath = Path.Combine(destDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
-        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
-        destPathLabel.Content = destFilePath;
+        destPathLabel.Content = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
     }
 
     ///Set value in warning label. Pass in "" or null to clear warning labels.
@@ -360,7 +360,7 @@ public partial class GPO
     {
         // GC.Collect(); TODO: needed?
         // GC.WaitForPendingFinalizers();
-        new System.Threading.Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
+        new Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
     }
 
     private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
