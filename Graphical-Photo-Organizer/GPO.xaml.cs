@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -326,7 +325,7 @@ public partial class GPO
         //https://stackoverflow.com/a/1132559
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
         {
-            FileName = Path.GetDirectoryName(unsortedFiles[0]),
+            FileName = Path.GetDirectoryName(currItemFullPath),
             UseShellExecute = true,
             Verb = "open"
         });
