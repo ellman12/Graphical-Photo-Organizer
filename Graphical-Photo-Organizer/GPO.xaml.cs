@@ -45,6 +45,9 @@ public partial class GPO
     
     ///Full path to folder where the current item will be sent.
     private string destFolderPath = "";
+
+    ///Full path to Unknown Date Taken folder.
+    private string unknownDTFolderPath = "";
     
     ///The full final path of current item (destFolderPath + filename).
     private string destFilePath = "";
@@ -171,6 +174,7 @@ public partial class GPO
         ValidateFolderDirs();
     }
 
+    ///Begin the sorting process.
     private void beginBtn_Click(object sender, RoutedEventArgs e)
     {
         itemPreview.LoadedBehavior = MediaState.Play;
@@ -178,6 +182,7 @@ public partial class GPO
         setupGroupBox.IsEnabled = false;
         currentItemGroupBox.IsEnabled = true;
         muteUnmuteBtn.IsEnabled = true;
+        unknownDTFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
 
         //Add any filenames in the destination folder for dupe checking.
         foreach(string fullPath in GetSupportedFiles(destDirRootPath))
