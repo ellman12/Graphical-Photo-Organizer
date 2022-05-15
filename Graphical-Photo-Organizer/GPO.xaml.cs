@@ -186,19 +186,17 @@ public partial class GPO
         UpdateStats();
     }
 
-    ///<summary>Dequeue the full path at the front and populate the GUI controls with values</summary>
+    ///<summary>Dequeue the full path at the front and populate the GUI controls with values.</summary>
     private void LoadItem()
     {
-        currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
-        originalPathLabel.Content = currItemFullPath;
+        originalPathLabel.Content = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
         filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(currItemFullPath);
         ext = Path.GetExtension(currItemFullPath);
         itemPreview.Source = new Uri(currItemFullPath);
 
         M.GetDateTaken(currItemFullPath, out dateTaken, out dateTakenSrc);
         ogDateTakenLabel.Content = "OG: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        datePicker.DisplayDate = dateTaken;
-        datePicker.SelectedDate = dateTaken;
+        datePicker.SelectedDate = datePicker.DisplayDate = dateTaken;
 
         dateTakenSrcLabel.Content = dateTakenSrc;
         dateTakenSrcLabel.Foreground = dateTakenSrc switch
@@ -210,7 +208,10 @@ public partial class GPO
         };
         
         UpdateDestPath();
-        CheckForDuplicates();
+        
+        //Checks the destination folder to see if the current item is/might be a duplicate.
+        string destFilename = Path.GetFileName(destFilePath);
+        SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
@@ -220,7 +221,7 @@ public partial class GPO
         destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
         destPathLabel.Content = destFilePath;
     }
-    
+
     ///Set value in warning label. Pass in "" or null to clear warning labels.
     private void SetWarning(string? newText)
     {
@@ -228,17 +229,9 @@ public partial class GPO
         warningTextLabel.Content = newText;
     }
 
-    ///<summary>Checks the destination folder to see if the current item is/might be a duplicate.</summary>
-    private void CheckForDuplicates()
-    {
-        string destFilename = Path.GetFileName(destFilePath);
-        SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
-    }
-
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
-        unsortedFiles.Dequeue();
-
+        // unsortedFiles.Dequeue(); TODO: might not be needed
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
 
@@ -249,58 +242,33 @@ public partial class GPO
     ///<summary>Moves the current item to its new home and loads the next item.</summary>
     private async void nextItemBtn_Click(object sender, EventArgs e)
     {
-        UpdateDestPath();
-        if (!File.Exists(destFilePath))
+        // UpdateDestPath(); //TODO: don't think update dest path needed here.
+
+        //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
+        if (File.Exists(destFilePath))
+        {
+            MessageBoxResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+
+            if (result == MessageBoxResult.Yes) RecycleFile(destFilePath); //Delete the original
+            else if (result == MessageBoxResult.Cancel) return; //Abort the move process
+        }
+        else //Move like normal.
         {
             Directory.CreateDirectory(destFolderPath);
 
             //Stupid but fixes file in use error
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (unsortedFiles.Count >= 2)
-                itemPreview.Source = new Uri(unsortedFiles[1]);
-            else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
-                Cleanup();
-
-            await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
-            destDirContents.Add(filenameTextBox.Text, destFilePath.Replace(destDirRootPath, null));
+            // GC.Collect(); TODO: needed?
+            // GC.WaitForPendingFinalizers();
+            
+            //Only needed here because if an item with the same exact path already existed, no need to re-add.
+            destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
         }
-        else
-        {
-            MessageBoxResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                RecycleFile(destFilePath); //Delete the original
-                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one. Don't need to add to Dict because it already has this in it from before.
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                ReplaceMeLol();
-                return;
-            }
-            else if (result == MessageBoxResult.Cancel)
-                return;
-        }
-
-        ReplaceMeLol();
-
-        if (unsortedFiles.Count == 0)
-            Cleanup();
+        await Task.Run(() => File.Move(currItemFullPath, destFilePath));
+        
+        if (unsortedFiles.Count > 0) LoadItem();
+        else if (unsortedFiles.Count == 0) Cleanup();
     }
-
-    ///<summary>Removes the current image from the List and loads the next one.</summary>
-    private void ReplaceMeLol()
-    {
-        unsortedFiles.RemoveAt(0);
-        amountSorted++;
-        UpdateStats();
-
-        if (unsortedFiles.Count > 0)
-            LoadItem(unsortedFiles[0]);
-    }
-
+    
     private void DeleteBtn_Click(object sender, RoutedEventArgs e)
     {
         if (delWarnCheckBox.IsChecked == false)
@@ -326,6 +294,17 @@ public partial class GPO
 
             RecycleFile(deletePath);
         }
+    }
+
+    ///<summary>Removes the current image from the List and loads the next one.</summary>
+    private void ReplaceMeLol()
+    {
+        unsortedFiles.RemoveAt(0);
+        amountSorted++;
+        UpdateStats();
+
+        if (unsortedFiles.Count > 0)
+            LoadItem(unsortedFiles[0]);
     }
 
     ///<summary>Runs garbage collection and recycles the file specified</summary>
