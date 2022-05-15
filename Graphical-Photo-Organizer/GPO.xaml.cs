@@ -292,37 +292,7 @@ public partial class GPO
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
     }
-
-    ///<summary>Removes the current image from the List and loads the next one.</summary>
-    private void ReplaceMeLol()
-    {
-        unsortedFiles.RemoveAt(0);
-        amountSorted++;
-        UpdateStats();
-
-        if (unsortedFiles.Count > 0)
-            LoadItem(unsortedFiles[0]);
-    }
-
-    ///<summary>Runs garbage collection and recycles the file specified</summary>
-    private static void RecycleFile(string path)
-    {
-        // GC.Collect(); TODO: needed?
-        // GC.WaitForPendingFinalizers();
-        new System.Threading.Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
-    }
-
-    private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        //https://stackoverflow.com/a/1132559
-        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-        {
-            FileName = Path.GetDirectoryName(unsortedFiles[0]),
-            UseShellExecute = true,
-            Verb = "open"
-        });
-    }
-
+    
     private async void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
     {
         destFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
@@ -367,6 +337,36 @@ public partial class GPO
 
         if (unsortedFiles.Count == 0)
             Cleanup();
+    }
+
+    ///<summary>Removes the current image from the List and loads the next one.</summary>
+    private void ReplaceMeLol()
+    {
+        unsortedFiles.RemoveAt(0);
+        amountSorted++;
+        UpdateStats();
+
+        if (unsortedFiles.Count > 0)
+            LoadItem(unsortedFiles[0]);
+    }
+
+    ///<summary>Runs garbage collection and recycles the file specified</summary>
+    private static void RecycleFile(string path)
+    {
+        // GC.Collect(); TODO: needed?
+        // GC.WaitForPendingFinalizers();
+        new System.Threading.Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
+    }
+
+    private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        //https://stackoverflow.com/a/1132559
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = Path.GetDirectoryName(unsortedFiles[0]),
+            UseShellExecute = true,
+            Verb = "open"
+        });
     }
     
     private void Cleanup()
