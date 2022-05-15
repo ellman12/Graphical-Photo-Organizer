@@ -77,7 +77,7 @@ public partial class GPO
         dateTakenSrcLabel.Content = "";
         warningLabel.Content = "";
         warningTextLabel.Content = "";
-
+            
         //Debugging stuff
         // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
         // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
@@ -268,11 +268,25 @@ public partial class GPO
         UpdateStats();
     }
 
-    ///<summary>Moves the current item to its new home and loads the next item.</summary>
-    private async void nextItemBtn_Click(object sender, EventArgs e)
+    ///Moves the current item to its new home and loads the next item.
+    private void nextItemBtn_Click(object sender, EventArgs e)
     {
         // UpdateDestPath(); //TODO: don't think update dest path needed here.
+        MoveItem(false);
+    }
+    
+    ///Sends the current item to the Unknown Date Taken folder and loads the next item.
+    private void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        //TODO: when eventually make DT field nullable, put this in UpdateDestPath() and have it check if it is null. If it is make this the dest path, else use the DT for the path.
+        destPathLabel.Content = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
+        MoveItem(true);
+    }
 
+    ///<summary>Called when either next button or unknown DT button clicked. Moves the current item to its new location (destFilePath).</summary>
+    ///<param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
+    private void MoveItem(bool unknownDT)
+    {
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
         {
@@ -281,67 +295,21 @@ public partial class GPO
             if (result == MessageBoxResult.Yes) RecycleFile(destFilePath); //Delete the original
             else if (result == MessageBoxResult.Cancel) return; //Abort the move process
         }
-        else //Move like normal.
+        else //Move like normal
         {
-            Directory.CreateDirectory(destFolderPath);
+            Directory.CreateDirectory(unknownDT ? unknownDTFolderPath : destFolderPath);
 
             //Stupid but fixes file in use error
             // GC.Collect(); TODO: needed?
             // GC.WaitForPendingFinalizers();
             
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
-            destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
+            destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
         }
-        await Task.Run(() => File.Move(currItemFullPath, destFilePath));
+        new Thread(() => File.Move(currItemFullPath, destFilePath)).Start();
         
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
-    }
-    
-    private async void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
-    {
-        destFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
-        destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
-        destPathLabel.Content = destFilePath;
-        
-        if (!File.Exists(destFilePath))
-        {
-            Directory.CreateDirectory(destFolderPath);
-
-            //Stupid but fixes file in use error
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (unsortedFiles.Count >= 2)
-                itemPreview.Source = new Uri(unsortedFiles[1]);
-            else if (unsortedFiles.Count == 1) //Since the Source can't be set to "" for whatever reason, just hide the control when all items are sorted.
-                Cleanup();
-
-            await Task.Run(() => File.Move(unsortedFiles[0], destFilePath));
-            destDirContents.Add(destFilePath.Replace(destDirRootPath, null), filenameTextBox.Text);
-        }
-        else
-        {
-            MessageBoxResult result = MessageBox.Show("A file with the same name already exists at that location. Overwrite it with this file?\nYes will overwrite it with this file, No will keep the original file and move on to the next file to sort, Cancel will cancel this.", "File already exists", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                RecycleFile(destFilePath); //Delete the original
-                await Task.Run(() => File.Move(unsortedFiles[0], destFilePath)); //And replace with this one. Don't need to add to Dict because it already has this in it from before.
-            }
-            else if (result == MessageBoxResult.No)
-            {
-                ReplaceMeLol();
-                return;
-            }
-            else if (result == MessageBoxResult.Cancel)
-                return;
-        }
-
-        ReplaceMeLol();
-
-        if (unsortedFiles.Count == 0)
-            Cleanup();
     }
 
     ///<summary>Removes the current image from the List and loads the next one.</summary>
