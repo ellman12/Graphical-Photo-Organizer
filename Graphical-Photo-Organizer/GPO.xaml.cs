@@ -307,6 +307,7 @@ public partial class GPO
             destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
         }
         new Thread(() => File.Move(currItemFullPath, destFilePath)).Start();
+        amountSorted++;
         
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
