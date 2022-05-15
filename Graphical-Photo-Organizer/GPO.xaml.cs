@@ -78,8 +78,8 @@ public partial class GPO
         warningTextLabel.Content = "";
             
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/yes/unsorted";
-        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/yes/sorted";
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
         // unsortedFiles = GetSupportedFiles(srcDirRootPath);
         // ValidateFolderDirs();
     }
@@ -184,6 +184,27 @@ public partial class GPO
         //Add any filenames in the destination folder for dupe checking.
         foreach(string fullPath in GetSupportedFiles(destDirRootPath))
             destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
+        
+        //EXPERIMENTAL
+        // int amountMoved = 0;
+        // const string expPath = "C:/Users/Elliott/Videos/exp";
+        // Dictionary<string, string> srcDirContents = new();
+        // foreach(string fullPath in GetSupportedFiles(srcDirRootPath))
+        //     srcDirContents.Add(fullPath.Replace(srcDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
+        //
+        // foreach ((string key, string value) in srcDirContents)
+        // {
+        //     if (destDirContents.ContainsValue(value))
+        //     {
+        //         string ogPath = Path.Join(srcDirRootPath, key);
+        //         string newPath = Path.Join(expPath, value);
+        //         new System.Threading.Thread(() => File.Move(ogPath, newPath)).Start();
+        //         amountMoved++;
+        //     }
+        // }
+        //
+        // if (amountMoved > 0) MessageBox.Show($"Moved {amountMoved} items", $"Moved {amountMoved} items", MessageBoxButton.OK, MessageBoxImage.Information);
+
         LoadItem();
         UpdateStats();
     }
