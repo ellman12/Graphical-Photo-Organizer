@@ -310,9 +310,9 @@ public partial class GPO
     ///<summary>Runs garbage collection and recycles the file specified</summary>
     private static void RecycleFile(string path)
     {
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); //https://stackoverflow.com/a/3282456
+        // GC.Collect(); TODO: needed?
+        // GC.WaitForPendingFinalizers();
+        new System.Threading.Thread(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)).Start(); //https://stackoverflow.com/a/3282456
     }
 
     private void resetBtn_Click(object sender, RoutedEventArgs e)
