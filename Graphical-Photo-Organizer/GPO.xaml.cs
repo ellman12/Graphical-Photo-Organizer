@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -288,7 +289,6 @@ public partial class GPO
     ///Moves the current item to its new home and loads the next item.
     private void nextItemBtn_Click(object sender, EventArgs e)
     {
-        // UpdateDestPath(); //TODO: don't think update dest path needed here.
         MoveItem(false);
     }
     
@@ -316,19 +316,25 @@ public partial class GPO
         {
             Directory.CreateDirectory(unknownDT ? unknownDTFolderPath : destFolderPath);
 
-            //Stupid but fixes file in use error
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
             destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
         }
-        Task.Run(() => File.Move(currItemFullPath, destFilePath));
-        amountSorted++;
-        UpdateStats();
+        
+        //Stupid but fixes file in use error
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        //Creating these variables prevents file in use errors.
+        string movePath = currItemFullPath;
+        string newPath = destFilePath;
+        Thread moveThread = new(() => File.Move(movePath, newPath));
         
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
+        
+        moveThread.Start();
+        amountSorted++;
+        UpdateStats();
     }
 
     ///<summary>Runs garbage collection and recycles the file specified</summary>
