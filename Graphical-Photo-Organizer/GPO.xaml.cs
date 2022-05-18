@@ -387,7 +387,7 @@ public partial class GPO
         destDirContents.Clear();
     }
 
-    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
+    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left";
 
     private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
     {
