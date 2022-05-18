@@ -71,8 +71,8 @@ public partial class GPO
         
         srcDirLabel.Content = "";
         destDirLabel.Content = "";
-        originalPathLabel.Content = "";
-        destPathLabel.Content = "";
+        originalPathText.Text = "";
+        destPathText.Text = "";
         statsLabel.Content = "";
         dateTakenSrcLabel.Content = "";
         warningLabel.Content = "";
@@ -213,7 +213,7 @@ public partial class GPO
     ///<summary>Dequeue the full path at the front and populate the GUI controls with values.</summary>
     private void LoadItem()
     {
-        originalPathLabel.Content = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
+        originalPathText.Text = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
         filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(currItemFullPath);
         ext = Path.GetExtension(currItemFullPath);
         itemPreview.Source = new Uri(currItemFullPath);
@@ -242,7 +242,7 @@ public partial class GPO
     private void UpdateDestPath()
     {
         destFolderPath = Path.Combine(destDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
-        destPathLabel.Content = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+        destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
     }
 
     ///Set value in warning label. Pass in "" or null to clear warning labels.
@@ -296,7 +296,7 @@ public partial class GPO
     private void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
     {
         //TODO: when eventually make DT field nullable, put this in UpdateDestPath() and have it check if it is null. If it is make this the dest path, else use the DT for the path.
-        destPathLabel.Content = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
+        destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
         MoveItem(true);
     }
 
@@ -345,7 +345,7 @@ public partial class GPO
         Task.Run(() => FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin)); //https://stackoverflow.com/a/3282456
     }
 
-    private void OriginalPathLabel_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void OriginalPathText_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         //https://stackoverflow.com/a/1132559
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -373,8 +373,8 @@ public partial class GPO
         // amountDeleted = 0;
 
         filenameTextBox.Text = "";
-        originalPathLabel.Content = "";
-        destPathLabel.Content = "";
+        originalPathText.Text = "";
+        destPathText.Text = "";
         ogDateTakenLabel.Content = "";
         newDateTakenLabel.Content = "";
         dateTakenSrcLabel.Content = "";

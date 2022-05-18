@@ -71,10 +71,10 @@
         <Label x:Name="warningTextLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="warning text" Foreground="#FFCB940A"/>
 
         <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
-        <Label MouseDoubleClick="OriginalPathLabel_OnMouseDoubleClick" x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path"/>
+        <TextBlock PreviewMouseDown="OriginalPathText_OnMouseDoubleClick" x:Name="originalPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Text="path"/>
 
         <Label Grid.Column="1" Grid.Row="14" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
-        <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" FontSize="13" VerticalAlignment="Center" Content="path" />
+        <TextBlock x:Name="destPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" FontSize="13" VerticalAlignment="Center" Text="path" />
 
         <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
         <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>

@@ -5,4 +5,4 @@ Warnings are no longer given via MessageBoxes. Instead, a Label has been added i
 GPO.xaml.cs has been massively cleaned up and de-spaghettied 🍝.
 GPO now supports files with extensions that aren't lowercase like MOV, JPEG, etc. Rare, but they happen.
 When moving items to sorted folder/unknown DT folder, Threads are used instead of Task.Run. Seems to work better?
- 
+Change original and destination file paths from Labels to TextBlocks. This is because in Labels, any '_' characters are used for Alt acceleration. TextBlocks don't allow this. This makes the GUI look that much better, and my life easier. 
