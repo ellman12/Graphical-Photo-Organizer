@@ -142,7 +142,7 @@ public partial class GPO
         
         foreach (string path in allPaths)
         {
-            if (validExts.Contains(Path.GetExtension(path)))
+            if (validExts.Contains(Path.GetExtension(path).ToLower()))
                 goodPaths.Enqueue(path.Replace('\\', '/'));
         }
 
