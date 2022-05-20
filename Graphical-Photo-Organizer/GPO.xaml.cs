@@ -356,35 +356,29 @@ public partial class GPO
         });
     }
     
+    ///Performs cleanup tasks upon sorting completion, mostly for preparing for another sort, if necessary.
     private void Cleanup()
     {
         itemPreview.LoadedBehavior = MediaState.Manual;
         itemPreview.Visibility = Visibility.Hidden;
         itemPreview.Stop();
         
-        // unsortedFiles.Clear(); probs don't need
-        //TODO: uncomment later
-        // srcDirRootPath = destDirRootPath = ext = "";
-        // dateTakenSrc = M.DateTakenSrc.Now;
-        // filename = destFolderPath = destFilePath = "";
-        // dateTaken = DateTime.Now;
-        // amountSorted = 0;
-        // amountSkipped = 0;
-        // amountDeleted = 0;
-
-        filenameTextBox.Text = "";
-        originalPathText.Text = "";
-        destPathText.Text = "";
-        ogDateTakenLabel.Content = "";
-        newDateTakenLabel.Content = "";
-        dateTakenSrcLabel.Content = "";
-        currentItemGroupBox.IsEnabled = false;
-        setupGroupBox.IsEnabled = true;
-        srcDirLabel.Content = srcDirRootPath = "";
-        destDirLabel.Content = destDirRootPath = "";
-        muteUnmuteBtn.IsEnabled = false;
         SetWarning(null);
         destDirContents.Clear();
+        
+        muteUnmuteBtn.IsEnabled = false;
+        currentItemGroupBox.IsEnabled = false;
+        setupGroupBox.IsEnabled = true;
+        amountSorted = amountSkipped = amountDeleted = 0;
+        srcDirRootPath = destDirRootPath = ext = "";
+        filename = destFolderPath = destFilePath = "";
+        filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
+        ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
+        srcDirLabel.Content = destDirLabel.Content = null;
+        srcDirRootPath = destDirRootPath = "";
+        
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
     }
 
     private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left";
