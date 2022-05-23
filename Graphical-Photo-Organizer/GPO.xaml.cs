@@ -13,7 +13,7 @@ using System.Windows.Media;
 using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
-using M = Graphical_Photo_Organizer.Metadata;
+using D = DateTakenExtractor.DateTakenExtractor;
 
 namespace Graphical_Photo_Organizer;
 
@@ -38,7 +38,7 @@ public partial class GPO
     private string ext = "";
     
     ///Where the DT GPO found came from.
-    private M.DateTakenSrc dateTakenSrc;
+    private D.DateTakenSrc dateTakenSrc;
 
     //Set when current file loads and may change based on user's actions.
     ///What the filename was when file loaded, and can user can change.
