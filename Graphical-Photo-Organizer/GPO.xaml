@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer V1.2" Width="1000" Height="660" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="800" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -17,7 +17,7 @@
             <RowDefinition Height="24"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="46"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -31,12 +31,13 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <GroupBox x:Name="setupGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="13">
-            <StackPanel Margin="4">
-                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click"/>
-                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
-                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False"/>
+            <StackPanel>
+                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click" Margin="0,4,0,0"/>
+                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="0,2,0,2"/>
+                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click" Margin="0,2,0,0"/>
+                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="0,2,0,5"/>
+                <Button x:Name="settingsBtn" Content="Settings / AutoSort" Height="26" Margin="0,4,0,0"/>
+                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False" Margin="0,8,0,0"/>
             </StackPanel>
         </GroupBox>
 
