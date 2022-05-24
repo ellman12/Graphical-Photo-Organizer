@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,7 +12,7 @@ using System.Windows.Media;
 using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
-using M = Graphical_Photo_Organizer.Metadata;
+using D = DateTakenExtractor.DateTakenExtractor;
 
 namespace Graphical_Photo_Organizer;
 
@@ -21,7 +20,7 @@ namespace Graphical_Photo_Organizer;
 public partial class GPO
 {
     //Set once during setup by user.
-    ///Stores every short path (relative to destDirRootPath) and its filename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
+    ///Stores every short path (relative to destDirRootPath) and its ogFilename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
     private readonly Dictionary<string, string> destDirContents = new();
 
     ///Every full path in the unsorted folder needing sorting.
@@ -34,15 +33,15 @@ public partial class GPO
     private string currItemFullPath = "";
 
     //Set when current file loads and stays constant until next file loaded or finish sorting.
-    ///Current file's extension. This is not included in the filename TextBox but is appended when the file is moving.
+    ///Current file's extension. This is not included in the ogFilename TextBox but is appended when the file is moving.
     private string ext = "";
     
     ///Where the DT GPO found came from.
-    private M.DateTakenSrc dateTakenSrc;
+    private D.DateTakenSrc dateTakenSrc;
 
     //Set when current file loads and may change based on user's actions.
-    ///What the filename was when file loaded, and can user can change.
-    private string filename = "";
+    ///What the ogFilename was when file loaded, and can user can change.
+    private string ogFilename = "";
     
     ///Full path to folder where the current item will be sent.
     private string destFolderPath = "";
@@ -50,11 +49,14 @@ public partial class GPO
     ///Full path to Unknown Date Taken folder.
     private string unknownDTFolderPath = "";
     
-    ///The full final path of current item (destFolderPath + filename).
+    ///The full final path of current item (destFolderPath + ogFilename).
     private string destFilePath = "";
     
     ///The Date Taken that was found (or not) when first loaded.
-    private DateTime dateTaken;
+    private DateTime? ogDateTaken;
+
+    ///The new Date Taken that the user picked.
+    private DateTime? newDateTaken;
 
     //Stats that are updated automatically as user sorts the folder.
     private int amountSorted;
@@ -214,24 +216,34 @@ public partial class GPO
     private void LoadItem()
     {
         originalPathText.Text = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
-        filenameTextBox.Text = filename = Path.GetFileNameWithoutExtension(currItemFullPath);
+        filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
         ext = Path.GetExtension(currItemFullPath);
         itemPreview.Source = new Uri(currItemFullPath);
 
-        M.GetDateTaken(currItemFullPath, out dateTaken, out dateTakenSrc);
-        ogDateTakenLabel.Content = "OG: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        datePicker.SelectedDate = datePicker.DisplayDate = dateTaken;
+        newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
+        if (ogDateTaken == null)
+        {
+            ogDateTakenLabel.Content = "OG: None";
+            newDateTakenLabel.Content = "New: None";
+        }
+        else if (ogDateTaken != null)
+        {
+            datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
+            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
+            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+        }
 
         dateTakenSrcLabel.Content = dateTakenSrc;
         dateTakenSrcLabel.Foreground = dateTakenSrc switch
         {
-            M.DateTakenSrc.Metadata => Brushes.Green,
-            M.DateTakenSrc.Filename => Brushes.Goldenrod,
-            M.DateTakenSrc.Now => Brushes.Red,
+            D.DateTakenSrc.Metadata => Brushes.Green,
+            D.DateTakenSrc.Filename => Brushes.Goldenrod,
+            D.DateTakenSrc.None => Brushes.Red,
             _ => throw new ArgumentOutOfRangeException()
         };
         
         UpdateDestPath();
+        UpdateStats();
         
         //Checks the destination folder to see if the current item is/might be a duplicate.
         string destFilename = Path.GetFileName(destFilePath);
@@ -241,8 +253,17 @@ public partial class GPO
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
     private void UpdateDestPath()
     {
-        destFolderPath = Path.Combine(destDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d", CultureInfo.InvariantCulture)!).Replace('\\', '/');
-        destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+        if (newDateTaken == null)
+        {
+            nextItemBtn.IsEnabled = false;
+            destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+        }
+        else if (newDateTaken != null)
+        {
+            nextItemBtn.IsEnabled = true;
+            destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
+            destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+        }
     }
 
     ///Set value in warning label. Pass in "" or null to clear warning labels.
@@ -256,19 +277,27 @@ public partial class GPO
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
         amountSkipped++;
-        UpdateStats();
         
         if (unsortedFiles.Count > 0) LoadItem();
         else if (unsortedFiles.Count == 0) Cleanup();
     }
     
-    ///Undoes any modifications made to the file by the user. The filename and Date Taken are set to what they were when file first loaded.
+    ///Undoes any modifications made to the file by the user. The ogFilename and Date Taken are set to what they were when file first loaded.
     private void resetBtn_Click(object sender, RoutedEventArgs e)
     {
-        filenameTextBox.Text = filename;
-        newDateTakenLabel.Content = "New: " + dateTaken.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
-        datePicker.DisplayDate = dateTaken;
-        datePicker.SelectedDate = dateTaken;
+        filenameTextBox.Text = ogFilename;
+        datePicker.SelectedDate = newDateTaken = ogDateTaken;
+        if (ogDateTaken == null)
+        {
+            ogDateTakenLabel.Content = "OG: None";
+            newDateTakenLabel.Content = "New: None";
+        }
+        else if (ogDateTaken != null)
+        {
+            datePicker.DisplayDate = (DateTime) ogDateTaken;
+            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
+            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+        }
     }
 
     ///Deletes the current item, and, if enabled, prompts the user to confirm recycling of the item.
@@ -283,7 +312,6 @@ public partial class GPO
         RecycleFile(currItemFullPath);
         LoadItem();
         amountDeleted++;
-        UpdateStats();
     }
 
     ///Moves the current item to its new home and loads the next item.
@@ -295,8 +323,6 @@ public partial class GPO
     ///Sends the current item to the Unknown Date Taken folder and loads the next item.
     private void UnknownDateBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        //TODO: when eventually make DT field nullable, put this in UpdateDestPath() and have it check if it is null. If it is make this the dest path, else use the DT for the path.
-        destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
         MoveItem(true);
     }
 
@@ -304,6 +330,9 @@ public partial class GPO
     ///<param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
     private void MoveItem(bool unknownDT)
     {
+        if (unknownDT) destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
+        else UpdateDestPath();
+        
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
         {
@@ -319,6 +348,7 @@ public partial class GPO
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
             destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
         }
+        amountSorted++;
         
         //Stupid but fixes file in use error
         GC.Collect();
@@ -333,8 +363,6 @@ public partial class GPO
         else if (unsortedFiles.Count == 0) Cleanup();
         
         moveThread.Start();
-        amountSorted++;
-        UpdateStats();
     }
 
     ///<summary>Runs garbage collection and recycles the file specified</summary>
@@ -364,14 +392,17 @@ public partial class GPO
         itemPreview.Stop();
         
         SetWarning(null);
+        unsortedFiles.Clear();
         destDirContents.Clear();
-        
+        UpdateStats();
+
+        datePicker.SelectedDate = null;
         muteUnmuteBtn.IsEnabled = false;
         currentItemGroupBox.IsEnabled = false;
         setupGroupBox.IsEnabled = true;
         amountSorted = amountSkipped = amountDeleted = 0;
         srcDirRootPath = destDirRootPath = ext = "";
-        filename = destFolderPath = destFilePath = "";
+        ogFilename = destFolderPath = destFilePath = "";
         filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
         ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
         srcDirLabel.Content = destDirLabel.Content = null;
@@ -381,7 +412,7 @@ public partial class GPO
         GC.WaitForPendingFinalizers();
     }
 
-    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left";
+    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
 
     private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
     {
@@ -393,8 +424,17 @@ public partial class GPO
 
     private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
     {
-        newDateTakenLabel.Content = "New: " + datePicker.SelectedDate?.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+        if (datePicker.SelectedDate == null)
+        {
+            ogDateTakenLabel.Content = "New: None";
+            datePicker.SelectedDate = null;
+        }
+        else if (datePicker.SelectedDate != null)
+        {
+            newDateTaken = datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
+            newDateTakenLabel.Content = "OG: " + newDateTaken?.ToString("M/d/yyyy");
+        }
+        
         UpdateDestPath();
-        nextItemBtn.Focus();
     }
 }
