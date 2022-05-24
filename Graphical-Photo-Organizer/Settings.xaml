@@ -45,20 +45,20 @@
 
         <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="6" FontSize="12">
             <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type CheckBox}">
                             <Setter Property="Margin" Value="0,4,0,0"/>
                             <Setter Property="FontSize" Value="10"/>
                         </Style>
                     </StackPanel.Resources> 
-                    <CheckBox>JPG</CheckBox>
-                    <CheckBox>JPEG</CheckBox>
-                    <CheckBox>PNG</CheckBox>
-                    <CheckBox>GIF</CheckBox>
-                    <CheckBox>MP4</CheckBox>
-                    <CheckBox>MOV</CheckBox>
-                    <CheckBox>MKV</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpg</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpeg</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">png</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">gif</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mp4</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mov</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mkv</CheckBox>
                 </StackPanel>
             </GroupBox>
         </GroupBox>

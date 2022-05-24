@@ -13,6 +13,7 @@ using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using D = DateTakenExtractor.DateTakenExtractor;
+using S = Graphical_Photo_Organizer.Shared;
 
 namespace Graphical_Photo_Organizer;
 
@@ -67,6 +68,9 @@ public partial class GPO
 
     private void Window_Initialized(object sender, EventArgs e)
     {
+        Settings settings = new();
+        settings.Show();
+        
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
@@ -134,17 +138,16 @@ public partial class GPO
     
     ///<summary>
     ///<para>Get the full paths of all supported file types in a root path.</para>
-    ///Supported file types are: ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"
+    ///Allowed file types are, depending on the settings of the user: "jpg", "jpeg", "png", "gif", "mp4", "mkv", "mov"
     ///</summary>
     private static Queue<string> GetSupportedFiles(string rootPath)
     {
-        string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
         string[] allPaths = Directory.GetFiles(rootPath, "*.*", System.IO.SearchOption.AllDirectories);
         Queue<string> goodPaths = new();
         
         foreach (string path in allPaths)
         {
-            if (validExts.Contains(Path.GetExtension(path).ToLower()))
+            if (S.allowedExts.Contains(Path.GetExtension(path).Replace(".", "").ToLower()))
                 goodPaths.Enqueue(path.Replace('\\', '/'));
         }
 
@@ -156,7 +159,6 @@ public partial class GPO
         string path = SelectFolder("Select Folder of Images to Sort");
         if (path == "") return;
 
-        unsortedFiles.Clear(); //Clear if user changed to different src folder
         unsortedFiles = GetSupportedFiles(path);
 
         srcDirLabel.Content = srcDirLabel.ToolTip = srcDirRootPath = path.Replace('\\', '/');

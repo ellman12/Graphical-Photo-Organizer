@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using S = Graphical_Photo_Organizer.Shared;
 
 namespace Graphical_Photo_Organizer
 {
-    /// <summary>
-    /// Interaction logic for Settings.xaml
-    /// </summary>
-    public partial class Settings : Window
-    {
-        public Settings()
-        {
-            InitializeComponent();
-        }
-    }
+	///Interaction logic for Settings.xaml
+	public partial class Settings
+	{
+		public Settings() => InitializeComponent();
+
+		///Clears and then populates the HashSet&lt;string&gt; of allowed extensions (GPO.allowedExts) based on which CheckBoxes are checked in Settings.
+		private void ExtCheckbox_Click(object sender, RoutedEventArgs e)
+		{
+			S.allowedExts.Clear();
+
+			foreach (FrameworkElement checkbox in extensionsStackPanel.Children)
+			{
+				CheckBox? currentCheckBox = (CheckBox) checkbox;
+				if (currentCheckBox.IsChecked == true)
+					S.allowedExts.Add(currentCheckBox.Content.ToString()!);
+			}
+		}
+	}
 }
