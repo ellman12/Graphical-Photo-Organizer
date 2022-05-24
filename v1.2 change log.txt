@@ -8,3 +8,4 @@ When moving items to sorted folder/unknown DT folder, Threads are used instead o
 Change GUI controls for original and destination file paths from Labels to TextBlocks. This is because in Labels, any '_' characters are used for Alt acceleration. TextBlocks don't allow this. This makes the GUI look that much better, and my life easier.
 Replace old Metadata.cs class with my new DateTakenExtractor NuGet package. This new package also supports `null` Date Taken, which GPO now uses for when a file has no DT metadata anywhere. Historically, DateTime.Now was the default value for when this happened. I think `null` will make a lot more sense and be simpler and more clear to the user. Also, when an item's DT is null, the Next button is grayed out, since that wouldn't make sense. If the user assigns a Date to the file, it is re-enabled.
 GPO now does a bit more cleanup when it finishes a sorting session.
+The stat for how many are left to sort should actually work good now.

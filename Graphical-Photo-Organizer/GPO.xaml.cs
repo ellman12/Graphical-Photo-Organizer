@@ -394,7 +394,7 @@ public partial class GPO
         SetWarning(null);
         unsortedFiles.Clear();
         destDirContents.Clear();
-        UpdateStats();
+        statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
 
         datePicker.SelectedDate = null;
         muteUnmuteBtn.IsEnabled = false;
@@ -412,7 +412,7 @@ public partial class GPO
         GC.WaitForPendingFinalizers();
     }
 
-    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count} Left";
+    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"; //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
 
     private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
     {
