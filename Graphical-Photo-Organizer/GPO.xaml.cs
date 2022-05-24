@@ -159,8 +159,7 @@ public partial class GPO
         unsortedFiles.Clear(); //Clear if user changed to different src folder
         unsortedFiles = GetSupportedFiles(path);
 
-        srcDirRootPath = path.Replace('\\', '/');
-        srcDirLabel.Content = srcDirLabel.ToolTip = srcDirRootPath;
+        srcDirLabel.Content = srcDirLabel.ToolTip = srcDirRootPath = path.Replace('\\', '/');
         ValidateFolderDirs();
     }
 
@@ -169,8 +168,7 @@ public partial class GPO
         string path = SelectFolder("Select Root Folder Where Sorted Items Will Go");
         if (path == "") return;
 
-        destDirRootPath = path.Replace('\\', '/');
-        destDirLabel.Content = destDirLabel.ToolTip = destDirRootPath;
+        destDirLabel.Content = destDirLabel.ToolTip = destDirRootPath = path.Replace('\\', '/');
         ValidateFolderDirs();
     }
 
