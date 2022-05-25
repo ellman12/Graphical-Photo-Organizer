@@ -43,7 +43,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="6" FontSize="12">
+        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="6" FontSize="12">
             <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11">
                 <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
                     <StackPanel.Resources>
@@ -63,7 +63,7 @@
             </GroupBox>
         </GroupBox>
         
-        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="9" Grid.RowSpan="12" FontSize="13">
+        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="12" FontSize="13">
             
         </GroupBox>
     </Grid>
