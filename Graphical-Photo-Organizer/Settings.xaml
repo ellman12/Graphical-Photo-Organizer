@@ -1,4 +1,4 @@
-<Window x:Class="Graphical_Photo_Organizer.Settings"
+﻿<Window x:Class="Graphical_Photo_Organizer.Settings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -71,7 +71,12 @@
                 <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
                 <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Pause and Prompt for a New Date Taken</RadioButton>
                 <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Skip the Item</RadioButton>
-            
+                
+                <Label FontWeight="Bold" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">When Should DT Warnings Be Shown?</Label>
+                <DockPanel FlowDirection="LeftToRight" VerticalAlignment="Center">
+                    <CheckBox Name="dtLTCheckBox" Margin="0,4,20,0" VerticalAlignment="Center" VerticalContentAlignment="Center" Content="DT Year is &lt;"/>
+                    <TextBox Width="50" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"></TextBox>
+                </DockPanel>
             </StackPanel>
         </GroupBox>
     </Grid>
