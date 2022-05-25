@@ -1,4 +1,4 @@
-﻿<Window x:Class="Graphical_Photo_Organizer.Settings"
+<Window x:Class="Graphical_Photo_Organizer.Settings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -64,7 +64,15 @@
         </GroupBox>
         
         <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="12" FontSize="13">
+            <StackPanel Orientation="Vertical">
+                <CheckBox Name="autoSortCheckBox" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort"/>
+                
+                <Label FontWeight="Bold" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Action to Take When No Date Taken Found</Label>
+                <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
+                <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Pause and Prompt for a New Date Taken</RadioButton>
+                <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Skip the Item</RadioButton>
             
+            </StackPanel>
         </GroupBox>
     </Grid>
 </Window>
