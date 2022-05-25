@@ -1,4 +1,4 @@
-<Window x:Class="Graphical_Photo_Organizer.Settings"
+﻿<Window x:Class="Graphical_Photo_Organizer.Settings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -76,6 +76,10 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <CheckBox Name="yearLtCB" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0">DT Year Is &lt;</CheckBox>
                     <TextBox Name="yearLtTB" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <CheckBox Name="yearGtCB" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0">DT Year Is &gt;</CheckBox>
+                    <TextBox Name="yearGtTB" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0"></TextBox>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
