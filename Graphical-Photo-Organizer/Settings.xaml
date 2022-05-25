@@ -84,7 +84,7 @@
                         <TextBox Name="yearGtTB" IsEnabled="False" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0"></TextBox>
                     </StackPanel>
                 </StackPanel>
-                <Button Click="whatAreTheseForBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,8,0,0">What Are These For?</Button>
+                <Button Click="WhatAreTheseForBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,8,0,0">What Are These For?</Button>
             </StackPanel>
         </GroupBox>
     </Grid>
