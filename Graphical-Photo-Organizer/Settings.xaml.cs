@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using S = Graphical_Photo_Organizer.Shared;
 
@@ -23,5 +23,11 @@ namespace Graphical_Photo_Organizer
 		}
 
 		private void WhatAreTheseForBtn_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Some files have been encountered (usually memes) that have absurd Date Taken metadata, with years like pre-2000s, 1970, or with years even earlier than that. This can help you catch these during an AutoSort session so they don't get sent to folders where you wouldn't want them.", "What Are These for?", MessageBoxButton.OK, MessageBoxImage.Information);
+
+		private void AutoSortCheckBox_Click(object sender, RoutedEventArgs e)
+		{
+			if (autoSortCheckBox.IsChecked == null) return;
+			autoSortSP.IsEnabled = (bool) autoSortCheckBox.IsChecked;
+		}
 	}
 }

@@ -66,9 +66,9 @@
         
         <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="12" FontSize="13">
             <StackPanel Orientation="Vertical">
-                <CheckBox Name="autoSortCheckBox" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort"/>
+                <CheckBox Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort"/>
                 
-                <StackPanel IsEnabled="False">
+                <StackPanel Name="autoSortSP" IsEnabled="False">
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Action to Take When No Date Taken Found</Label>
                     <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
                     <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center">Pause and Prompt for a New Date Taken</RadioButton>
