@@ -29,4 +29,16 @@ public partial class Settings
 		if (autoSortCheckBox.IsChecked == null) return;
 		autoSortSP.IsEnabled = (bool) autoSortCheckBox.IsChecked;
 	}
+
+	private void YearLtCB_OnClick(object sender, RoutedEventArgs e)
+	{
+		if (yearLtCB.IsChecked == null) return;
+		yearLtTB.IsEnabled = (bool) yearLtCB.IsChecked;
+	}
+
+	private void YearGtCB_OnClick(object sender, RoutedEventArgs e)
+	{
+		if (yearGtCB.IsChecked == null) return;
+		yearGtTB.IsEnabled = (bool) yearGtCB.IsChecked;
+	}
 }

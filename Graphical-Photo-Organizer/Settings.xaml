@@ -76,11 +76,11 @@
                     
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="11">When Should DT Warnings Be Shown?</Label>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox Name="yearLtCB" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &lt;</CheckBox>
+                        <CheckBox Name="yearLtCB" Click="YearLtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &lt;</CheckBox>
                         <TextBox Name="yearLtTB" IsEnabled="False" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox Name="yearGtCB" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &gt;</CheckBox>
+                        <CheckBox Name="yearGtCB" Click="YearGtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &gt;</CheckBox>
                         <TextBox Name="yearGtTB" IsEnabled="False" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
                     </StackPanel>
                 </StackPanel>
