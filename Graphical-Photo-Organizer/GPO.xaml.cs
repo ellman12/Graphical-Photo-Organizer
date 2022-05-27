@@ -222,12 +222,12 @@ public partial class GPO
         //
         // if (amountMoved > 0) MessageBox.Show($"Moved {amountMoved} items", $"Moved {amountMoved} items", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        LoadItem();
+        LoadAndDisplayNextItem();
         UpdateStats();
     }
 
     ///<summary>Dequeue the full path at the front and populate the GUI controls with values.</summary>
-    private void LoadItem()
+    private void LoadAndDisplayNextItem()
     {
         originalPathText.Text = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
         filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
@@ -292,7 +292,7 @@ public partial class GPO
     {
         amountSkipped++;
         
-        if (unsortedFiles.Count > 0) LoadItem();
+        if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
         else if (unsortedFiles.Count == 0) Cleanup();
     }
     
@@ -324,7 +324,7 @@ public partial class GPO
         }
         
         RecycleFile(currItemFullPath);
-        LoadItem();
+        LoadAndDisplayNextItem();
         amountDeleted++;
     }
 
@@ -373,7 +373,7 @@ public partial class GPO
         string newPath = destFilePath;
         Thread moveThread = new(() => File.Move(movePath, newPath));
         
-        if (unsortedFiles.Count > 0) LoadItem();
+        if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
         else if (unsortedFiles.Count == 0) Cleanup();
         
         moveThread.Start();
