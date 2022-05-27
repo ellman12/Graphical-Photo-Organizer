@@ -222,8 +222,16 @@ public partial class GPO
         //
         // if (amountMoved > 0) MessageBox.Show($"Moved {amountMoved} items", $"Moved {amountMoved} items", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        LoadAndDisplayNextItem();
-        UpdateStats();
+        if (settings.autoSortCheckBox.IsChecked == true)
+        {
+            Thread autoSortThread = new(AutoSort);
+            autoSortThread.Start();
+        }
+        else //manual sorting
+        {
+            LoadAndDisplayNextItem();
+            UpdateStats();
+        }
     }
 
     ///Dequeues the unsorted file at the start of the Queue and loads and displays it.

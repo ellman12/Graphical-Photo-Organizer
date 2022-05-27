@@ -70,9 +70,9 @@
                 
                 <StackPanel Name="autoSortSP" IsEnabled="False">
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center"  FontSize="11">Action to Take When No Date Taken Found</Label>
-                    <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
-                    <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Pause and Prompt for a New Date Taken</RadioButton>
-                    <RadioButton GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Skip the Item</RadioButton>
+                    <RadioButton Name="sendToUnknownDTBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
+                    <RadioButton Name="promptBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Pause and Prompt for a New Date Taken</RadioButton>
+                    <RadioButton Name="skipItemBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Skip the Item</RadioButton>
                     
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="11">When Should DT Warnings Be Shown?</Label>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
