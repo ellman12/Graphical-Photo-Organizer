@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using S = Graphical_Photo_Organizer.Shared;
@@ -40,5 +41,12 @@ public partial class Settings
 	{
 		if (yearGtCB.IsChecked == null) return;
 		yearGtTB.IsEnabled = (bool) yearGtCB.IsChecked;
+	}
+
+	//Prevents the red X corner button from actually closing the window. Just hides the window.
+	protected override void OnClosing(CancelEventArgs e) //https://balajiramesh.wordpress.com/2008/07/24/hide-a-window-instead-of-closing-it-in-wpf/
+	{
+		e.Cancel = true;
+		Visibility = Visibility.Collapsed;
 	}
 }

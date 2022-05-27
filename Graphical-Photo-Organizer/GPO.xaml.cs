@@ -20,6 +20,9 @@ namespace Graphical_Photo_Organizer;
 ///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
+    ///Represents the Settings window that can be shown/hidden whenever.
+    private readonly Settings settings = new();
+    
     //Set once during setup by user.
     ///Stores every short path (relative to destDirRootPath) and its ogFilename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
     private readonly Dictionary<string, string> destDirContents = new();
@@ -66,11 +69,14 @@ public partial class GPO
 
     public GPO() => InitializeComponent();
 
+    ///Closes both windows and closes the app.
+    protected override void OnClosed(EventArgs e) //https://stackoverflow.com/a/9992888
+    {
+        System.Windows.Application.Current.Shutdown();
+    }
+
     private void Window_Initialized(object sender, EventArgs e)
     {
-        Settings settings = new();
-        settings.Show();
-        
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
@@ -172,6 +178,13 @@ public partial class GPO
 
         destDirLabel.Content = destDirLabel.ToolTip = destDirRootPath = path.Replace('\\', '/');
         ValidateFolderDirs();
+    }
+    
+    ///Opens or closes the Settings window.
+    private void SettingsBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (settings.IsVisible) settings.Hide();
+        else settings.Show();
     }
 
     ///Begin the sorting process.
