@@ -226,10 +226,14 @@ public partial class GPO
         UpdateStats();
     }
 
-    ///<summary>Dequeue the full path at the front and populate the GUI controls with values.</summary>
-    private void LoadAndDisplayNextItem()
+    ///Dequeues the unsorted file at the start of the Queue and loads and displays it.
+    private void LoadAndDisplayNextItem() => LoadAndDisplayItem(unsortedFiles.Dequeue());
+
+    ///<summary>Load and display this item and populate GUI controls.</summary>
+    ///<param name="fullPath">The full path to the item to load and display.</param>
+    private void LoadAndDisplayItem(string fullPath)
     {
-        originalPathText.Text = currItemFullPath = unsortedFiles.Dequeue(); //The item to load.
+        originalPathText.Text = currItemFullPath = fullPath;
         filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
         ext = Path.GetExtension(currItemFullPath);
         itemPreview.Source = new Uri(currItemFullPath);
