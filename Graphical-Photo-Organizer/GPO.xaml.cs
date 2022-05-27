@@ -268,7 +268,7 @@ public partial class GPO
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        UpdateDestPath();
+        UpdateAndDisplayDestPath();
         UpdateStats();
         
         //Checks the destination folder to see if the current item is/might be a duplicate.
@@ -277,7 +277,7 @@ public partial class GPO
     }
 
     ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
-    private void UpdateDestPath()
+    private void UpdateAndDisplayDestPath()
     {
         if (newDateTaken == null)
         {
@@ -357,7 +357,7 @@ public partial class GPO
     private void MoveItem(bool unknownDT)
     {
         if (unknownDT) destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
-        else UpdateDestPath();
+        else UpdateAndDisplayDestPath();
         
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
@@ -446,7 +446,7 @@ public partial class GPO
         muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
     }
 
-    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
+    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateAndDisplayDestPath();
 
     private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -461,6 +461,6 @@ public partial class GPO
             newDateTakenLabel.Content = "OG: " + newDateTaken?.ToString("M/d/yyyy");
         }
         
-        UpdateDestPath();
+        UpdateAndDisplayDestPath();
     }
 }
