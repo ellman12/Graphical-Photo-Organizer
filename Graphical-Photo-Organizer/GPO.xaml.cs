@@ -276,7 +276,7 @@ public partial class GPO
         SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
-    ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
+    ///Generate the destination path for the current item and display it in the GUI.
     private void UpdateAndDisplayDestPath()
     {
         if (newDateTaken == null)

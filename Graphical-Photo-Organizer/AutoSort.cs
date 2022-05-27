@@ -29,4 +29,13 @@ public partial class GPO
 	private void AutoSortUnknownDTSkip()
 	{
 	}
+
+	///Generate the destination path for the current item without displaying it in the GUI.
+	private void UpdateDestPath()
+	{
+		if (newDateTaken == null)
+			destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
+		else if (newDateTaken != null)
+			destFilePath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!, filenameTextBox.Text + ext);
+	}
 }
