@@ -81,14 +81,15 @@ public partial class GPO
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
         
-        srcDirLabel.Content = "";
-        destDirLabel.Content = "";
-        originalPathText.Text = "";
-        destPathText.Text = "";
-        statsLabel.Content = "";
-        dateTakenSrcLabel.Content = "";
-        warningLabel.Content = "";
-        warningTextLabel.Content = "";
+        srcDirLabel.Content = null;
+        destDirLabel.Content = null;
+        originalPathText.Text = null;
+        destPathText.Text = null;
+        statsLabel.Content = null;
+        dateTakenSrcLabel.Content = null;
+        warningLabel.Content = null;
+        warningTextLabel.Content = null;
+        statusLabel.Content = null;
             
         //Debugging stuff
         // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
