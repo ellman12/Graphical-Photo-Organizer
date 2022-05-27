@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer V1.2" Width="1000" Height="660" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="680" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -17,7 +17,7 @@
             <RowDefinition Height="24"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="46"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -31,12 +31,13 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <GroupBox x:Name="setupGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="13">
-            <StackPanel Margin="4">
-                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click"/>
-                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
-                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False"/>
+            <StackPanel>
+                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click" Margin="0,4,0,0"/>
+                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="0,2,0,2"/>
+                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click" Margin="0,2,0,0"/>
+                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="0,2,0,5"/>
+                <Button x:Name="settingsBtn" Content="Settings / AutoSort" Height="26" Margin="0,4,0,0" Click="SettingsBtn_OnClick"/>
+                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False" Margin="0,8,0,0"/>
             </StackPanel>
         </GroupBox>
 
@@ -78,7 +79,9 @@
 
         <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
         <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
+        <ProgressBar Name="progressBar" Grid.Column="4" HorizontalAlignment="Right" Grid.Row="10" Height="20" Width="200" Margin="0,0,10,0"/>
 
-        <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />
+        <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats"/>
+        <Label Name="statusLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="AutoSort Status Message" HorizontalAlignment="Right" Margin="0,0,10,0"/>
     </Grid>
 </Window>

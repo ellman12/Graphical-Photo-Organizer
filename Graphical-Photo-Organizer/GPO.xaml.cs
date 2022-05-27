@@ -13,12 +13,16 @@ using Microsoft.VisualBasic.FileIO;
 using MessageBox = System.Windows.MessageBox;
 using WinForms = System.Windows.Forms;
 using D = DateTakenExtractor.DateTakenExtractor;
+using S = Graphical_Photo_Organizer.Shared;
 
 namespace Graphical_Photo_Organizer;
 
 ///<summary>Interaction logic for GPO.xaml</summary>
 public partial class GPO
 {
+    ///Represents the Settings window that can be shown/hidden whenever.
+    private readonly Settings settings = new();
+    
     //Set once during setup by user.
     ///Stores every short path (relative to destDirRootPath) and its ogFilename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
     private readonly Dictionary<string, string> destDirContents = new();
@@ -65,20 +69,27 @@ public partial class GPO
 
     public GPO() => InitializeComponent();
 
+    ///Closes both windows and closes the app.
+    protected override void OnClosed(EventArgs e) //https://stackoverflow.com/a/9992888
+    {
+        System.Windows.Application.Current.Shutdown();
+    }
+
     private void Window_Initialized(object sender, EventArgs e)
     {
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
         datePicker.SelectedDate = DateTime.Now;
         
-        srcDirLabel.Content = "";
-        destDirLabel.Content = "";
-        originalPathText.Text = "";
-        destPathText.Text = "";
-        statsLabel.Content = "";
-        dateTakenSrcLabel.Content = "";
-        warningLabel.Content = "";
-        warningTextLabel.Content = "";
+        srcDirLabel.Content = null;
+        destDirLabel.Content = null;
+        originalPathText.Text = null;
+        destPathText.Text = null;
+        statsLabel.Content = null;
+        dateTakenSrcLabel.Content = null;
+        warningLabel.Content = null;
+        warningTextLabel.Content = null;
+        statusLabel.Content = null;
             
         //Debugging stuff
         // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
@@ -134,17 +145,16 @@ public partial class GPO
     
     ///<summary>
     ///<para>Get the full paths of all supported file types in a root path.</para>
-    ///Supported file types are: ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"
+    ///Allowed file types are, depending on the settings of the user: "jpg", "jpeg", "png", "gif", "mp4", "mkv", "mov"
     ///</summary>
     private static Queue<string> GetSupportedFiles(string rootPath)
     {
-        string[] validExts = {".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mkv", ".mov"};
         string[] allPaths = Directory.GetFiles(rootPath, "*.*", System.IO.SearchOption.AllDirectories);
         Queue<string> goodPaths = new();
         
         foreach (string path in allPaths)
         {
-            if (validExts.Contains(Path.GetExtension(path).ToLower()))
+            if (S.allowedExts.Contains(Path.GetExtension(path).Replace(".", "").ToLower()))
                 goodPaths.Enqueue(path.Replace('\\', '/'));
         }
 
@@ -156,11 +166,9 @@ public partial class GPO
         string path = SelectFolder("Select Folder of Images to Sort");
         if (path == "") return;
 
-        unsortedFiles.Clear(); //Clear if user changed to different src folder
         unsortedFiles = GetSupportedFiles(path);
 
-        srcDirRootPath = path.Replace('\\', '/');
-        srcDirLabel.Content = srcDirLabel.ToolTip = srcDirRootPath;
+        srcDirLabel.Content = srcDirLabel.ToolTip = srcDirRootPath = path.Replace('\\', '/');
         ValidateFolderDirs();
     }
 
@@ -169,9 +177,15 @@ public partial class GPO
         string path = SelectFolder("Select Root Folder Where Sorted Items Will Go");
         if (path == "") return;
 
-        destDirRootPath = path.Replace('\\', '/');
-        destDirLabel.Content = destDirLabel.ToolTip = destDirRootPath;
+        destDirLabel.Content = destDirLabel.ToolTip = destDirRootPath = path.Replace('\\', '/');
         ValidateFolderDirs();
+    }
+    
+    ///Opens or closes the Settings window.
+    private void SettingsBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (settings.IsVisible) settings.Hide();
+        else settings.Show();
     }
 
     ///Begin the sorting process.
