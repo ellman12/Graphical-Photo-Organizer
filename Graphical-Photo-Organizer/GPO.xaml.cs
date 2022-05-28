@@ -92,8 +92,15 @@ public partial class GPO
         statusLabel.Content = null;
             
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/unsorted";
         // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+
+        // foreach (string file in Directory.GetFiles(destDirRootPath, "*.*", System.IO.SearchOption.AllDirectories)) 
+        //     File.Move(file, Path.Combine(srcDirRootPath, Path.GetFileName(file)));
+        
+        // Directory.Delete(destDirRootPath, true);
+        // Directory.CreateDirectory(destDirRootPath);
+
         // unsortedFiles = GetSupportedFiles(srcDirRootPath);
         // ValidateFolderDirs();
     }
@@ -430,11 +437,11 @@ public partial class GPO
             datePicker.SelectedDate = null;
             muteUnmuteBtn.IsEnabled = false;
             currentItemGroupBox.IsEnabled = false;
-        setupGroupBox.IsEnabled = true;
-        amountSorted = amountSkipped = amountDeleted = 0;
-        srcDirRootPath = destDirRootPath = ext = "";
-        ogFilename = destFolderPath = destFilePath = "";
-        filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
+            setupGroupBox.IsEnabled = true;
+            amountSorted = amountSkipped = amountDeleted = 0;
+            srcDirRootPath = destDirRootPath = ext = "";
+            ogFilename = destFolderPath = destFilePath = "";
+            filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
             ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
             srcDirLabel.Content = destDirLabel.Content = null;
             srcDirRootPath = destDirRootPath = "";
