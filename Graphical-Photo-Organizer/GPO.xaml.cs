@@ -237,12 +237,11 @@ public partial class GPO
         }
         else //manual sorting
         {
-            currentItemGroupBox.IsEnabled = true;
-            muteUnmuteBtn.IsEnabled = true;
-            LoadAndDisplayNextItem();
-            UpdateStats();
-        }
-    }
+			currentItemGroupBox.IsEnabled = true;
+			muteUnmuteBtn.IsEnabled = true;
+			LoadAndDisplayNextItem();
+		}
+	}
 
     ///Dequeues the unsorted file at the start of the Queue and loads and displays it.
     private void LoadAndDisplayNextItem() => LoadAndDisplayItem(unsortedFiles.Dequeue());
