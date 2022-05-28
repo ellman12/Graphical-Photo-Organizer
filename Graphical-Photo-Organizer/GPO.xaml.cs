@@ -247,61 +247,70 @@ public partial class GPO
     private void LoadAndDisplayNextItem() => LoadAndDisplayItem(unsortedFiles.Dequeue());
 
     ///<summary>Load and display this item and populate GUI controls.</summary>
-    ///<param name="fullPath">The full path to the item to load and display.</param>
-    private void LoadAndDisplayItem(string fullPath)
-    {
-        Dispatcher.Invoke(() => originalPathText.Text = currItemFullPath = fullPath);
-        Dispatcher.Invoke(() => filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath));
-        ext = Path.GetExtension(currItemFullPath);
-        itemPreview.Source = new Uri(currItemFullPath);
+	///<param name="fullPath">The full path to the item to load and display.</param>
+	private void LoadAndDisplayItem(string fullPath)
+	{
+		Dispatcher.Invoke(() =>
+		{
+			originalPathText.Text = currItemFullPath = fullPath;
+			filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
+			ext = Path.GetExtension(currItemFullPath);
+			itemPreview.Source = new Uri(currItemFullPath);
+		});
 
-        newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
-        if (ogDateTaken == null)
-        {
-            ogDateTakenLabel.Content = "OG: None";
-            newDateTakenLabel.Content = "New: None";
-        }
-        else if (ogDateTaken != null)
-        {
+		newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
+		if (ogDateTaken == null)
+		{
+			Dispatcher.Invoke(() => ogDateTakenLabel.Content = "OG: None");
+			Dispatcher.Invoke(() => newDateTakenLabel.Content = "New: None");
+		}
+		else if (ogDateTaken != null)
+		{
             datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
             ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
-            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
-        }
+			newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+		}
 
-        dateTakenSrcLabel.Content = dateTakenSrc;
-        dateTakenSrcLabel.Foreground = dateTakenSrc switch
-        {
+		Dispatcher.Invoke(() =>
+		{
+			dateTakenSrcLabel.Content = dateTakenSrc;
+			dateTakenSrcLabel.Foreground = dateTakenSrc switch
+			{
             D.DateTakenSrc.Metadata => Brushes.Green,
             D.DateTakenSrc.Filename => Brushes.Goldenrod,
-            D.DateTakenSrc.None => Brushes.Red,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-        
-        UpdateAndDisplayDestPath();
-        UpdateStats();
+				D.DateTakenSrc.None => Brushes.Red,
+				_ => throw new ArgumentOutOfRangeException()
+			};
+		});
+
+		UpdateAndDisplayDestPath();
+		UpdateStats();
         
         //Checks the destination folder to see if the current item is/might be a duplicate.
         string destFilename = Path.GetFileName(destFilePath);
         SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
-    ///Generate the destination path for the current item and display it in the GUI.
-    private void UpdateAndDisplayDestPath()
-    {
-        if (newDateTaken == null)
-        {
-            nextItemBtn.IsEnabled = false;
+	///Generate the destination path for the current item and display it in the GUI.
+	private void UpdateAndDisplayDestPath()
+	{
+		Dispatcher.Invoke(() =>
+		{
+			if (newDateTaken == null)
+			{
+				nextItemBtn.IsEnabled = false;
             destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
         }
         else if (newDateTaken != null)
         {
             nextItemBtn.IsEnabled = true;
-            destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
-            destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
-        }
-    }
+				destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
+				destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+			}
+		});
+	}
 
-    ///Set value in warning label. Pass in "" or null to clear warning labels.
+	///Set value in warning label. Pass in "" or null to clear warning labels.
     private void SetWarning(string? newText)
     {
         Dispatcher.Invoke(() => warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning");
@@ -392,12 +401,14 @@ public partial class GPO
         Thread moveThread = new(() => File.Move(movePath, newPath));
         
         if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
-        else if (unsortedFiles.Count == 0) Cleanup();
-        
-        moveThread.Start();
-    }
+		else if (unsortedFiles.Count == 0) Cleanup();
 
-    ///<summary>Runs garbage collection and recycles the file specified</summary>
+		moveThread.Start();
+		autoSortSuspended = false;
+		Dispatcher.Invoke(() => currentItemGroupBox.IsEnabled = false);
+	}
+
+	///<summary>Runs garbage collection and recycles the file specified</summary>
     private static void RecycleFile(string path)
     {
         GC.Collect();
@@ -447,13 +458,13 @@ public partial class GPO
         });
 
         GC.Collect();
-        GC.WaitForPendingFinalizers();
-    }
+		GC.WaitForPendingFinalizers();
+	}
 
-    private void UpdateStats() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"; //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
+	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
 
-    private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
-    {
+	private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
+	{
         itemPreview.IsMuted = !itemPreview.IsMuted;
         muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
     }
