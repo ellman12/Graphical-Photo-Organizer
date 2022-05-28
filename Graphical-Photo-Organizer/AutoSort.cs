@@ -20,6 +20,8 @@ public partial class GPO
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
 		}
+		
+		Cleanup();
 	}
 
 	///Run AutoSort and if encounters an item with null/unknown DT, pause AutoSort and ask user what to do with the item.
@@ -48,6 +50,8 @@ public partial class GPO
 				MoveItem(false);
 			}
 		}
+		
+		Cleanup();
 	}
 
 
