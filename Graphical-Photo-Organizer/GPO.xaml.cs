@@ -92,8 +92,15 @@ public partial class GPO
         statusLabel.Content = null;
             
         //Debugging stuff
-        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/Photos-001";
+        // srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/unsorted";
         // destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
+
+        // foreach (string file in Directory.GetFiles(destDirRootPath, "*.*", System.IO.SearchOption.AllDirectories)) 
+        //     File.Move(file, Path.Combine(srcDirRootPath, Path.GetFileName(file)));
+        
+        // Directory.Delete(destDirRootPath, true);
+        // Directory.CreateDirectory(destDirRootPath);
+
         // unsortedFiles = GetSupportedFiles(srcDirRootPath);
         // ValidateFolderDirs();
     }
@@ -194,8 +201,6 @@ public partial class GPO
         itemPreview.LoadedBehavior = MediaState.Play;
         itemPreview.Visibility = Visibility.Visible;
         setupGroupBox.IsEnabled = false;
-        currentItemGroupBox.IsEnabled = true;
-        muteUnmuteBtn.IsEnabled = true;
         unknownDTFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
 
         //Add any filenames in the destination folder for dupe checking.
@@ -222,8 +227,21 @@ public partial class GPO
         //
         // if (amountMoved > 0) MessageBox.Show($"Moved {amountMoved} items", $"Moved {amountMoved} items", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        LoadAndDisplayNextItem();
-        UpdateStats();
+        if (settings.autoSortCheckBox.IsChecked == true)
+        {
+            Thread? autoSortThread = null;
+            if (settings.sendToUnknownDTBtn.IsChecked == true) autoSortThread = new Thread(AutoSortSendToUnknownFolder);
+            else if (settings.promptBtn.IsChecked == true) autoSortThread = new Thread(AutoSortPromptNullDT);
+            else if (settings.skipItemBtn.IsChecked == true) autoSortThread = new Thread(AutoSortUnknownDTSkip);
+            autoSortThread!.Start();
+        }
+        else //manual sorting
+        {
+            currentItemGroupBox.IsEnabled = true;
+            muteUnmuteBtn.IsEnabled = true;
+            LoadAndDisplayNextItem();
+            UpdateStats();
+        }
     }
 
     ///Dequeues the unsorted file at the start of the Queue and loads and displays it.
@@ -233,8 +251,8 @@ public partial class GPO
     ///<param name="fullPath">The full path to the item to load and display.</param>
     private void LoadAndDisplayItem(string fullPath)
     {
-        originalPathText.Text = currItemFullPath = fullPath;
-        filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
+        Dispatcher.Invoke(() => originalPathText.Text = currItemFullPath = fullPath);
+        Dispatcher.Invoke(() => filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath));
         ext = Path.GetExtension(currItemFullPath);
         itemPreview.Source = new Uri(currItemFullPath);
 
@@ -260,7 +278,7 @@ public partial class GPO
             _ => throw new ArgumentOutOfRangeException()
         };
         
-        UpdateDestPath();
+        UpdateAndDisplayDestPath();
         UpdateStats();
         
         //Checks the destination folder to see if the current item is/might be a duplicate.
@@ -268,8 +286,8 @@ public partial class GPO
         SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
-    ///<summary>Updates the folder where the current photo will be sent and also its final path and the label that displays the full path.</summary>
-    private void UpdateDestPath()
+    ///Generate the destination path for the current item and display it in the GUI.
+    private void UpdateAndDisplayDestPath()
     {
         if (newDateTaken == null)
         {
@@ -287,8 +305,8 @@ public partial class GPO
     ///Set value in warning label. Pass in "" or null to clear warning labels.
     private void SetWarning(string? newText)
     {
-        warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning";
-        warningTextLabel.Content = newText;
+        Dispatcher.Invoke(() => warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning");
+        Dispatcher.Invoke(() => warningTextLabel.Content = newText);
     }
     
     ///Leaves the current item where it is and loads the next item.
@@ -348,9 +366,6 @@ public partial class GPO
     ///<param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
     private void MoveItem(bool unknownDT)
     {
-        if (unknownDT) destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext);
-        else UpdateDestPath();
-        
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
         {
@@ -364,7 +379,7 @@ public partial class GPO
             Directory.CreateDirectory(unknownDT ? unknownDTFolderPath : destFolderPath);
 
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
-            destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text);
+            Dispatcher.Invoke(() => destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text));
         }
         amountSorted++;
         
@@ -377,7 +392,7 @@ public partial class GPO
         string newPath = destFilePath;
         Thread moveThread = new(() => File.Move(movePath, newPath));
         
-        if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
+        if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
         else if (unsortedFiles.Count == 0) Cleanup();
         
         moveThread.Start();
@@ -405,27 +420,33 @@ public partial class GPO
     ///Performs cleanup tasks upon sorting completion, mostly for preparing for another sort, if necessary.
     private void Cleanup()
     {
-        itemPreview.LoadedBehavior = MediaState.Manual;
-        itemPreview.Visibility = Visibility.Hidden;
-        itemPreview.Stop();
+        Dispatcher.Invoke(() =>
+        {
+            itemPreview.LoadedBehavior = MediaState.Manual;
+            itemPreview.Visibility = Visibility.Hidden;
+            itemPreview.Stop();
+        });
         
         SetWarning(null);
         unsortedFiles.Clear();
         destDirContents.Clear();
-        statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
 
-        datePicker.SelectedDate = null;
-        muteUnmuteBtn.IsEnabled = false;
-        currentItemGroupBox.IsEnabled = false;
-        setupGroupBox.IsEnabled = true;
-        amountSorted = amountSkipped = amountDeleted = 0;
-        srcDirRootPath = destDirRootPath = ext = "";
-        ogFilename = destFolderPath = destFilePath = "";
-        filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
-        ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
-        srcDirLabel.Content = destDirLabel.Content = null;
-        srcDirRootPath = destDirRootPath = "";
-        
+        Dispatcher.Invoke(() =>
+        {
+            statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
+            datePicker.SelectedDate = null;
+            muteUnmuteBtn.IsEnabled = false;
+            currentItemGroupBox.IsEnabled = false;
+            setupGroupBox.IsEnabled = true;
+            amountSorted = amountSkipped = amountDeleted = 0;
+            srcDirRootPath = destDirRootPath = ext = "";
+            ogFilename = destFolderPath = destFilePath = "";
+            filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
+            ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
+            srcDirLabel.Content = destDirLabel.Content = null;
+            srcDirRootPath = destDirRootPath = "";
+        });
+
         GC.Collect();
         GC.WaitForPendingFinalizers();
     }
@@ -438,7 +459,7 @@ public partial class GPO
         muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
     }
 
-    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateDestPath();
+    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateAndDisplayDestPath();
 
     private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -453,6 +474,6 @@ public partial class GPO
             newDateTakenLabel.Content = "OG: " + newDateTaken?.ToString("M/d/yyyy");
         }
         
-        UpdateDestPath();
+        UpdateAndDisplayDestPath();
     }
 }
