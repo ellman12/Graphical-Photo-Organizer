@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading;
 using D = DateTakenExtractor.DateTakenExtractor;
@@ -85,6 +86,22 @@ public partial class GPO
 		{
 			destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!);
 			destFilePath = Path.Combine(destFolderPath, Path.GetFileName(currItemFullPath));
+		}
+	}
+
+	private void CheckDateTakenYear()
+	{
+		if (ogDateTaken == null) return;
+		
+		if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
+		{
+			SetWarning($"This item's Date Taken year of {ogDateTaken?.Year} is less than the year value in Settings.");
+			LoadAndDisplayItem(currItemFullPath);
+		}
+		else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
+		{
+			SetWarning($"This item's Date Taken year of {ogDateTaken?.Year} is greater than the year value in Settings.");
+			LoadAndDisplayItem(currItemFullPath);
 		}
 	}
 }
