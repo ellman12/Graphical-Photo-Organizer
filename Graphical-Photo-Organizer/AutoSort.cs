@@ -12,7 +12,7 @@ public partial class GPO
 		while (unsortedFiles.Count > 0)
 		{
 			currItemFullPath = unsortedFiles.Dequeue();
-			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
 		}
