@@ -54,10 +54,26 @@ public partial class GPO
 		Cleanup();
 	}
 
-
-	///Run AutoSort and if encounter an item with null/unknown DT, skip the item automatically.
+	///Run AutoSort and if encounter an item with null/unknown DT, skip the item.
 	private void AutoSortUnknownDTSkip()
 	{
+		while (unsortedFiles.Count > 0)
+		{
+			currItemFullPath = unsortedFiles.Dequeue();
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+
+			if (ogDateTaken == null)
+			{
+				amountSkipped++;
+			}
+			else if (ogDateTaken != null)
+			{
+				UpdateDestPath();
+				MoveItem(false);
+			}
+		}
+		
+		Cleanup();
 	}
 
 	///Generate the destination path for the current item without displaying it in the GUI.
