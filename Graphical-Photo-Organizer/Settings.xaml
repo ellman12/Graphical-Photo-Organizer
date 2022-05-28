@@ -68,7 +68,7 @@
             <StackPanel Orientation="Vertical">
                 <CheckBox IsChecked="True" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
                 
-                <StackPanel Name="autoSortSP" IsEnabled="False">
+                <StackPanel Name="autoSortSP" IsEnabled="True">
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center"  FontSize="11">Action to Take When No Date Taken Found</Label>
                     <RadioButton Name="sendToUnknownDTBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10" IsChecked="True">Send to the Unknown DT Folder</RadioButton>
                     <RadioButton Name="promptBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Pause and Prompt for a New Date Taken</RadioButton>
