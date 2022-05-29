@@ -407,10 +407,13 @@ public partial class GPO
 		if (joinThread) moveThread.Join();
 		Dispatcher.Invoke(() =>
 		{
-			if (settings.autoSortCheckBox.IsChecked == false) return;
-			autoSortSuspended = false;
-			currentItemGroupBox.IsEnabled = false;
-			progressBar.Value++;
+			if (settings.autoSortCheckBox.IsChecked == true)
+			{
+				autoSortSuspended = false;
+				currentItemGroupBox.IsEnabled = false;
+				progressBar.Value++;
+				UpdateStats();
+			}
 		});
 	}
 
