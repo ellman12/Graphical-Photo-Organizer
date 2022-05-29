@@ -369,9 +369,10 @@ public partial class GPO
         MoveItem(true);
     }
 
-    ///<summary>Called when either next button or unknown DT button clicked. Moves the current item to its new location (destFilePath).</summary>
+    ///<summary>Called when either next button or unknown DT button clicked. Moves the current item to its new location (destFilePath) by spawning a Thread.</summary>
     ///<param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
-    private void MoveItem(bool unknownDT)
+    ///<param name="joinThread">Should the Thread that is spawned for moving the file suspend the main Thread until it finishes (.Join())? Defaults to false.</param>
+    private void MoveItem(bool unknownDT, bool joinThread = false)
     {
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
@@ -403,8 +404,14 @@ public partial class GPO
 		else if (unsortedFiles.Count == 0) Cleanup();
 
 		moveThread.Start();
-		autoSortSuspended = false;
-		Dispatcher.Invoke(() => currentItemGroupBox.IsEnabled = false);
+		if (joinThread) moveThread.Join();
+		Dispatcher.Invoke(() =>
+		{
+			if (settings.autoSortCheckBox.IsChecked == false) return;
+			autoSortSuspended = false;
+			currentItemGroupBox.IsEnabled = false;
+			progressBar.Value++;
+		});
 	}
 
 	///<summary>Runs garbage collection and recycles the file specified</summary>
