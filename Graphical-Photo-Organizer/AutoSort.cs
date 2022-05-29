@@ -16,6 +16,12 @@ public partial class GPO
 	{
 		while (unsortedFiles.Count > 0)
 		{
+			if (autoSortSuspended)
+			{
+				Thread.Sleep(500);
+				continue;
+			}
+			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
 			UpdateDestPath();
@@ -60,6 +66,12 @@ public partial class GPO
 	{
 		while (unsortedFiles.Count > 0)
 		{
+			if (autoSortSuspended)
+			{
+				Thread.Sleep(500);
+				continue;
+			}
+			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
 
