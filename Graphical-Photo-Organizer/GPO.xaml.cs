@@ -256,6 +256,10 @@ public partial class GPO
 			filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
 			ext = Path.GetExtension(currItemFullPath);
 			itemPreview.Source = new Uri(currItemFullPath);
+			
+			//Fixes file in use errors caused by video files.
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
 		});
 
 		newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
@@ -299,11 +303,11 @@ public partial class GPO
 			if (newDateTaken == null)
 			{
 				nextItemBtn.IsEnabled = false;
-            destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
-        }
-        else if (newDateTaken != null)
-        {
-            nextItemBtn.IsEnabled = true;
+				destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
+			}
+			else if (newDateTaken != null)
+			{
+				nextItemBtn.IsEnabled = true;
 				destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
 				destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
 			}

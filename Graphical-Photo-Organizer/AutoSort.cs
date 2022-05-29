@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Windows;
 using D = DateTakenExtractor.DateTakenExtractor;
 
 namespace Graphical_Photo_Organizer;
@@ -24,6 +25,11 @@ public partial class GPO
 			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+			
+			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
+			CheckDateTakenYear();
+			if (autoSortSuspended) continue;
+			
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
 		}	
@@ -99,15 +105,20 @@ public partial class GPO
 	{
 		if (ogDateTaken == null) return;
 		
-		if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
+		Dispatcher.Invoke(() =>
 		{
-			SetWarning($"This item's Date Taken year of {ogDateTaken?.Year} is less than the year value in Settings.");
-			LoadAndDisplayItem(currItemFullPath);
-		}
-		else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
-		{
-			SetWarning($"This item's Date Taken year of {ogDateTaken?.Year} is greater than the year value in Settings.");
-			LoadAndDisplayItem(currItemFullPath);
-		}
+			if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
+			{
+				MessageBox.Show($"This item's Date Taken year of {ogDateTaken?.Year} is less than the year value in Settings. Choose what to do with it.", "Date Taken Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				LoadAndDisplayItem(currItemFullPath);
+				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
+			}
+			else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
+			{
+				MessageBox.Show($"This item's Date Taken year of {ogDateTaken?.Year} is greater than the year value in Settings. Choose what to do with it.", "Date Taken Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				LoadAndDisplayItem(currItemFullPath);
+				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
+			}
+		});
 	}
 }
