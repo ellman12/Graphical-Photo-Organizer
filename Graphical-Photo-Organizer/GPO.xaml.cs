@@ -481,7 +481,7 @@ public partial class GPO
         else if (datePicker.SelectedDate != null)
         {
             newDateTaken = datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
-            newDateTakenLabel.Content = "OG: " + newDateTaken?.ToString("M/d/yyyy");
+            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
         }
         
         UpdateAndDisplayDestPath();
