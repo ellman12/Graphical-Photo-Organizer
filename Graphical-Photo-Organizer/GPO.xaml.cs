@@ -230,6 +230,8 @@ public partial class GPO
         if (settings.autoSortCheckBox.IsChecked == true)
         {
             Thread? autoSortThread = null;
+            progressBar.Visibility = Visibility.Visible;
+            progressBar.Maximum = unsortedFiles.Count;
             if (settings.sendToUnknownDTBtn.IsChecked == true) autoSortThread = new Thread(AutoSortSendToUnknownFolder);
             else if (settings.promptBtn.IsChecked == true) autoSortThread = new Thread(AutoSortPromptNullDT);
             else if (settings.skipItemBtn.IsChecked == true) autoSortThread = new Thread(AutoSortUnknownDTSkip);
@@ -237,7 +239,8 @@ public partial class GPO
         }
         else //manual sorting
         {
-			currentItemGroupBox.IsEnabled = true;
+	        progressBar.Visibility = Visibility.Hidden;
+	        currentItemGroupBox.IsEnabled = true;
 			muteUnmuteBtn.IsEnabled = true;
 			LoadAndDisplayNextItem();
 		}

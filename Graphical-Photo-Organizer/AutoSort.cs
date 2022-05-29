@@ -15,6 +15,8 @@ public partial class GPO
 	///Run AutoSort and if encounter an item with null/unknown DT, automatically send it to Unknown DT folder without telling user.
 	private void AutoSortSendToUnknownFolder()
 	{
+		int unsortedFilesCountAtStart = unsortedFiles.Count;
+		
 		while (unsortedFiles.Count > 0)
 		{
 			if (autoSortSuspended)
@@ -32,12 +34,15 @@ public partial class GPO
 			
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
-		}	
+			Dispatcher.Invoke(() => progressBar.Value = unsortedFilesCountAtStart - unsortedFiles.Count);
+		}
 	}
 
 	///Run AutoSort and if encounters an item with null/unknown DT, pause AutoSort and ask user what to do with the item.
 	private void AutoSortPromptNullDT()
 	{
+		int unsortedFilesCountAtStart = unsortedFiles.Count;
+
 		while (unsortedFiles.Count > 0)
 		{
 			if (autoSortSuspended)
@@ -64,12 +69,15 @@ public partial class GPO
 				UpdateDestPath();
 				MoveItem(false);
 			}
+			Dispatcher.Invoke(() => progressBar.Value = unsortedFilesCountAtStart - unsortedFiles.Count);
 		}	
 	}
 
 	///Run AutoSort and if encounter an item with null/unknown DT, skip the item.
 	private void AutoSortUnknownDTSkip()
 	{
+		int unsortedFilesCountAtStart = unsortedFiles.Count;
+
 		while (unsortedFiles.Count > 0)
 		{
 			if (autoSortSuspended)
@@ -94,6 +102,7 @@ public partial class GPO
 				UpdateDestPath();
 				MoveItem(false);
 			}
+			Dispatcher.Invoke(() => progressBar.Value = unsortedFilesCountAtStart - unsortedFiles.Count);
 		}
 	}
 

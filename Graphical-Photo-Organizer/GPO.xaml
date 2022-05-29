@@ -79,7 +79,7 @@
 
         <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
         <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
-        <ProgressBar Name="progressBar" Grid.Column="4" HorizontalAlignment="Right" Grid.Row="10" Height="20" Width="200" Margin="0,0,10,0"/>
+        <ProgressBar Visibility="Hidden" Name="progressBar" Grid.Column="4" HorizontalAlignment="Right" Grid.Row="10" Height="20" Width="200" Minimum="0" Margin="0,0,10,0"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats"/>
         <Label Name="statusLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="AutoSort Status Message" HorizontalAlignment="Right" Margin="0,0,10,0"/>
