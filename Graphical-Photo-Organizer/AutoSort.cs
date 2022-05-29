@@ -26,9 +26,7 @@ public partial class GPO
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
-		}
-		
-		Cleanup();
+		}	
 	}
 
 	///Run AutoSort and if encounters an item with null/unknown DT, pause AutoSort and ask user what to do with the item.
@@ -56,9 +54,7 @@ public partial class GPO
 				UpdateDestPath();
 				MoveItem(false);
 			}
-		}
-		
-		Cleanup();
+		}	
 	}
 
 	///Run AutoSort and if encounter an item with null/unknown DT, skip the item.
@@ -85,8 +81,6 @@ public partial class GPO
 				MoveItem(false);
 			}
 		}
-		
-		Cleanup();
 	}
 
 	///Generate the destination path for the current item without displaying it in the GUI.
