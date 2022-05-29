@@ -87,8 +87,7 @@ public partial class GPO
         destPathText.Text = null;
         statsLabel.Content = null;
         dateTakenSrcLabel.Content = null;
-        warningLabel.Content = null;
-        warningTextLabel.Content = null;
+        warningText.Text = null;
         statusLabel.Content = null;
             
         //Debugging stuff
@@ -295,7 +294,7 @@ public partial class GPO
         
         //Checks the destination folder to see if the current item is/might be a duplicate.
         string destFilename = Path.GetFileName(destFilePath);
-        SetWarning(destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
+        Dispatcher.Invoke(() => warningText.Text = destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
     }
 
 	///Generate the destination path for the current item and display it in the GUI.
@@ -317,13 +316,6 @@ public partial class GPO
 		});
 	}
 
-	///Set value in warning label. Pass in "" or null to clear warning labels.
-    private void SetWarning(string? newText)
-    {
-        Dispatcher.Invoke(() => warningLabel.Content = String.IsNullOrWhiteSpace(newText) ? null : "Warning");
-        Dispatcher.Invoke(() => warningTextLabel.Content = newText);
-    }
-    
     ///Leaves the current item where it is and loads the next item.
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
@@ -444,7 +436,7 @@ public partial class GPO
             itemPreview.Stop();
         });
         
-        SetWarning(null);
+        Dispatcher.Invoke(() => warningText.Text = null);
         unsortedFiles.Clear();
         destDirContents.Clear();
 

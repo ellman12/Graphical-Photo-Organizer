@@ -68,8 +68,7 @@
             </StackPanel>
         </GroupBox>
 
-        <Label x:Name="warningLabel" Grid.Column="1" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="Warning" Foreground="#FFCB940A"/>
-        <Label x:Name="warningTextLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="warning text" Foreground="#FFCB940A"/>
+        <TextBlock x:Name="warningText" Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="12" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" Text="warning text" Foreground="#FFCB940A"/>
 
         <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
         <TextBlock PreviewMouseDown="OriginalPathText_OnMouseDoubleClick" x:Name="originalPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Text="path"/>
