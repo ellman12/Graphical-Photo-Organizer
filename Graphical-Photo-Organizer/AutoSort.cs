@@ -49,6 +49,10 @@ public partial class GPO
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
 			
+			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
+			CheckDateTakenYear();
+			if (autoSortSuspended) continue;
+			
 			if (ogDateTaken == null)
 			{
 				Dispatcher.Invoke(() => currentItemGroupBox.IsEnabled = true);
@@ -76,6 +80,10 @@ public partial class GPO
 			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+			
+			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
+			CheckDateTakenYear();
+			if (autoSortSuspended) continue;
 
 			if (ogDateTaken == null)
 			{
