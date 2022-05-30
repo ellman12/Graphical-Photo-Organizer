@@ -375,6 +375,8 @@ public partial class GPO
     ///<param name="joinThread">Should the Thread that is spawned for moving the file suspend the main Thread until it finishes (.Join())? Defaults to false.</param>
     private void MoveItem(bool unknownDT, bool joinThread = false)
     {
+	    if (unknownDT) destFilePath = Path.Combine(unknownDTFolderPath, Path.GetFileName(currItemFullPath));
+
         //If there is an item with the exact same full path, ask user what to do. They can overwrite it, skip it, or cancel.
         if (File.Exists(destFilePath))
         {
