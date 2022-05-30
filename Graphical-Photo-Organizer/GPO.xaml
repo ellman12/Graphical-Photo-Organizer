@@ -81,6 +81,6 @@
         <ProgressBar Visibility="Hidden" Name="progressBar" Grid.Column="4" HorizontalAlignment="Right" Grid.Row="10" Height="20" Width="200" Minimum="0" Margin="0,0,10,0"/>
 
         <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats"/>
-        <Label Name="statusLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="AutoSort Status Message" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+        <TextBlock Name="statusTextBlock" Grid.Column="4" Grid.Row="11" FontSize="12" VerticalAlignment="Center" Text="AutoSort Status Message" HorizontalAlignment="Right" Foreground="#FFCB940A" Margin="0,0,10,0"/>
     </Grid>
 </Window>

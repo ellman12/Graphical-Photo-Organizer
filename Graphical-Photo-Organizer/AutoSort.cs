@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Threading;
-using System.Windows;
 using D = DateTakenExtractor.DateTakenExtractor;
 
 namespace Graphical_Photo_Organizer;
@@ -117,13 +116,13 @@ public partial class GPO
 		{
 			if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
 			{
-				MessageBox.Show($"This item's Date Taken year of {ogDateTaken?.Year} is less than the year value in Settings. Choose what to do with it.", "Date Taken Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is less than value in Settings. Choose what to do with it.";
 				LoadAndDisplayItem(currItemFullPath);
 				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
 			}
 			else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
 			{
-				MessageBox.Show($"This item's Date Taken year of {ogDateTaken?.Year} is greater than the year value in Settings. Choose what to do with it.", "Date Taken Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is greater than value in Settings. Choose what to do with it.";
 				LoadAndDisplayItem(currItemFullPath);
 				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
 			}

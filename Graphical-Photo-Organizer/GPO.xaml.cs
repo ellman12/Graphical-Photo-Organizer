@@ -88,7 +88,7 @@ public partial class GPO
         statsLabel.Content = null;
         dateTakenSrcLabel.Content = null;
         warningText.Text = null;
-        statusLabel.Content = null;
+        statusTextBlock.Text = null;
 
         settings.yearGtTB.Text = DateTime.Now.Year.ToString();
 
