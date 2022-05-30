@@ -197,6 +197,7 @@ public partial class GPO
     ///Begin the sorting process.
     private void beginBtn_Click(object sender, RoutedEventArgs e)
     {
+        amountSorted = amountSkipped = amountDeleted = 0;
         itemPreview.LoadedBehavior = MediaState.Play;
         itemPreview.Visibility = Visibility.Visible;
         setupGroupBox.IsEnabled = false;
@@ -444,20 +445,12 @@ public partial class GPO
             itemPreview.LoadedBehavior = MediaState.Manual;
             itemPreview.Visibility = Visibility.Hidden;
             itemPreview.Stop();
-        });
-        
-        Dispatcher.Invoke(() => warningText.Text = null);
-        unsortedFiles.Clear();
-        destDirContents.Clear();
-
-        Dispatcher.Invoke(() =>
-        {
+            warningText.Text = null;
             statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
             datePicker.SelectedDate = null;
             muteUnmuteBtn.IsEnabled = false;
             currentItemGroupBox.IsEnabled = false;
             setupGroupBox.IsEnabled = true;
-            amountSorted = amountSkipped = amountDeleted = 0;
             srcDirRootPath = destDirRootPath = ext = "";
             ogFilename = destFolderPath = destFilePath = "";
             filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
@@ -470,7 +463,7 @@ public partial class GPO
 		GC.WaitForPendingFinalizers();
 	}
 
-	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
+	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {(unsortedFiles.Count == 0 ? 0 : unsortedFiles.Count + 1)} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
 
 	private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
 	{
