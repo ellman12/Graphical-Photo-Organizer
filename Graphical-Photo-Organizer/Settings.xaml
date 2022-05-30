@@ -66,22 +66,22 @@
         
         <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="7" FontSize="12">
             <StackPanel Orientation="Vertical">
-                <CheckBox IsChecked="True" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
+                <CheckBox IsChecked="False" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
                 
-                <StackPanel Name="autoSortSP" IsEnabled="True">
+                <StackPanel Name="autoSortSP" IsEnabled="False">
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center"  FontSize="11">Action to Take When No Date Taken Found</Label>
-                    <RadioButton Name="sendToUnknownDTBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Send to the Unknown DT Folder</RadioButton>
+                    <RadioButton IsChecked="True" Name="sendToUnknownDTBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Send to the Unknown DT Folder</RadioButton>
                     <RadioButton Name="promptBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Pause and Prompt for a New Date Taken</RadioButton>
-                    <RadioButton IsChecked="True" Name="skipItemBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Skip the Item</RadioButton>
+                    <RadioButton Name="skipItemBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Skip the Item</RadioButton>
                     
                     <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="11">When Should DT Warnings Be Shown?</Label>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <CheckBox IsChecked="True" Name="yearLtCB" Click="YearLtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &lt;</CheckBox>
-                        <TextBox Text="2019" Name="yearLtTB" IsEnabled="False" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
+                        <TextBox Text="2000" Name="yearLtTB" IsEnabled="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <CheckBox IsChecked="True" Name="yearGtCB" Click="YearGtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &gt;</CheckBox>
-                        <TextBox Text="2019" Name="yearGtTB" IsEnabled="False" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
+                        <TextBox Name="yearGtTB" IsEnabled="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
                     </StackPanel>
                 </StackPanel>
                 <Button FontSize="10" Click="WhatAreTheseForBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,8,0,0">What Are These ↑ For?</Button>
