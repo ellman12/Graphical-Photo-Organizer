@@ -37,7 +37,7 @@
                 <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click" Margin="0,2,0,0"/>
                 <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="0,2,0,5"/>
                 <Button x:Name="settingsBtn" Content="Settings / AutoSort" Height="26" Margin="0,4,0,0" Click="SettingsBtn_OnClick"/>
-                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False" Margin="0,8,0,0"/>
+                <Button x:Name="beginBtn" Content="_Begin Manual Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False" Margin="0,8,0,0"/>
             </StackPanel>
         </GroupBox>
 

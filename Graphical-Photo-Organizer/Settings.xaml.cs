@@ -29,6 +29,11 @@ public partial class Settings
 	{
 		if (autoSortCheckBox.IsChecked == null) return;
 		autoSortSP.IsEnabled = (bool) autoSortCheckBox.IsChecked;
+		
+		//Stupid but it works. https://stackoverflow.com/a/13901470
+		foreach (Window window in Application.Current.Windows)
+			if (window.GetType() == typeof(GPO))
+				(window as GPO)!.beginBtn.Content = autoSortCheckBox.IsChecked == true ? "_Begin AutoSort" : "_Begin Manual Sorting";
 	}
 
 	private void YearLtCB_OnClick(object sender, RoutedEventArgs e)
