@@ -370,10 +370,9 @@ public partial class GPO
         MoveItem(true);
     }
 
-    ///<summary>Called when either next button or unknown DT button clicked. Moves the current item to its new location (destFilePath) by spawning a Thread.</summary>
-    ///<param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
-    ///<param name="joinThread">Should the Thread that is spawned for moving the file suspend the main Thread until it finishes (.Join())? Defaults to false.</param>
-    private void MoveItem(bool unknownDT, bool joinThread = false)
+    /// <summary>Called when either next button or unknown DT button clicked. Moves the current item to its new location (destFilePath) by spawning a Thread.</summary>
+    /// <param name="unknownDT">Pass in 'true' if this item will be sent to the Unknown Date Taken folder. False if it will be sent to a sorted folder (determined in UpdateDestPath()).</param>
+    private void MoveItem(bool unknownDT)
     {
 	    if (unknownDT) destFilePath = Path.Combine(unknownDTFolderPath, Path.GetFileName(currItemFullPath));
 
@@ -398,16 +397,14 @@ public partial class GPO
         GC.Collect();
         GC.WaitForPendingFinalizers();
 
-        //Creating these variables prevents file in use errors.
+        //Creating these variables prevents file in use errors (I think).
         string movePath = currItemFullPath;
         string newPath = destFilePath;
-        Thread moveThread = new(() => File.Move(movePath, newPath));
+        Task.Run(() => File.Move(movePath, newPath));
         
         if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
 		else if (unsortedFiles.Count == 0) Cleanup();
 
-		moveThread.Start();
-		if (joinThread) moveThread.Join();
 		Dispatcher.Invoke(() =>
 		{
 			if (settings.autoSortCheckBox.IsChecked == true)

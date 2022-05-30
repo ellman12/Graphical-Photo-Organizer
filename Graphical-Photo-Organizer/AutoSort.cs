@@ -31,7 +31,7 @@ public partial class GPO
 			if (autoSortSuspended) continue;
 			
 			UpdateDestPath();
-			MoveItem(ogDateTaken == null, true);
+			MoveItem(ogDateTaken == null);
 		}
 	}
 
@@ -62,7 +62,7 @@ public partial class GPO
 			else if (ogDateTaken != null)
 			{
 				UpdateDestPath();
-				MoveItem(false, true);
+				MoveItem(false);
 			}
 		}	
 	}
@@ -92,7 +92,7 @@ public partial class GPO
 			else if (ogDateTaken != null)
 			{
 				UpdateDestPath();
-				MoveItem(false, true);
+				MoveItem(false);
 			}
 		}
 	}
