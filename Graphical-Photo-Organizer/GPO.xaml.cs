@@ -233,13 +233,11 @@ public partial class GPO
 
         if (settings.autoSortCheckBox.IsChecked == true)
         {
-            Thread? autoSortThread = null;
             progressBar.Visibility = Visibility.Visible;
             progressBar.Maximum = unsortedFiles.Count;
-            if (settings.sendToUnknownDTBtn.IsChecked == true) autoSortThread = new Thread(AutoSortSendToUnknownFolder);
-            else if (settings.promptBtn.IsChecked == true) autoSortThread = new Thread(AutoSortPromptNullDT);
-            else if (settings.skipItemBtn.IsChecked == true) autoSortThread = new Thread(AutoSortUnknownDTSkip);
-            autoSortThread!.Start();
+            if (settings.sendToUnknownDTBtn.IsChecked == true) new Thread(AutoSortSendToUnknownFolder).Start();
+            else if (settings.promptBtn.IsChecked == true) new Thread(AutoSortPromptNullDT).Start();
+            else if (settings.skipItemBtn.IsChecked == true) new Thread(AutoSortUnknownDTSkip).Start();
         }
         else //manual sorting
         {
