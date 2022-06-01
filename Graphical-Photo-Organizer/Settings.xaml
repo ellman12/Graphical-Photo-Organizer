@@ -1,0 +1,91 @@
+<Window x:Class="Graphical_Photo_Organizer.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="GPO Settings" Height="470" Width="350" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="6" FontSize="12">
+            <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11">
+                <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type CheckBox}">
+                            <Setter Property="Margin" Value="0,4,0,0"/>
+                            <Setter Property="FontSize" Value="10"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpg</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpeg</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">png</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">gif</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mp4</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mov</CheckBox>
+                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mkv</CheckBox>
+                </StackPanel>
+            </GroupBox>
+        </GroupBox>
+        
+        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="7" FontSize="12">
+            <StackPanel Orientation="Vertical">
+                <CheckBox IsChecked="False" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
+                
+                <StackPanel Name="autoSortSP" IsEnabled="False">
+                    <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center"  FontSize="11">Action to Take When No Date Taken Found</Label>
+                    <RadioButton IsChecked="True" Name="sendToUnknownDTBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Send to the Unknown DT Folder</RadioButton>
+                    <RadioButton Name="promptBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Pause and Prompt for a New Date Taken</RadioButton>
+                    <RadioButton Name="skipItemBtn" GroupName="noDTGroup" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="10">Skip the Item</RadioButton>
+                    
+                    <Label FontWeight="Bold" Margin="-5,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="11">When Should DT Warnings Be Shown?</Label>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox IsChecked="True" Name="yearLtCB" Click="YearLtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &lt;</CheckBox>
+                        <TextBox Text="2000" Name="yearLtTB" IsEnabled="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <CheckBox IsChecked="True" Name="yearGtCB" Click="YearGtCB_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="10">DT Year Is &gt;</CheckBox>
+                        <TextBox Name="yearGtTB" IsEnabled="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <Button FontSize="10" Click="WhatAreTheseForBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,8,0,0">What Are These ↑ For?</Button>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>
