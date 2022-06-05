@@ -260,44 +260,41 @@ public partial class GPO
 			originalPathText.Text = currItemFullPath = fullPath;
 			filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
 			ext = Path.GetExtension(currItemFullPath);
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
 			itemPreview.Source = new Uri(currItemFullPath);
-			
+
 			//Fixes file in use errors caused by video files.
 			GC.Collect();
 			GC.WaitForPendingFinalizers();
-		});
 
-		newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
-		if (ogDateTaken == null)
-		{
-			Dispatcher.Invoke(() => ogDateTakenLabel.Content = "OG: None");
-			Dispatcher.Invoke(() => newDateTakenLabel.Content = "New: None");
-		}
-		else if (ogDateTaken != null)
-		{
-            datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
-            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
-			newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
-		}
+			if (ogDateTaken == null)
+			{
+				ogDateTakenLabel.Content = "OG: None";
+				newDateTakenLabel.Content = "New: None";
+			}
+			else if (ogDateTaken != null)
+			{
+				datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
+				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
+				newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+			}
 
-		Dispatcher.Invoke(() =>
-		{
 			dateTakenSrcLabel.Content = dateTakenSrc;
 			dateTakenSrcLabel.Foreground = dateTakenSrc switch
 			{
-            D.DateTakenSrc.Metadata => Brushes.Green,
-            D.DateTakenSrc.Filename => Brushes.Goldenrod,
+				D.DateTakenSrc.Metadata => Brushes.Green,
+				D.DateTakenSrc.Filename => Brushes.Goldenrod,
 				D.DateTakenSrc.None => Brushes.Red,
 				_ => throw new ArgumentOutOfRangeException()
 			};
-		});
 
-		UpdateAndDisplayDestPath();
-		UpdateStats();
-        
-        //Checks the destination folder to see if the current item is/might be a duplicate.
-        string destFilename = Path.GetFileName(destFilePath);
-        Dispatcher.Invoke(() => warningText.Text = destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null);
+			UpdateAndDisplayDestPath();
+			UpdateStats();
+
+			//Checks the destination folder to see if the current item is/might be a duplicate.
+			string destFilename = Path.GetFileName(destFilePath);
+			warningText.Text = destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null;
+		});
     }
 
 	///Generate the destination path for the current item and display it in the GUI.
