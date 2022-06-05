@@ -444,7 +444,6 @@ public partial class GPO
             itemPreview.Source = null;
             itemPreview.Stop();
             warningText.Text = null;
-            statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
             datePicker.SelectedDate = null;
             muteUnmuteBtn.IsEnabled = false;
             currentItemGroupBox.IsEnabled = false;
@@ -456,12 +455,15 @@ public partial class GPO
             srcDirLabel.Content = destDirLabel.Content = null;
             srcDirRootPath = destDirRootPath = "";
         });
+        
+        UpdateStats();
+        amountSorted = amountSkipped = amountDeleted = 0;
 
         GC.Collect();
 		GC.WaitForPendingFinalizers();
 	}
 
-	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {(unsortedFiles.Count == 0 ? 0 : unsortedFiles.Count + 1)} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
+	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
 
 	private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
 	{
