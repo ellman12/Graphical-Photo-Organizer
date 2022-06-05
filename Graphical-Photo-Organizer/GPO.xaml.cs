@@ -463,7 +463,7 @@ public partial class GPO
 		GC.WaitForPendingFinalizers();
 	}
 
-	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   {unsortedFiles.Count + 1} Left"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
+	private void UpdateStats() => Dispatcher.Invoke(() => statsLabel.Content = $"{amountSorted} Sorted    {amountSkipped} Skipped    {amountDeleted} Deleted    {unsortedFiles.Count + 1} Left    {amountSorted + amountSkipped + amountDeleted + unsortedFiles.Count + 1} Total"); //The + 1 is necessary to include the current item user is looking at towards how many are left to sort.
 
 	private void MuteUnmuteBtn_Click(object sender, RoutedEventArgs e)
 	{

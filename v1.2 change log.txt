@@ -10,3 +10,4 @@ GPO now does a bit more cleanup when it finishes a sorting session.
 The stat for how many are left to sort should actually work good now.
 itemPreview's Visibility is no longer changed. Instead, its source is set to null when nothing to display.
 Fix some file in use errors, mostly caused by chonky videos.
+Add some more spacing between each stat and add total statistic.
