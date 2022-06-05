@@ -203,7 +203,7 @@ public partial class GPO
     {
         amountSorted = amountSkipped = amountDeleted = 0;
         itemPreview.LoadedBehavior = MediaState.Play;
-        itemPreview.Visibility = Visibility.Visible;
+        itemPreview.Source = null;
         setupGroupBox.IsEnabled = false;
         unknownDTFolderPath = Path.Combine(destDirRootPath, "Unknown Date Taken").Replace('\\', '/');
 
@@ -441,7 +441,7 @@ public partial class GPO
         Dispatcher.Invoke(() =>
         {
             itemPreview.LoadedBehavior = MediaState.Manual;
-            itemPreview.Visibility = Visibility.Hidden;
+            itemPreview.Source = null;
             itemPreview.Stop();
             warningText.Text = null;
             statsLabel.Content = $"{amountSorted} Sorted   {amountSkipped} Skipped   {amountDeleted} Deleted   0 Left";
