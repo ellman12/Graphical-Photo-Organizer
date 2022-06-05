@@ -13,6 +13,7 @@ public partial class Settings
 	///Clears and then populates the HashSet&lt;string&gt; of allowed extensions (GPO.allowedExts) based on which CheckBoxes are checked in Settings.
 	private void ExtCheckbox_Click(object sender, RoutedEventArgs e)
 	{
+		CheckBox current = (CheckBox) sender;
 		S.allowedExts.Clear();
 
 		foreach (FrameworkElement checkbox in extensionsStackPanel.Children)
@@ -20,6 +21,12 @@ public partial class Settings
 			CheckBox? currentCheckBox = (CheckBox) checkbox;
 			if (currentCheckBox.IsChecked == true)
 				S.allowedExts.Add(currentCheckBox.Content.ToString()!);
+		}
+
+		if (S.allowedExts.Count == 0)
+		{
+			MessageBox.Show("At least one extension must be selected to begin sorting.", "Select at least one extension.", MessageBoxButton.OK, MessageBoxImage.Error);
+			current.IsChecked = true;
 		}
 	}
 
