@@ -79,7 +79,7 @@ public partial class GPO
     {
         //These are necessary.
         datePicker.DisplayDate = DateTime.Now;
-        datePicker.SelectedDate = DateTime.Now;
+        datePicker.SelectedDate = null;
         
         srcDirLabel.Content = null;
         destDirLabel.Content = null;
