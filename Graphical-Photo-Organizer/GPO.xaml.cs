@@ -77,9 +77,8 @@ public partial class GPO
 
     private void Window_Initialized(object sender, EventArgs e)
     {
-        //These are necessary.
-        datePicker.DisplayDate = DateTime.Now;
-        datePicker.SelectedDate = null;
+        datePicker.DisplayDate = DateTime.Now; //This is necessary to prevent null errors.
+        datePicker.SelectedDate = null; //Prevents the current date from showing up after "New: "
         
         srcDirLabel.Content = null;
         destDirLabel.Content = null;
