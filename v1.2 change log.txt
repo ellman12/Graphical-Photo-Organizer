@@ -12,3 +12,4 @@ itemPreview's Visibility is no longer changed. Instead, its source is set to nul
 Fix some file in use errors, mostly caused by chonky videos.
 Add some more spacing between each stat and add total statistic.
 Fix issue where today's date is shown in the "New: " thing on GUI load.
+Fix an issue where srcDirLabel and destDirLabel Content could be set to null and thus make UI look weird.

@@ -80,8 +80,8 @@ public partial class GPO
         datePicker.DisplayDate = DateTime.Now; //This is necessary to prevent null errors.
         datePicker.SelectedDate = null; //Prevents the current date from showing up after "New: "
         
-        srcDirLabel.Content = null;
-        destDirLabel.Content = null;
+        srcDirLabel.Content = ""; //These cannot be null because if they are, they don't take up any space and make UI look weird.
+        destDirLabel.Content =""; 
         originalPathText.Text = null;
         destPathText.Text = null;
         statsLabel.Content = null;
@@ -451,7 +451,7 @@ public partial class GPO
             ogFilename = destFolderPath = destFilePath = "";
             filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
             ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
-            srcDirLabel.Content = destDirLabel.Content = null;
+            srcDirLabel.Content = destDirLabel.Content = "";
             srcDirRootPath = destDirRootPath = "";
         });
         
