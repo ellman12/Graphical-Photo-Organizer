@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer V1.2" Width="1000" Height="680" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="700" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -41,14 +41,11 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="False">
+        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="true">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
-                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="6,6,4,3" FontSize="9" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
-                    <Label Name="dateTakenSrcLabel" Content="src"/>
-                </StackPanel>
-
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,6,0,3" FontSize="9" />
+                <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
+                <Label Name="dateTakenSrcLabel" Content="Source: "/>
                 <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
                 <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 

@@ -85,7 +85,7 @@ public partial class GPO
         originalPathText.Text = null;
         destPathText.Text = null;
         statsLabel.Content = null;
-        dateTakenSrcLabel.Content = null;
+        dateTakenSrcLabel.Content = "Source: ";
         warningText.Text = null;
         statusTextBlock.Text = null;
 
