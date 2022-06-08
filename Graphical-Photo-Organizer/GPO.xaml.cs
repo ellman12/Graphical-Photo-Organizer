@@ -275,8 +275,8 @@ public partial class GPO
 			else if (ogDateTaken != null)
 			{
 				timePicker.Value = datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
-				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
-				newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+				newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy") + timePicker.Value?.ToString(" h:mm:ss tt");
 			}
 
 			dateTakenSrcLabel.Content = dateTakenSrc;
@@ -338,8 +338,8 @@ public partial class GPO
         else if (ogDateTaken != null)
         {
             datePicker.DisplayDate = (DateTime) ogDateTaken;
-            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
-            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy h:mm:ss tt") + timePicker.Value?.ToString(" h:mm:ss tt");
         }
     }
 
@@ -483,9 +483,14 @@ public partial class GPO
         else if (datePicker.SelectedDate != null)
         {
             newDateTaken = datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
-            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
+            newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy") + timePicker.Value?.ToString(" h:mm:ss tt");
         }
         
         UpdateAndDisplayDestPath();
+    }
+
+    private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+	    newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy") + timePicker.Value?.ToString(" h:mm:ss tt");
     }
 }
