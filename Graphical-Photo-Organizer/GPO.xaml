@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer V1.2" Width="1000" Height="680" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="740" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -27,6 +28,8 @@
             <RowDefinition Height="45"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -41,17 +44,20 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="False">
+        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="10" Header="Current Item" FontSize="13" IsEnabled="False">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
-                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="6,6,4,3" FontSize="9" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
-                    <Label Name="dateTakenSrcLabel" Content="src"/>
-                </StackPanel>
-
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,6,0,3" FontSize="9" />
+                <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
+                <Label Name="dateTakenSrcLabel" Content="Source: "/>
                 <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
-                <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
 
+                <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
+                
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,2">
+                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
+                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" DefaultValue="12:00:00 AM" Value="12:00:00 AM" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
+                </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
                     <Button FontSize="13" Content="_Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click" ToolTip="This item will not be moved and will remain where it is."/>
                     <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0" ToolTip="Sort this item based on what Date Taken it was given by you or that was found in the file."/>
@@ -68,13 +74,13 @@
             </StackPanel>
         </GroupBox>
 
-        <TextBlock x:Name="warningText" Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="12" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" Text="warning text" Foreground="#FFCB940A"/>
+        <TextBlock x:Name="warningText" Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="14" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" Text="warning text" Foreground="#FFCB940A"/>
 
-        <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
-        <TextBlock PreviewMouseDown="OriginalPathText_OnMouseDoubleClick" x:Name="originalPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Text="path"/>
+        <Label Grid.Column="1" Grid.Row="15" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
+        <TextBlock PreviewMouseDown="OriginalPathText_OnMouseDoubleClick" x:Name="originalPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="15" FontSize="13" VerticalAlignment="Center" Text="path"/>
 
-        <Label Grid.Column="1" Grid.Row="14" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
-        <TextBlock x:Name="destPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" FontSize="13" VerticalAlignment="Center" Text="path" />
+        <Label Grid.Column="1" Grid.Row="16" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
+        <TextBlock x:Name="destPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="16" FontSize="13" VerticalAlignment="Center" Text="path" />
 
         <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
         <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
