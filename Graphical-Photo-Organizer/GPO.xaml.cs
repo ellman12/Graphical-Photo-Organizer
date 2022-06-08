@@ -270,10 +270,11 @@ public partial class GPO
 			{
 				ogDateTakenLabel.Content = "OG: None";
 				newDateTakenLabel.Content = "New: None";
+				timePicker.Value = null;
 			}
 			else if (ogDateTaken != null)
 			{
-				datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
+				timePicker.Value = datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
 				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy");
 				newDateTakenLabel.Content = "New: " + newDateTaken?.ToString("M/d/yyyy");
 			}
