@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GPO Settings" Height="470" Width="350" ResizeMode="NoResize">
+        Title="GPO Settings" Height="520" Width="350" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -13,7 +13,7 @@
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="14"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -25,7 +25,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="35"/>
@@ -44,27 +44,32 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="6" FontSize="12">
-            <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11">
-                <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="{x:Type CheckBox}">
-                            <Setter Property="Margin" Value="0,4,0,0"/>
-                            <Setter Property="FontSize" Value="10"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpg</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpeg</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">png</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">gif</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mp4</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mov</CheckBox>
-                    <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mkv</CheckBox>
-                </StackPanel>
-            </GroupBox>
+        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="8" FontSize="12">
+            <StackPanel Orientation="Vertical">
+                <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11" Margin="0,0,105,0">
+                    <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type CheckBox}">
+                                <Setter Property="Margin" Value="0,4,0,0" />
+                                <Setter Property="FontSize" Value="10" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpg</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">jpeg</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">png</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">gif</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mp4</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mov</CheckBox>
+                        <CheckBox IsChecked="true" Click="ExtCheckbox_Click">mkv</CheckBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <CheckBox IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,5,0,0" ToolTip="When the current item is sorted, should its internal DT metadata be updated if you modified it in GPO?">Update Metadata DT on Sort (← Recommended ↓)</CheckBox>
+                <CheckBox IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,3,0,0" ToolTip="When the current item is sorted, if it had DT in the filename but NOT the metadata, should the metadata be updated with the filename DT?">Update DT Metadata If None, but Has Filename DT</CheckBox>
+            </StackPanel>
         </GroupBox>
         
-        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="7" Grid.RowSpan="7" FontSize="12">
+        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="9" Grid.RowSpan="7" FontSize="12">
             <StackPanel Orientation="Vertical">
                 <CheckBox IsChecked="False" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
                 
