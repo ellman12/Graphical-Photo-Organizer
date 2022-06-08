@@ -48,7 +48,10 @@
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,6,0,3" FontSize="9" />
                 <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
-                <Label Name="dateTakenSrcLabel" Content="Source: "/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="Source:" Margin="0,0,0,0"/>
+                    <Label VerticalAlignment="Center" Name="dateTakenSrcLabel" Margin="-6,0,0,0"/>
+                </StackPanel>
                 <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
 
                 <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
