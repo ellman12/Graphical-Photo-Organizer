@@ -78,7 +78,9 @@ public partial class GPO
     private void Window_Initialized(object sender, EventArgs e)
     {
         datePicker.DisplayDate = DateTime.Now; //This is necessary to prevent null errors.
-        datePicker.SelectedDate = null; //Prevents the current date from showing up after "New: "
+        datePicker.SelectedDate = null;
+        timePicker.Value = null;
+        newDateTakenLabel.Content = null;
         
         srcDirLabel.Content = ""; //These cannot be null because if they are, they don't take up any space and make UI look weird.
         destDirLabel.Content =""; 
@@ -268,15 +270,15 @@ public partial class GPO
 
 			if (ogDateTaken == null)
 			{
-				ogDateTakenLabel.Content = "OG: None";
-				newDateTakenLabel.Content = "New: None";
+				ogDateTakenLabel.Content = "None";
+				newDateTakenLabel.Content = "None";
 				timePicker.Value = null;
 			}
 			else if (ogDateTaken != null)
 			{
 				timePicker.Value = datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
-				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
-				newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+				ogDateTakenLabel.Content = ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+				newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
 			}
 
 			dateTakenSrcLabel.Content = dateTakenSrc;
@@ -332,14 +334,14 @@ public partial class GPO
         datePicker.SelectedDate = newDateTaken = ogDateTaken;
         if (ogDateTaken == null)
         {
-            ogDateTakenLabel.Content = "OG: None";
-            newDateTakenLabel.Content = "New: None";
+            ogDateTakenLabel.Content = "None";
+            newDateTakenLabel.Content = "None";
         }
         else if (ogDateTaken != null)
         {
             datePicker.DisplayDate = (DateTime) ogDateTaken;
-            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
-            newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+            ogDateTakenLabel.Content = ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+            newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
         }
     }
 
@@ -490,17 +492,18 @@ public partial class GPO
     {
         if (datePicker.SelectedDate == null)
         {
-            ogDateTakenLabel.Content = "New: None";
-            datePicker.SelectedDate = null;
+            ogDateTakenLabel.Content = "None";
+            newDateTaken = null;
         }
         else if (datePicker.SelectedDate != null)
         {
-            newDateTaken = datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
-            newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+            newDateTaken = datePicker.SelectedDate;
+            newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+            datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
         }
         
         UpdateAndDisplayDestPath();
     }
 
-    private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) => newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+    private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) => newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
 }
