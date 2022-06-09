@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GPO Settings" Height="520" Width="350" ResizeMode="NoResize">
+        Title="GPO Settings" Height="520" Width="360" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -44,7 +44,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="8" FontSize="12">
+        <GroupBox Header="General Settings" Grid.Column="1" Grid.ColumnSpan="7" Grid.Row="1" Grid.RowSpan="8" FontSize="12">
             <StackPanel Orientation="Vertical">
                 <GroupBox Header="File Extensions to Sort" VerticalContentAlignment="Top" FontSize="11" Margin="0,0,105,0">
                     <StackPanel Name="extensionsStackPanel" Orientation="Vertical">
@@ -64,8 +64,8 @@
                     </StackPanel>
                 </GroupBox>
 
-                <CheckBox IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,5,0,0" ToolTip="When the current item is sorted, should its internal DT metadata be updated if you modified it in GPO?">Update Metadata DT on Sort (← Recommended ↓)</CheckBox>
-                <CheckBox IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,3,0,0" ToolTip="When the current item is sorted, if it had DT in the filename but NOT the metadata, should the metadata be updated with the filename DT?">Update DT Metadata If None, but Has Filename DT</CheckBox>
+                <CheckBox Name="updateDTOnSort" IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,5,0,0" ToolTip="When the current item is sorted, should its internal DT metadata be updated if you modified (or cleared if Unknown DT selected) it in GPO?">Update DT Metadata on Sort, If Modified or Has None (Recommended)</CheckBox>
+                <CheckBox Name="updateMetadataWithFilenameDT" IsChecked="True" IsEnabled="False" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,3,0,0" ToolTip="When the current item is sorted, if it had DT in the filename but NOT the metadata, should the metadata be updated with the filename DT?">Update DT Metadata If Has None, but Has Filename DT (Recommended)</CheckBox>
             </StackPanel>
         </GroupBox>
         
