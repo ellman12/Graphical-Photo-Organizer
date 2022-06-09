@@ -399,7 +399,20 @@ public partial class GPO
         //Creating these variables prevents file in use errors (I think).
         string movePath = currItemFullPath;
         string newPath = destFilePath;
-        Task.Run(() => File.Move(movePath, newPath));
+        Task.Run(() =>
+        {
+	        File.Move(movePath, newPath);
+
+	        Dispatcher.Invoke(() =>
+	        {
+		        if (settings.updateDTOnSort.IsChecked == true)
+		        {
+			        if (unknownDT) D.UpdateDateTaken(movePath, null);
+			        else if (ogDateTaken != newDateTaken || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
+				        D.UpdateDateTaken(movePath, newDateTaken);
+		        }
+	        });
+        });
         
         if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
 		else if (unsortedFiles.Count == 0) Cleanup();
