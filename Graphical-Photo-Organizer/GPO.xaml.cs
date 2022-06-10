@@ -202,7 +202,7 @@ public partial class GPO
     ///Begin the sorting process.
     private void beginBtn_Click(object sender, RoutedEventArgs e)
     {
-        amountSorted = amountSkipped = amountDeleted = 0;
+	    progressBar.Value = amountSorted = amountSkipped = amountDeleted = 0;
         itemPreview.LoadedBehavior = MediaState.Play;
         itemPreview.Source = null;
         setupGroupBox.IsEnabled = false;
@@ -232,17 +232,16 @@ public partial class GPO
         //
         // if (amountMoved > 0) MessageBox.Show($"Moved {amountMoved} items", $"Moved {amountMoved} items", MessageBoxButton.OK, MessageBoxImage.Information);
 
+        progressBar.Maximum = unsortedFiles.Count;
+        
         if (settings.autoSortCheckBox.IsChecked == true)
         {
-            progressBar.Visibility = Visibility.Visible;
-            progressBar.Maximum = unsortedFiles.Count;
             if (settings.sendToUnknownDTBtn.IsChecked == true) new Thread(AutoSortSendToUnknownFolder).Start();
             else if (settings.promptBtn.IsChecked == true) new Thread(AutoSortPromptNullDT).Start();
             else if (settings.skipItemBtn.IsChecked == true) new Thread(AutoSortUnknownDTSkip).Start();
         }
         else //manual sorting
         {
-	        progressBar.Visibility = Visibility.Hidden;
 	        currentItemGroupBox.IsEnabled = true;
 			muteUnmuteBtn.IsEnabled = true;
 			LoadAndDisplayNextItem();
@@ -322,7 +321,8 @@ public partial class GPO
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
         amountSkipped++;
-        
+        progressBar.Value++;
+
         if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
         else if (unsortedFiles.Count == 0) Cleanup();
     }
@@ -357,6 +357,7 @@ public partial class GPO
         RecycleFile(currItemFullPath);
         LoadAndDisplayNextItem();
         amountDeleted++;
+        progressBar.Value++;
     }
 
     ///Moves the current item to its new home and loads the next item.
@@ -431,11 +432,12 @@ public partial class GPO
 
 		Dispatcher.Invoke(() =>
 		{
+			progressBar.Value++;
+
 			if (settings.autoSortCheckBox.IsChecked == true)
 			{
 				autoSortSuspended = false;
 				currentItemGroupBox.IsEnabled = false;
-				progressBar.Value++;
 				UpdateStats();
 			}
 		});
