@@ -465,7 +465,9 @@ public partial class GPO
     {
         Dispatcher.Invoke(() =>
         {
-            itemPreview.LoadedBehavior = MediaState.Manual;
+	        unsortedFiles.Clear();
+	        destDirContents.Clear();
+	        itemPreview.LoadedBehavior = MediaState.Manual;
             itemPreview.Source = null;
             itemPreview.Stop();
             warningText.Text = null;
