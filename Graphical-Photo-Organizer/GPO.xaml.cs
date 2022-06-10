@@ -398,23 +398,33 @@ public partial class GPO
         GC.Collect();
         GC.WaitForPendingFinalizers();
 
-        //Creating these variables prevents file in use errors (I think).
+        //Creating these string variables prevents file in use errors (I think).
         string movePath = currItemFullPath;
-        string newPath = destFilePath;
-        Task.Run(() =>
-        {
-	        File.Move(movePath, newPath);
+        string destPath = destFilePath;
+        
+        //Yes this part is stupid, but I don't care.
+        DateTime? combined = null; //Combination of the date picker AND the time picker.
+		
+		//Despite clearly making sure they aren't null ↓, Rider kept complaining saying they could be null.
+		#pragma warning disable CS8629
+	    if (newDateTaken != null && timePicker.Value != null) combined =  new DateTime((int) newDateTaken?.Year, (int) newDateTaken?.Month, (int) newDateTaken?.Day, (int) timePicker.Value?.Hour, (int) timePicker.Value?.Minute, (int) timePicker.Value?.Second);
+		#pragma warning restore CS8629
 
-	        Dispatcher.Invoke(() =>
+        Task.Run(() => MoveAndUpdate(ogDateTaken, combined));
+
+        void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
+        {
+	        if (Dispatcher.Invoke(() => settings.updateDTOnSort.IsChecked) == true)
 	        {
-		        if (settings.updateDTOnSort.IsChecked == true)
+		        if (unknownDT) D.UpdateDateTaken(movePath, null);
+		        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
 		        {
-			        if (unknownDT) D.UpdateDateTaken(movePath, null);
-			        else if (ogDateTaken != newDateTaken || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
-				        D.UpdateDateTaken(movePath, newDateTaken);
+			        D.UpdateDateTaken(movePath, newDT);
 		        }
-	        });
-        });
+	        }
+	        
+	        File.Move(movePath, destPath);
+        }
         
         if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
 		else if (unsortedFiles.Count == 0) Cleanup();
