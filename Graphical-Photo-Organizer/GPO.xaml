@@ -65,7 +65,7 @@
                 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,2">
                     <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
-                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" DefaultValue="12:00:00 AM" Value="12:00:00 AM" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
+                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
