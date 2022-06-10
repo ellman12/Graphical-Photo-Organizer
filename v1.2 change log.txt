@@ -13,3 +13,5 @@ Fix some file in use errors, mostly caused by chonky videos.
 Add some more spacing between each stat and add total statistic.
 Fix issue where today's date is shown in the "New: " thing on GUI load.
 Fix an issue where srcDirLabel and destDirLabel Content could be set to null and thus make UI look weird.
+When an item is moved, its internal Date Taken metadata can now be updated. If you give it a new DT (or give it a DT in the first place), that will be written to the file if enabled in Settings. Also, if it has a filename DT but NOT metadata DT, the metadata can be automatically created/updated with the filename DT.
+

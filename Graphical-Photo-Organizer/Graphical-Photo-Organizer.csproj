@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DateTakenExtractor" Version="1.1.1" />
+    <PackageReference Include="DateTakenExtractor" Version="1.1.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.3.0" />
   </ItemGroup>
 

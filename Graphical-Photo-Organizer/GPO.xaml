@@ -47,18 +47,25 @@
         <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="10" Header="Current Item" FontSize="13" IsEnabled="False">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
                 <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,6,0,3" FontSize="9" />
-                <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
+                
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="OG:" Margin="0,0,0,0"/>
+                    <Label Name="ogDateTakenLabel" Margin="-5,0,0,0"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label Content="Source:" Margin="0,0,0,0"/>
                     <Label VerticalAlignment="Center" Name="dateTakenSrcLabel" Margin="-6,0,0,0"/>
                 </StackPanel>
-                <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="New:" Margin="0,0,0,0"/>
+                    <Label Name="newDateTakenLabel" Margin="-5,0,0,0"/>
+                </StackPanel>
 
-                <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
+                <Calendar Margin="0,3,0,0" SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
                 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,2">
                     <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
-                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" DefaultValue="12:00:00 AM" Value="12:00:00 AM" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
+                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">

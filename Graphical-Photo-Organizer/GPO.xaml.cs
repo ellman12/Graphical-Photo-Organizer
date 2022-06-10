@@ -78,7 +78,9 @@ public partial class GPO
     private void Window_Initialized(object sender, EventArgs e)
     {
         datePicker.DisplayDate = DateTime.Now; //This is necessary to prevent null errors.
-        datePicker.SelectedDate = null; //Prevents the current date from showing up after "New: "
+        datePicker.SelectedDate = null;
+        timePicker.Value = null;
+        newDateTakenLabel.Content = null;
         
         srcDirLabel.Content = ""; //These cannot be null because if they are, they don't take up any space and make UI look weird.
         destDirLabel.Content =""; 
@@ -268,15 +270,15 @@ public partial class GPO
 
 			if (ogDateTaken == null)
 			{
-				ogDateTakenLabel.Content = "OG: None";
-				newDateTakenLabel.Content = "New: None";
+				ogDateTakenLabel.Content = "None";
+				newDateTakenLabel.Content = "None";
 				timePicker.Value = null;
 			}
 			else if (ogDateTaken != null)
 			{
 				timePicker.Value = datePicker.SelectedDate = datePicker.DisplayDate = (DateTime) ogDateTaken;
-				ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
-				newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+				ogDateTakenLabel.Content = ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+				newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
 			}
 
 			dateTakenSrcLabel.Content = dateTakenSrc;
@@ -302,12 +304,12 @@ public partial class GPO
 	{
 		Dispatcher.Invoke(() =>
 		{
-			if (newDateTaken == null)
+			if (newDateTaken == null || timePicker.Value == null)
 			{
 				nextItemBtn.IsEnabled = false;
 				destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
 			}
-			else if (newDateTaken != null)
+			else if (newDateTaken != null && timePicker.Value != null)
 			{
 				nextItemBtn.IsEnabled = true;
 				destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
@@ -332,14 +334,14 @@ public partial class GPO
         datePicker.SelectedDate = newDateTaken = ogDateTaken;
         if (ogDateTaken == null)
         {
-            ogDateTakenLabel.Content = "OG: None";
-            newDateTakenLabel.Content = "New: None";
+            ogDateTakenLabel.Content = "None";
+            newDateTakenLabel.Content = "None";
         }
         else if (ogDateTaken != null)
         {
             datePicker.DisplayDate = (DateTime) ogDateTaken;
-            ogDateTakenLabel.Content = "OG: " + ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
-            newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+            ogDateTakenLabel.Content = ogDateTaken?.ToString("M/d/yyyy h:mm:ss tt");
+            newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
         }
     }
 
@@ -396,10 +398,33 @@ public partial class GPO
         GC.Collect();
         GC.WaitForPendingFinalizers();
 
-        //Creating these variables prevents file in use errors (I think).
+        //Creating these string variables prevents file in use errors (I think).
         string movePath = currItemFullPath;
-        string newPath = destFilePath;
-        Task.Run(() => File.Move(movePath, newPath));
+        string destPath = destFilePath;
+        
+        //Yes this part is stupid, but I don't care.
+        DateTime? combined = null; //Combination of the date picker AND the time picker.
+		
+		//Despite clearly making sure they aren't null ↓, Rider kept complaining saying they could be null.
+		#pragma warning disable CS8629
+	    if (newDateTaken != null && timePicker.Value != null) combined =  new DateTime((int) newDateTaken?.Year, (int) newDateTaken?.Month, (int) newDateTaken?.Day, (int) timePicker.Value?.Hour, (int) timePicker.Value?.Minute, (int) timePicker.Value?.Second);
+		#pragma warning restore CS8629
+
+        Task.Run(() => MoveAndUpdate(ogDateTaken, combined));
+
+        void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
+        {
+	        if (Dispatcher.Invoke(() => settings.updateDTOnSort.IsChecked) == true)
+	        {
+		        if (unknownDT) D.UpdateDateTaken(movePath, null);
+		        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
+		        {
+			        D.UpdateDateTaken(movePath, newDT);
+		        }
+	        }
+	        
+	        File.Move(movePath, destPath);
+        }
         
         if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
 		else if (unsortedFiles.Count == 0) Cleanup();
@@ -444,20 +469,21 @@ public partial class GPO
             itemPreview.Source = null;
             itemPreview.Stop();
             warningText.Text = null;
-            datePicker.SelectedDate = null;
+            datePicker.SelectedDate = timePicker.Value = null;
             muteUnmuteBtn.IsEnabled = false;
             currentItemGroupBox.IsEnabled = false;
             setupGroupBox.IsEnabled = true;
             srcDirRootPath = destDirRootPath = ext = "";
             ogFilename = destFolderPath = destFilePath = "";
-            filenameTextBox.Text = originalPathText.Text = destPathText.Text = null;
+            filenameTextBox.Text = null;
+            originalPathText.Text = destPathText.Text = null;
             ogDateTakenLabel.Content = newDateTakenLabel.Content = dateTakenSrcLabel.Content = null;
             srcDirLabel.Content = destDirLabel.Content = "";
-            srcDirRootPath = destDirRootPath = "";
-        });
+            srcDirRootPath = destDirRootPath = unknownDTFolderPath = "";
         
-        UpdateStats();
-        amountSorted = amountSkipped = amountDeleted = 0;
+			statsLabel.Content = $"{amountSorted} Sorted    {amountSkipped} Skipped    {amountDeleted} Deleted    0 Left    {amountSorted + amountSkipped + amountDeleted} Total";
+			amountSorted = amountSkipped = amountDeleted = 0;
+        });
 
         GC.Collect();
 		GC.WaitForPendingFinalizers();
@@ -473,21 +499,24 @@ public partial class GPO
 
     private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateAndDisplayDestPath();
 
-    private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    private void ValidateNewDateTaken()
     {
-        if (datePicker.SelectedDate == null)
-        {
-            ogDateTakenLabel.Content = "New: None";
-            datePicker.SelectedDate = null;
-        }
-        else if (datePicker.SelectedDate != null)
-        {
-            newDateTaken = datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
-            newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
-        }
+	    if (datePicker.SelectedDate == null)
+	    {
+		    ogDateTakenLabel.Content = "None";
+		    newDateTaken = null;
+	    }
+	    else if (datePicker.SelectedDate != null)
+	    {
+		    newDateTaken = datePicker.SelectedDate;
+		    newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+		    datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
+	    }
         
-        UpdateAndDisplayDestPath();
+	    UpdateAndDisplayDestPath();
     }
 
-    private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) => newDateTakenLabel.Content = $"New: {newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+    private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e) => ValidateNewDateTaken();
+
+    private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) => ValidateNewDateTaken();
 }
