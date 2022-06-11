@@ -24,7 +24,7 @@ public partial class GPO
     private readonly Settings settings = new();
     
     //Set once during setup by user.
-    ///Stores every short path (relative to destDirRootPath) and its ogFilename in the directory where sorted items end up. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
+    ///Stores every filename in destDirRootPath, and the short path of it relative to destDirRootPath. Populated with all the items, if any, in destDirRootPath. When an item is sorted, it's added to this.
     private readonly Dictionary<string, string> destDirContents = new();
 
     ///Every full path in the unsorted folder needing sorting.
@@ -213,7 +213,7 @@ public partial class GPO
 
         //Add any filenames in the destination folder for dupe checking.
         foreach(string fullPath in GetSupportedFiles(destDirRootPath))
-            destDirContents.Add(fullPath.Replace(destDirRootPath, null).Replace('\\', '/'), Path.GetFileName(fullPath));
+            destDirContents.TryAdd(Path.GetFileName(fullPath), fullPath.Replace(destDirRootPath, null).Replace('\\', '/'));
         
         //EXPERIMENTAL
         // int amountMoved = 0;
@@ -416,7 +416,7 @@ public partial class GPO
             Directory.CreateDirectory(unknownDT ? unknownDTFolderPath : destFolderPath);
 
             //Only needed here because if an item with the same exact path already existed, no need to re-add.
-            Dispatcher.Invoke(() => destDirContents.Add(destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null), filenameTextBox.Text));
+            Dispatcher.Invoke(() => destDirContents.TryAdd(filenameTextBox.Text, destFilePath.Replace(unknownDT ? unknownDTFolderPath : destFolderPath, null)));
         }
         amountSorted++;
         
@@ -584,9 +584,9 @@ public partial class GPO
 	    string filename = Path.GetFileName(currItemFullPath);
 	    Dispatcher.Invoke(() =>
 	    {
-		    if (destDirContents.ContainsValue(filename))
+		    if (destDirContents.ContainsKey(filename))
 		    {
-			    warningText.Text = $"A file with the same name already exists at {destDirContents.First(x => x.Value == filename).Key}";
+			    warningText.Text = $"A file with the same name already exists at {destDirContents[filename]}";
 			    returnVal = true;
 		    }
 		    else
