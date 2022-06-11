@@ -323,11 +323,22 @@ public partial class GPO
     ///Leaves the current item where it is and loads the next item.
     private void SkipBtn_Click(object sender, RoutedEventArgs e)
     {
-        amountSkipped++;
-        progressBar.Value++;
-
-        if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
-        else if (unsortedFiles.Count == 0) Cleanup();
+	    Dispatcher.Invoke(() =>
+	    {
+		    amountSkipped++;
+		    progressBar.Value++;
+		    if (settings.autoSortCheckBox.IsChecked == true)
+		    {
+			    autoSortSuspended = false;
+			    currentItemGroupBox.IsEnabled = false;
+			    UpdateStats();
+		    }
+		    else
+		    {
+			    if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
+			    else if (unsortedFiles.Count == 0) Cleanup();
+		    }
+	    });
     }
     
     ///Undoes any modifications made to the file by the user. The ogFilename and Date Taken are set to what they were when file first loaded.
@@ -358,9 +369,23 @@ public partial class GPO
         }
         
         RecycleFile(currItemFullPath);
-        LoadAndDisplayNextItem();
-        amountDeleted++;
-        progressBar.Value++;
+        Dispatcher.Invoke(() =>
+        {
+			amountDeleted++;
+			progressBar.Value++;
+			
+	        if (settings.autoSortCheckBox.IsChecked == true)
+	        {
+		        autoSortSuspended = false;
+		        currentItemGroupBox.IsEnabled = false;
+		        UpdateStats();
+	        }
+	        else
+	        {
+		        if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
+		        else if (unsortedFiles.Count == 0) Cleanup();
+	        }
+        });
     }
 
     ///Moves the current item to its new home and loads the next item.
@@ -430,21 +455,21 @@ public partial class GPO
 	        File.Move(movePath, destPath);
         }
         
-        if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
-		else if (unsortedFiles.Count == 0) Cleanup();
-
-		Dispatcher.Invoke(() =>
-		{
-			progressBar.Value++;
+        Dispatcher.Invoke(() =>
+        {
+	        progressBar.Value++;
 
 			if (settings.autoSortCheckBox.IsChecked == true)
 			{
 				autoSortSuspended = false;
 				currentItemGroupBox.IsEnabled = false;
-				UpdateStats();
-			}
-		});
-	}
+		        UpdateStats();
+	        }
+        });
+        
+        if (unsortedFiles.Count > 0 && Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false) LoadAndDisplayNextItem();
+		else if (unsortedFiles.Count == 0) Cleanup();
+    }
 
 	///<summary>Runs garbage collection and recycles the file specified</summary>
     private static void RecycleFile(string path)
