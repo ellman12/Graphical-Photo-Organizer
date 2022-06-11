@@ -42,6 +42,9 @@ public partial class GPO
     
     ///Where the DT GPO found came from.
     private D.DateTakenSrc dateTakenSrc;
+    
+    ///Used to verify filename user entered doesn't contain any invalid characters.
+    private readonly HashSet<char> invalidChars = Path.GetInvalidFileNameChars().ToHashSet();
 
     //Set when current file loads and may change based on user's actions.
     ///What the ogFilename was when file loaded, and can user can change.
@@ -501,9 +504,30 @@ public partial class GPO
         muteUnmuteBtn.Content = itemPreview.IsMuted ? "Un_mute" : "_Mute";
     }
 
-    private void filenameTextBox_TextChanged(object sender, EventArgs e) => UpdateAndDisplayDestPath();
+	///Perform validation of filename user entered.
+	private void filenameTextBox_TextChanged(object sender, EventArgs e)
+	{
+		if (filenameTextBox.Text.Any(c => invalidChars.Contains(c)))
+		{
+			nextItemBtn.IsEnabled = unknownDateBtn.IsEnabled = false;
+			destPathText.Foreground = Brushes.Red;
+			destPathText.Text = "Filename cannot contain \\ / : * ? \" < > |";
+		}
+		else if (String.IsNullOrEmpty(filenameTextBox.Text))
+		{
+			nextItemBtn.IsEnabled = unknownDateBtn.IsEnabled = false;
+			destPathText.Foreground = Brushes.Red;
+			destPathText.Text = "Filename cannot be blank";
+		}
+		else
+		{
+			nextItemBtn.IsEnabled = unknownDateBtn.IsEnabled = true;
+			destPathText.Foreground = Brushes.Black;
+			UpdateAndDisplayDestPath();
+		}
+	}
 
-    private void ValidateNewDateTaken()
+	private void ValidateNewDateTaken()
     {
 	    if (datePicker.SelectedDate == null)
 	    {
