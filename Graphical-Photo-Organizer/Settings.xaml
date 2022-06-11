@@ -64,7 +64,7 @@
                     </StackPanel>
                 </GroupBox>
 
-                <CheckBox Name="updateDTOnSort" IsChecked="True" FontSize="10" Click="UpdateDTOnSort_OnClick" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,5,0,0" ToolTip="When the current item is sorted, should its internal DT metadata be updated if you modified (or cleared if Unknown DT selected) it in GPO?">Update DT Metadata on Sort, If Modified or Has None (Recommended)</CheckBox>
+                <CheckBox Name="updateDTOnSort" IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,5,0,0" ToolTip="When the current item is sorted, should its internal DT metadata be updated if you modified (or cleared if Unknown DT selected) it in GPO?">Update DT Metadata on Sort, If Modified or Has None (Recommended)</CheckBox>
                 <CheckBox Name="updateMetadataWithFilenameDT" IsChecked="True" FontSize="10" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="6,3,0,0" ToolTip="When the current item is sorted, if it had DT in the filename but NOT the metadata, should the metadata be updated with the filename DT?">Update DT Metadata If Has None, but Has Filename DT (Recommended)</CheckBox>
             </StackPanel>
         </GroupBox>
