@@ -294,10 +294,7 @@ public partial class GPO
 
 			UpdateAndDisplayDestPath();
 			UpdateStats();
-
-			//Checks the destination folder to see if the current item is/might be a duplicate.
-			string destFilename = Path.GetFileName(destFilePath);
-			warningText.Text = destDirContents.ContainsValue(destFilename) ? $"A file with the same name already exists at {destDirContents.First(x => x.Value == destFilename).Key}" : null;
+			SameFilenameExists();
 		});
     }
 
@@ -436,22 +433,29 @@ public partial class GPO
 		
 		//Despite clearly making sure they aren't null ↓, Rider kept complaining saying they could be null.
 		#pragma warning disable CS8629
-	    if (newDateTaken != null && timePicker.Value != null) combined =  new DateTime((int) newDateTaken?.Year, (int) newDateTaken?.Month, (int) newDateTaken?.Day, (int) timePicker.Value?.Hour, (int) timePicker.Value?.Minute, (int) timePicker.Value?.Second);
+	    Dispatcher.Invoke(() =>
+	    {
+		    if (newDateTaken != null && timePicker.Value != null)
+			    combined = new DateTime((int) newDateTaken?.Year, (int) newDateTaken?.Month, (int) newDateTaken?.Day, (int) timePicker.Value?.Hour, (int) timePicker.Value?.Minute, (int) timePicker.Value?.Second);
+	    });
 		#pragma warning restore CS8629
 
         Task.Run(() => MoveAndUpdate(ogDateTaken, combined));
 
         void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
         {
-	        if (Dispatcher.Invoke(() => settings.updateDTOnSort.IsChecked) == true)
+	        Dispatcher.Invoke(() =>
 	        {
-		        if (unknownDT) D.UpdateDateTaken(movePath, null);
-		        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
+		        if (settings.updateDTOnSort.IsChecked == true)
 		        {
-			        D.UpdateDateTaken(movePath, newDT);
+			        if (unknownDT) D.UpdateDateTaken(movePath, null);
+			        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
+			        {
+				        D.UpdateDateTaken(movePath, newDT);
+			        }
 		        }
-	        }
-	        
+		    });
+
 	        File.Move(movePath, destPath);
         }
         
@@ -572,4 +576,25 @@ public partial class GPO
     private void DatePicker_OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e) => ValidateNewDateTaken();
 
     private void TimePicker_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e) => ValidateNewDateTaken();
+    
+    ///Checks the filename to see if a file with the same name exists in the destination folder. Returns true if so and also sets warning text.
+    private bool SameFilenameExists()
+    {
+	    bool returnVal = false;
+	    string filename = Path.GetFileName(currItemFullPath);
+	    Dispatcher.Invoke(() =>
+	    {
+		    if (destDirContents.ContainsValue(filename))
+		    {
+			    warningText.Text = $"A file with the same name already exists at {destDirContents.First(x => x.Value == filename).Key}";
+			    returnVal = true;
+		    }
+		    else
+		    {
+			    warningText.Text = null;
+			    returnVal = false;
+		    }
+	    });
+	    return returnVal;
+    }
 }

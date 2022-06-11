@@ -24,10 +24,15 @@ public partial class GPO
 			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
-			
-			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
-			CheckDateTakenYear();
-			if (autoSortSuspended) continue;
+
+			bool sameFilename = SameFilenameExists();
+			bool dtYearInvalid = DateTakenYearInvalid();
+			if (sameFilename || dtYearInvalid)
+			{
+				Dispatcher.Invoke(() => autoSortSuspended = currentItemGroupBox.IsEnabled = true);
+				LoadAndDisplayItem(currItemFullPath);
+				continue;
+			}
 			
 			UpdateDestPath();
 			MoveItem(ogDateTaken == null);
@@ -47,10 +52,15 @@ public partial class GPO
 			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
-			
-			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
-			CheckDateTakenYear();
-			if (autoSortSuspended) continue;
+
+			bool sameFilename = SameFilenameExists();
+			bool dtYearInvalid = DateTakenYearInvalid(); 
+			if (sameFilename || dtYearInvalid)
+			{
+				Dispatcher.Invoke(() => autoSortSuspended = currentItemGroupBox.IsEnabled = true);
+				LoadAndDisplayItem(currItemFullPath);
+				continue;
+			}
 			
 			if (ogDateTaken == null)
 			{
@@ -79,10 +89,15 @@ public partial class GPO
 			
 			currItemFullPath = unsortedFiles.Dequeue();
 			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
-			
-			//If this item's DT Year is less/greater than what user wants to check for, suspend this Thread until user decides what to do with the current file.
-			CheckDateTakenYear();
-			if (autoSortSuspended) continue;
+
+			bool sameFilename = SameFilenameExists();
+			bool dtYearInvalid = DateTakenYearInvalid(); 
+			if (sameFilename || dtYearInvalid)
+			{
+				Dispatcher.Invoke(() => autoSortSuspended = currentItemGroupBox.IsEnabled = true);
+				LoadAndDisplayItem(currItemFullPath);
+				continue;
+			}
 
 			if (ogDateTaken == null)
 			{
@@ -108,24 +123,31 @@ public partial class GPO
 		}
 	}
 
-	private void CheckDateTakenYear()
+	///<summary>If the setting is enabled, checks the Date Taken year value of the current item and pauses AutoSort so user can decide what to do with the item.</summary>
+	///<returns>True if Date Taken year is invalid, false if valid.</returns>
+	private bool DateTakenYearInvalid()
 	{
-		if (ogDateTaken == null) return;
+		if (ogDateTaken == null) return false;
+		bool returnVal = false;
 		
 		Dispatcher.Invoke(() =>
 		{
 			if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
 			{
 				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is less than value in Settings. Choose what to do with it.";
-				LoadAndDisplayItem(currItemFullPath);
-				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
+				returnVal = true;
 			}
 			else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
 			{
 				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is greater than value in Settings. Choose what to do with it.";
-				LoadAndDisplayItem(currItemFullPath);
-				autoSortSuspended = currentItemGroupBox.IsEnabled = true;
+				returnVal = true;
+			}
+			else
+			{
+				statusTextBlock.Text = null;
+				returnVal = false;
 			}
 		});
+		return returnVal;
 	}
 }
