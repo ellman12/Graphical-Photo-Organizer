@@ -95,21 +95,6 @@ public partial class GPO
         statusTextBlock.Text = null;
 
         settings.yearGtTB.Text = DateTime.Now.Year.ToString();
-
-        //Debugging stuff
-        if (System.Diagnostics.Debugger.IsAttached)
-        {
-	        srcDirLabel.Content = srcDirRootPath = "C:/Users/Elliott/Videos/unsorted";
-	        destDirLabel.Content = destDirRootPath = "C:/Users/Elliott/Videos/sorted";
-
-	        foreach (string file in Directory.GetFiles(destDirRootPath, "*.*", System.IO.SearchOption.AllDirectories))
-		        File.Move(file, Path.Combine(srcDirRootPath, Path.GetFileName(file)));
-
-	        Directory.Delete(destDirRootPath, true);
-	        Directory.CreateDirectory(destDirRootPath);
-	        unsortedFiles = GetSupportedFiles(srcDirRootPath);
-	        ValidateFolderDirs();
-        }
     }
 
     ///<summary>Used for getting the source and destination folders. Uses a WinForms folder browser dialog.</summary>
