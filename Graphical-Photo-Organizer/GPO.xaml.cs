@@ -515,7 +515,11 @@ public partial class GPO
 	///Perform validation of filename user entered.
 	private void filenameTextBox_TextChanged(object sender, EventArgs e)
 	{
-		if (filenameTextBox.Text.Any(c => invalidChars.Contains(c)))
+		if (destDirContents.ContainsKey(filenameTextBox.Text + ext))
+		{
+			warningText.Text = $"A file with the same name already exists at {destDirContents[filenameTextBox.Text + ext]}";
+		}
+		else if (filenameTextBox.Text.Any(c => invalidChars.Contains(c)))
 		{
 			nextItemBtn.IsEnabled = unknownDateBtn.IsEnabled = false;
 			destPathText.Foreground = Brushes.Red;
@@ -529,6 +533,7 @@ public partial class GPO
 		}
 		else
 		{
+			warningText.Text = null;
 			nextItemBtn.IsEnabled = unknownDateBtn.IsEnabled = true;
 			destPathText.Foreground = Brushes.Black;
 			UpdateAndDisplayDestPath();
