@@ -134,12 +134,12 @@ public partial class GPO
 		{
 			if (settings.yearLtCB.IsChecked == true && Int32.TryParse(settings.yearLtTB.Text, out int validYearValue) && ogDateTaken?.Year < validYearValue)
 			{
-				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is less than value in Settings. Choose what to do with it.";
+				statusTextBlock.Text = $"This item's DT year {ogDateTaken?.Year} is < {settings.yearLtTB.Text}.";
 				returnVal = true;
 			}
 			else if (settings.yearGtCB.IsChecked == true && Int32.TryParse(settings.yearGtTB.Text, out validYearValue) && ogDateTaken?.Year > validYearValue)
 			{
-				statusTextBlock.Text = $"This item's DT year of {ogDateTaken?.Year} is greater than value in Settings. Choose what to do with it.";
+				statusTextBlock.Text = $"This item's DT year {ogDateTaken?.Year} is > {settings.yearGtTB.Text}.";
 				returnVal = true;
 			}
 			else
