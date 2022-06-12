@@ -402,11 +402,12 @@ public partial class GPO
 	        {
 		        if (settings.updateDTOnSort.IsChecked == true)
 		        {
-			        if (unknownDT) D.UpdateDateTaken(movePath, null);
+			        //Only clear DT metadata if user chooses to do so when AS paused (or not running) and they hit the Unknown DT button.
+			        //If AutoSort didn't find any DT metadata, then it doesn't make sense to run the command.
+			        if (unknownDT && (autoSortSuspended || settings.autoSortCheckBox.IsChecked == false))
+				        D.UpdateDateTaken(movePath, null);
 			        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
-			        {
 				        D.UpdateDateTaken(movePath, newDT);
-			        }
 		        }
 		    });
 
