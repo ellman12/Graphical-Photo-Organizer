@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphical-Photo-Organizer", "..\..\GitHub\Graphical-Photo-Organizer\Graphical-Photo-Organizer\Graphical-Photo-Organizer.csproj", "{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphical-Photo-Organizer", "Graphical-Photo-Organizer.csproj", "{CE16EEEF-8F55-4CFD-90E8-A95CC0F5199F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

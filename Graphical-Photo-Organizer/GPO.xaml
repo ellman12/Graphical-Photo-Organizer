@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Graphical_Photo_Organizer"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Graphical Photo Organizer" Width="1000" Height="630" ResizeMode="NoResize" Initialized="Window_Initialized">
+        Title="Graphical Photo Organizer V1.2" Width="1000" Height="740" ResizeMode="NoResize" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -18,7 +18,7 @@
             <RowDefinition Height="24"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="46"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -28,29 +28,46 @@
             <RowDefinition Height="45"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <GroupBox x:Name="setupGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="4" Header="Setup" FontSize="13">
-            <StackPanel Margin="4">
-                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click"/>
-                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click"/>
-                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="2,0,0,0" Margin="0,2,0,8"/>
-                <Button x:Name="beginBtn" Content="_Begin Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False"/>
+            <StackPanel>
+                <Button x:Name="chooseSrcBtn" Content="Choose Source Folder" VerticalAlignment="Top" Height="26" Click="chooseSrcBtn_Click" Margin="0,4,0,0"/>
+                <Label FontSize="8" x:Name="srcDirLabel" Content="dir" Padding="0,2,0,2"/>
+                <Button x:Name="chooseDestBtn" Content="Choose Destination Folder" VerticalAlignment="Top" Height="26" Click="chooseDestBtn_Click" Margin="0,2,0,0"/>
+                <Label FontSize="8" x:Name="destDirLabel" Content="dir" Padding="0,2,0,5"/>
+                <Button x:Name="settingsBtn" Content="Settings / AutoSort" Height="26" Margin="0,4,0,0" Click="SettingsBtn_OnClick"/>
+                <Button x:Name="beginBtn" Content="_Begin Manual Sorting" Height="26" Click="beginBtn_Click" IsEnabled="False" Margin="0,8,0,0"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="8" Header="Current Item" FontSize="13" IsEnabled="False">
+        <GroupBox x:Name="currentItemGroupBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Grid.RowSpan="10" Header="Current Item" FontSize="13" IsEnabled="False">
             <StackPanel UseLayoutRounding="True" SnapsToDevicePixels="True">
-                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="6,6,4,3" FontSize="9" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Name="ogDateTakenLabel" Content="OG: " Margin="0,0,10,0"/>
-                    <Label Name="dateTakenSrcLabel" Content="src"/>
+                <TextBox TextChanged="filenameTextBox_TextChanged" Name="filenameTextBox" Margin="0,6,0,3" FontSize="9" />
+                
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="OG:" Margin="0,0,0,0"/>
+                    <Label Name="ogDateTakenLabel" Margin="-5,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="Source:" Margin="0,0,0,0"/>
+                    <Label VerticalAlignment="Center" Name="dateTakenSrcLabel" Margin="-6,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label Content="New:" Margin="0,0,0,0"/>
+                    <Label Name="newDateTakenLabel" Margin="-5,0,0,0"/>
                 </StackPanel>
 
-                <Label Name="newDateTakenLabel" Content="New: " Margin="0,0,0,3"/>
-                <Calendar SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
-
+                <Calendar Margin="0,3,0,0" SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
+                
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,2">
+                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
+                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
+                </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">
                     <Button FontSize="13" Content="_Skip" Height="26" Width="88" Name="skipBtn" Click="SkipBtn_Click" ToolTip="This item will not be moved and will remain where it is."/>
                     <Button FontSize="13" Name="nextItemBtn" Click="nextItemBtn_Click" Content="_Next" Height="26" Width="88" Margin="4,0,0,0" ToolTip="Sort this item based on what Date Taken it was given by you or that was found in the file."/>
@@ -63,18 +80,23 @@
                     <Button FontSize="13" Content="_Delete" Height="26" Width="88" Name="deleteBtn" Click="DeleteBtn_Click" ToolTip="Send this file to the Recycle Bin"/>
                     <CheckBox FontSize="12" VerticalAlignment="Center" VerticalContentAlignment="Center" Name="delWarnCheckBox" Content="Del Warning" Margin="4,0,0,0" ToolTip="Should a warning be shown when deleting items?"/>
                 </StackPanel>
-                
+
             </StackPanel>
         </GroupBox>
 
-        <Label Grid.Column="1" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
-        <Label MouseDoubleClick="OriginalPathLabel_OnMouseDoubleClick" x:Name="originalPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="12" FontSize="13" VerticalAlignment="Center" Content="path"/>
-        <Label Grid.Column="1" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
-        <Label x:Name="destPathLabel" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" FontSize="13" VerticalAlignment="Center" Content="path" />
+        <TextBlock x:Name="warningText" Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="14" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" Text="warning text" Foreground="#FFCB940A"/>
 
-        <MediaElement Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
-        <Button Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
+        <Label Grid.Column="1" Grid.Row="15" FontSize="13" VerticalAlignment="Center" Content="OG Path: "  ToolTip="Where this item is now."/>
+        <TextBlock PreviewMouseDown="OriginalPathText_OnMouseDoubleClick" x:Name="originalPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="15" FontSize="13" VerticalAlignment="Center" Text="path"/>
 
-        <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats" />
+        <Label Grid.Column="1" Grid.Row="16" FontSize="13" VerticalAlignment="Center" Content="New Path: " ToolTip="Where it will end up when Next is clicked."/>
+        <TextBlock x:Name="destPathText" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="16" FontSize="13" VerticalAlignment="Center" Text="path" />
+
+        <MediaElement Grid.Row="0" Name="itemPreview" Grid.Column="4" HorizontalAlignment="Left" Height="440" Margin="4,12,0,0" VerticalAlignment="Top" Width="750" Grid.RowSpan="10"/>
+        <Button IsEnabled="False" Grid.Column="4" HorizontalAlignment="Left" Grid.Row="10" Name="muteUnmuteBtn" Click="MuteUnmuteBtn_Click" FontSize="13" Content="_Mute" Height="26" Width="100" Margin="4"/>
+        <ProgressBar Name="progressBar" Grid.Column="4" HorizontalAlignment="Right" Grid.Row="10" Height="20" Width="200" Minimum="0" Margin="0,0,10,0"/>
+
+        <Label Name="statsLabel" Grid.Column="4" Grid.Row="11" FontSize="13" VerticalAlignment="Center" Content="Stats"/>
+        <TextBlock Name="statusTextBlock" Grid.Column="4" Grid.Row="11" FontSize="12" VerticalAlignment="Center" Text="AutoSort Status Message" HorizontalAlignment="Right" Foreground="#FFCB940A" Margin="0,0,10,0"/>
     </Grid>
 </Window>
