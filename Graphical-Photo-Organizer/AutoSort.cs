@@ -23,7 +23,7 @@ public partial class GPO
 			}
 			
 			currItemFullPath = unsortedFiles.Dequeue();
-			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
 
 			bool sameFilename = SameFilenameExists();
 			bool dtYearInvalid = DateTakenYearInvalid();
@@ -51,7 +51,7 @@ public partial class GPO
 			}
 			
 			currItemFullPath = unsortedFiles.Dequeue();
-			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
 
 			bool sameFilename = SameFilenameExists();
 			bool dtYearInvalid = DateTakenYearInvalid(); 
@@ -88,7 +88,7 @@ public partial class GPO
 			}
 			
 			currItemFullPath = unsortedFiles.Dequeue();
-			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out _);
+			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
 
 			bool sameFilename = SameFilenameExists();
 			bool dtYearInvalid = DateTakenYearInvalid(); 
