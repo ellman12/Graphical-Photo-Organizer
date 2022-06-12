@@ -431,16 +431,13 @@ public partial class GPO
         //Yes this part is stupid, but I don't care.
         DateTime? combined = null; //Combination of the date picker AND the time picker.
 		
-		//Despite clearly making sure they aren't null ↓, Rider kept complaining saying they could be null.
-		#pragma warning disable CS8629
 	    Dispatcher.Invoke(() =>
 	    {
 		    if (newDateTaken != null && timePicker.Value != null)
-			    combined = new DateTime((int) newDateTaken?.Year, (int) newDateTaken?.Month, (int) newDateTaken?.Day, (int) timePicker.Value?.Hour, (int) timePicker.Value?.Minute, (int) timePicker.Value?.Second);
+			    combined = new DateTime(newDateTaken.Value.Year, newDateTaken.Value.Month, newDateTaken.Value.Day, timePicker.Value.Value.Hour, timePicker.Value.Value.Minute, timePicker.Value.Value.Second);
 	    });
-		#pragma warning restore CS8629
 
-        Task.Run(() => MoveAndUpdate(ogDateTaken, combined));
+        Task.Run(() => MoveAndUpdate(ogDateTaken, combined ?? newDateTaken));
 
         void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
         {
@@ -563,9 +560,9 @@ public partial class GPO
 		    ogDateTakenLabel.Content = "None";
 		    newDateTaken = null;
 	    }
-	    else if (datePicker.SelectedDate != null)
+	    else if (datePicker.SelectedDate != null && timePicker.Value != null)
 	    {
-		    newDateTaken = datePicker.SelectedDate;
+		    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day, timePicker.Value!.Value.Hour, timePicker.Value!.Value.Minute, timePicker.Value!.Value.Second);
 		    newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
 		    datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
 	    }
