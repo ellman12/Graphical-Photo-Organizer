@@ -73,7 +73,7 @@ To contribute to Graphical Photo Organizer, follow these steps:
 
 Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
-To compile GPO to a portable .exe using Visual Studio 2022, go under `Build > Publish Selection`, enter these settings in, then click `Publish`:
+To compile GPO to a portable .exe using Visual Studio 2022, go under `Build > Publish Selection`, enter these settings in, then click `Publish`:<br>
 ![image](https://user-images.githubusercontent.com/56001219/173247363-6b6591bb-e0c8-41db-90fc-44d4f1666815.png)
 
 Feel free to open a PR if you spot a bug 🐛 or have a feature idea 💡.
