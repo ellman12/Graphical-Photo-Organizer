@@ -393,26 +393,23 @@ public partial class GPO
 			    combined = new DateTime(newDateTaken.Value.Year, newDateTaken.Value.Month, newDateTaken.Value.Day, timePicker.Value.Value.Hour, timePicker.Value.Value.Minute, timePicker.Value.Value.Second);
 	    });
 
-        Task.Run(() => MoveAndUpdate(ogDateTaken, combined ?? newDateTaken));
-        ResumeAutoSort();
+	    Task.Run(() => MoveAndUpdate(ogDateTaken, combined ?? newDateTaken));
+	    ResumeAutoSort();
 
-        void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
-        {
-	        Dispatcher.Invoke(() =>
-	        {
-		        if (settings.updateDTOnSort.IsChecked == true)
-		        {
-			        //Only clear DT metadata if user chooses to do so when AS paused (or not running) and they hit the Unknown DT button.
-			        //If AutoSort didn't find any DT metadata, then it doesn't make sense to run the command.
-			        if (unknownDT && (autoSortSuspended || settings.autoSortCheckBox.IsChecked == false))
-				        D.UpdateDateTaken(movePath, null);
-			        else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && settings.updateMetadataWithFilenameDT.IsChecked == true)
-				        D.UpdateDateTaken(movePath, newDT);
-		        }
-		    });
-
-	        File.Move(movePath, destPath);
-        }
+	    void MoveAndUpdate(DateTime? ogDT, DateTime? newDT)
+	    {
+		    File.Move(movePath, destPath);
+		    
+		    if (Dispatcher.Invoke(() => settings.updateDTOnSort.IsChecked) == true)
+		    {
+			    //Only clear DT metadata if user chooses to do so when AS paused (or not running) and they hit the Unknown DT button.
+			    //If AutoSort didn't find any DT metadata, then it doesn't make sense to run the command.
+			    if (unknownDT && (autoSortSuspended || Dispatcher.Invoke(() => settings.autoSortCheckBox.IsChecked) == false))
+				    D.UpdateDateTaken(destPath, null);
+			    else if (ogDT != newDT || dateTakenSrc == D.DateTakenSrc.Filename && Dispatcher.Invoke(() => settings.updateMetadataWithFilenameDT.IsChecked) == true)
+				    D.UpdateDateTaken(destPath, newDT);
+		    }
+	    }
     }
     
     ///Called in places where AutoSort can be suspended to perform necessary cleanup before resuming AutoSort.
