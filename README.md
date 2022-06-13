@@ -14,7 +14,7 @@ With Graphical Photo Organizer (GPO), organizing messy folders of pictures and v
 
 ## Installation
 1. Download the [ExifTool](https://exiftool.org/) Windows Executable. This is required for modifying Date Taken metadata.
-	1. Change the name of the .exe from 'exiftool(-k).exe' to 'exiftool.exe'
+	1. Change the name of the .exe from `exiftool(-k).exe` to `exiftool.exe`
 	2. Add exiftool.exe to your system's `PATH` or move it to a folder already in the `PATH`, like `C:/Windows`.
 2. Check the [Releases](https://github.com/ellman12/Graphical-Photo-Organizer/releases) and in the latest version of GPO, download the `GPO.zip` file.
 3. Unzip the file and find `Graphical-Photo-Organizer.exe`. Double click to run it. It should be able to run wherever you put it.
