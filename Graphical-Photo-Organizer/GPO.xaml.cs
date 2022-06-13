@@ -432,11 +432,9 @@ public partial class GPO
 			    datePicker.SelectedDate = timePicker.Value = null;
 			    UpdateStats();
 		    }
-		    else
-		    {
-			    if (unsortedFiles.Count > 0) LoadAndDisplayNextItem();
-			    else if (unsortedFiles.Count == 0) Cleanup();
-		    }
+		    else if (settings.autoSortCheckBox.IsChecked == false && unsortedFiles.Count > 0) LoadAndDisplayNextItem();
+
+		    if (unsortedFiles.Count == 0) Cleanup();
 	    });
     }
 
@@ -471,7 +469,7 @@ public partial class GPO
             itemPreview.Stop();
             warningText.Text = null;
             datePicker.SelectedDate = timePicker.Value = null;
-            muteUnmuteBtn.IsEnabled = false;
+            muteUnmuteBtn.IsEnabled = autoSortSuspended = false;
             currentItemGroupBox.IsEnabled = false;
             setupGroupBox.IsEnabled = true;
             srcDirRootPath = destDirRootPath = ext = "";
