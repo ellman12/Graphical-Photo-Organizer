@@ -64,8 +64,8 @@
                 <Calendar Margin="0,3,0,0" SelectedDatesChanged="DatePicker_OnSelectedDatesChanged" Name="datePicker" FontWeight="SemiBold"/>
                 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,2">
-                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
-                    <wpfx:TimePicker Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
+                    <TextBlock Name="newTimeText" TextAlignment="Center" VerticalAlignment="Center" Text="New Time: " Margin="0,-2,0,0"/>
+                    <wpfx:TimePicker ToolTipService.ShowOnDisabled="True" Name="timePicker" ValueChanged="TimePicker_OnValueChanged" VerticalContentAlignment="Center" TextAlignment="Center" Margin="2,4,4,6" Width="100" ShowDropDownButton="True" VerticalAlignment="Center" IsOpen="False" ShowButtonSpinner="False" Kind="Local" Format="Custom" FormatString="h:mm:ss tt"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="4,0,4,4">

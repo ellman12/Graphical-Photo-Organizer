@@ -222,6 +222,15 @@ public partial class GPO
 
         progressBar.Maximum = unsortedFiles.Count;
         
+        //Time picker is only used for updating internal Date Taken metadata.
+        if (settings.updateDTOnSort.IsChecked == true || settings.updateMetadataWithFilenameDT.IsChecked == true) 
+	        timePicker.IsEnabled = true;
+        else
+        {
+	        timePicker.IsEnabled = false;
+	        newTimeText.ToolTip = timePicker.ToolTip = "TimePicker is only used for updating internal Date Taken metadata.";
+        }
+        
         if (settings.autoSortCheckBox.IsChecked == true)
         {
             if (settings.sendToUnknownDTBtn.IsChecked == true) new Thread(AutoSortSendToUnknownFolder).Start();
@@ -528,10 +537,19 @@ public partial class GPO
 		    ogDateTakenLabel.Content = "None";
 		    newDateTaken = null;
 	    }
-	    else if (datePicker.SelectedDate != null && timePicker.Value != null)
+	    else
 	    {
-		    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day, timePicker.Value!.Value.Hour, timePicker.Value!.Value.Minute, timePicker.Value!.Value.Second);
-		    newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+		    if ((settings.updateDTOnSort.IsChecked == true || settings.updateMetadataWithFilenameDT.IsChecked == true) && timePicker.Value != null)
+		    {
+			    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day, timePicker.Value!.Value.Hour, timePicker.Value!.Value.Minute, timePicker.Value!.Value.Second);
+			    newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+		    }
+		    else
+		    {
+			    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day);
+			    newDateTakenLabel.Content = newDateTaken?.ToString("M/d/yyyy");
+		    }
+		    
 		    datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
 	    }
         
