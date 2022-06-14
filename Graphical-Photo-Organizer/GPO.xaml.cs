@@ -258,6 +258,8 @@ public partial class GPO
 			filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
 			ext = Path.GetExtension(currItemFullPath);
 			datePicker.SelectedDate = newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
+			ValidateNewDateTaken();
+			
 			itemPreview.Source = new Uri(currItemFullPath);
 
 			//Fixes file in use errors caused by video files.
@@ -297,15 +299,13 @@ public partial class GPO
 	{
 		Dispatcher.Invoke(() =>
 		{
-			if (newDateTaken == null || timePicker.Value == null)
+			if (datePicker.SelectedDate == null)
 			{
-				nextItemBtn.IsEnabled = false;
 				destPathText.Text = destFilePath = Path.Combine(unknownDTFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
 			}
-			else if (newDateTaken != null && timePicker.Value != null)
+			else if (datePicker.SelectedDate != null)
 			{
-				nextItemBtn.IsEnabled = true;
-				destFolderPath = Path.Combine(destDirRootPath, newDateTaken?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
+				destFolderPath = Path.Combine(destDirRootPath, datePicker.SelectedDate?.ToString("yyyy/M MMMM/d")!).Replace('\\', '/');
 				destPathText.Text = destFilePath = Path.Combine(destFolderPath, filenameTextBox.Text + ext).Replace('\\', '/');
 			}
 		});
@@ -536,6 +536,7 @@ public partial class GPO
 	    {
 		    ogDateTakenLabel.Content = "None";
 		    newDateTaken = null;
+		    nextItemBtn.IsEnabled = false;
 	    }
 	    else
 	    {
@@ -543,14 +544,17 @@ public partial class GPO
 		    {
 			    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day, timePicker.Value!.Value.Hour, timePicker.Value!.Value.Minute, timePicker.Value!.Value.Second);
 			    newDateTakenLabel.Content = $"{newDateTaken?.ToString("M/d/yyyy")} {timePicker.Value?.ToString(" h:mm:ss tt")}";
+				datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
+				nextItemBtn.IsEnabled = true;
 		    }
-		    else
+		    else if (settings.updateDTOnSort.IsChecked == false && settings.updateMetadataWithFilenameDT.IsChecked == false && timePicker.Value == null)
 		    {
-			    newDateTaken = new DateTime(datePicker.SelectedDate.Value.Year, datePicker.SelectedDate.Value.Month, datePicker.SelectedDate.Value.Day);
-			    newDateTakenLabel.Content = newDateTaken?.ToString("M/d/yyyy");
+			    nextItemBtn.IsEnabled = true;
 		    }
-		    
-		    datePicker.DisplayDate = (DateTime) datePicker.SelectedDate;
+		    else if ((settings.updateDTOnSort.IsChecked == true || settings.updateMetadataWithFilenameDT.IsChecked == true) && timePicker.Value == null)
+		    {
+				nextItemBtn.IsEnabled = false;
+		    }
 	    }
         
 	    UpdateAndDisplayDestPath();
