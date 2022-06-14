@@ -60,7 +60,7 @@ The colored text below the OG (original) Date Taken is where GPO found the Date 
 AutoSort is a new feature in V1.2 that can automatically sort a folder, making the process of sorting _way_ faster and easier. It does take a little bit of setup, but once it starts, it can chew through a folder quickly.
 
 The [Wiki](https://github.com/ellman12/Graphical-Photo-Organizer/wiki) goes into a lot more detail about what all the settings are for and when you'd want to use them, but to enable AutoSort, go to the settings window and check the box to turn it on. The default settings should be ideal for almost all use cases. The rest of the AutoSort settings _should_ speak for themselves, but check the Wiki for more info and their use cases.<br>
-![image](https://user-images.githubusercontent.com/56001219/173256485-773bc3a6-f64f-496a-adf7-e667b18cae85.png)
+![image](https://user-images.githubusercontent.com/56001219/173622721-48df6038-4936-4846-8a0e-df2c9e3d245a.png)
 
 ## Contributing to Graphical Photo Organizer
 To contribute to Graphical Photo Organizer, follow these steps:

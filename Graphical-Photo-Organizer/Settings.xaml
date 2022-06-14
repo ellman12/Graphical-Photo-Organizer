@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GPO Settings" Height="520" Width="390" ResizeMode="NoResize">
+        Title="GPO Settings" Height="470" Width="390" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
@@ -31,7 +31,7 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
@@ -69,7 +69,7 @@
             </StackPanel>
         </GroupBox>
         
-        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="9" Grid.RowSpan="7" FontSize="12">
+        <GroupBox Header="AutoSort Settings" Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="9" Grid.RowSpan="6" FontSize="12">
             <StackPanel Orientation="Vertical">
                 <CheckBox IsChecked="False" Name="autoSortCheckBox" Click="AutoSortCheckBox_Click" Margin="0,4,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" Content="Enable AutoSort" FontSize="11"/>
                 
@@ -89,7 +89,6 @@
                         <TextBox Name="yearGtTB" IsEnabled="True" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="50" Margin="0,2,0,0" FontSize="10"></TextBox>
                     </StackPanel>
                 </StackPanel>
-                <Button FontSize="10" Click="WhatAreTheseForBtn_Click" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="0,8,0,0">What Are These ↑ For?</Button>
             </StackPanel>
         </GroupBox>
     </Grid>
