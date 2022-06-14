@@ -257,7 +257,7 @@ public partial class GPO
 			originalPathText.Text = currItemFullPath = fullPath;
 			filenameTextBox.Text = ogFilename = Path.GetFileNameWithoutExtension(currItemFullPath);
 			ext = Path.GetExtension(currItemFullPath);
-			newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
+			datePicker.SelectedDate = newDateTaken = ogDateTaken = D.GetDateTakenAuto(currItemFullPath, out dateTakenSrc);
 			itemPreview.Source = new Uri(currItemFullPath);
 
 			//Fixes file in use errors caused by video files.
