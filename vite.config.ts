@@ -10,10 +10,10 @@ export default defineConfig({
         tailwindcss(),
         electron({
             main: {
-                entry: "electron/main.ts",
+                entry: "src/electron/main.ts",
             },
             preload: {
-                input: path.join(__dirname, "electron/preload.ts"),
+                input: path.join(__dirname, "src/electron/preload.ts"),
             },
             // Ployfill the Electron and Node.js API for Renderer process.
             // If you want use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
