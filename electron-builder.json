@@ -1,0 +1,27 @@
+{
+    "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+    "appId": "Graphical Photo Organizer",
+    "asar": true,
+    "productName": "Graphical Photo Organizer",
+    "directories": {
+        "output": "release/${version}"
+    },
+    "files": ["dist", "dist-electron"],
+    "mac": {
+        "target": ["dmg"],
+        "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    },
+    "win": {
+        "target": [
+            {
+                "target": "portable",
+                "arch": ["x64"]
+            }
+        ],
+        "artifactName": "${productName}-Windows-${version}.${ext}"
+    },
+    "linux": {
+        "target": ["AppImage"],
+        "artifactName": "${productName}-Linux-${version}.${ext}"
+    }
+}
