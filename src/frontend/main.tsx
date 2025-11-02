@@ -7,6 +7,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./App.css";
+import DevHelper from "./DevHelper";
 
 const theme = createTheme({
     typography: {
@@ -20,7 +21,7 @@ const theme = createTheme({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
-            {/*{import.meta.env.DEV && <DevHelper />}*/}
+            {import.meta.env.MODE === "development" && <DevHelper />}
             <App />
         </ThemeProvider>
     </React.StrictMode>
