@@ -1,6 +1,6 @@
-import { exiftool } from "exiftool-vendored";
-import * as path from "path";
+import path from "path";
 import { supportedVideoExtensions } from "../electron/api";
+import { exifTool } from "../services/ExifTool";
 
 export type UnsortedFile = {
     readonly filePath: string;
@@ -10,7 +10,7 @@ export type UnsortedFile = {
 };
 
 export async function createUnsortedFile(filePath: string): Promise<UnsortedFile> {
-    const tags = await exiftool.read(filePath);
+    const tags = await exifTool.read(filePath);
     console.log("Creating UnsortedFile for", filePath, tags);
 
     return {
