@@ -1,0 +1,96 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - "v*"
+
+env:
+    NODE_VERSION: "20"
+    PNPM_VERSION: "10"
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: ${{ env.PNPM_VERSION }}
+
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+            - name: Setup pnpm cache
+              uses: actions/cache@v4
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build
+              run: pnpm build
+
+            - name: Create Release
+              id: create_release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ github.ref }}
+                  name: Release ${{ github.ref }}
+                  draft: false
+                  prerelease: false
+                  files: /dist/**/*
+
+            - name: Generate changelog
+              id: changelog
+              run: |
+                  # Generate changelog from commits since last tag
+                  PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+                  if [ -z "$PREVIOUS_TAG" ]; then
+                    # If no previous tag, get all commits
+                    CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges)
+                  else
+                    CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges $PREVIOUS_TAG..HEAD)
+                  fi
+                  echo "changelog<<EOF" >> $GITHUB_OUTPUT
+                  echo "$CHANGELOG" >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+
+            - name: Update Release Notes
+              uses: actions/github-script@v8
+              with:
+                  script: |
+                      const { data: release } = await github.rest.repos.getReleaseByTag({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        tag: context.ref.replace('refs/tags/', '')
+                      });
+
+                      const changelog = `${{ steps.changelog.outputs.changelog }}`;
+
+                      await github.rest.repos.updateRelease({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        release_id: release.id,
+                        body: `## What's Changed\n\n${changelog}\n\n## Installation\n\nDownload the appropriate build for your platform from the assets above.`
+                      });
