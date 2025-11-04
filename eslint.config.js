@@ -38,8 +38,20 @@ export default tseslint.config([
         },
         extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
         languageOptions: { ecmaVersion: 2020, globals: globals.browser },
+
+        //https://www.npmjs.com/package/eslint-plugin-unused-imports
         rules: {
-            "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+            "no-unused-vars": "off",
+            "unused-imports/no-unused-imports": "error",
+            "unused-imports/no-unused-vars": [
+                "warn",
+                {
+                    vars: "all",
+                    varsIgnorePattern: "^_",
+                    args: "after-used",
+                    argsIgnorePattern: "^_",
+                },
+            ],
         },
     },
 ]);
