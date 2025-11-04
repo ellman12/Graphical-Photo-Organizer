@@ -8,7 +8,7 @@
 
         //---------- Modules ----------
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
 
