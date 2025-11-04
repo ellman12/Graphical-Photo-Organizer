@@ -27,7 +27,8 @@ ipcMain.handle("files:getFiles", async (event: IpcMainInvokeEvent, dir: string):
 });
 
 ipcMain.handle("files:getUnsortedFiles", async (event: IpcMainInvokeEvent, dir: string): Promise<UnsortedFile[]> => {
-    const supportedFiles = (await getFiles(dir)).filter((filePath) => supportedExtensions.has(path.extname(filePath)));
+    const files = await getFiles(dir);
+    const supportedFiles = files.filter((filePath) => supportedExtensions.has(path.extname(filePath).toLowerCase()));
     return await Promise.all(supportedFiles.map((filePath) => createUnsortedFile(filePath)));
 });
 

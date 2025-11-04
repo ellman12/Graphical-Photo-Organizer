@@ -1,22 +1,21 @@
 import path from "path";
 import { supportedVideoExtensions } from "../electron/api";
-import { exifTool } from "../services/ExifTool";
+import { exifToolService } from "../services/ExifToolService";
+import { DateTaken } from "./DateTaken";
 
 export type UnsortedFile = {
     readonly filePath: string;
-    readonly metadataDateTaken: Date | null;
-    readonly filenameDateTaken: Date | null;
+    readonly dateTaken: DateTaken;
     readonly isVideo: boolean;
 };
 
 export async function createUnsortedFile(filePath: string): Promise<UnsortedFile> {
-    const tags = await exifTool.read(filePath);
-    console.log("Creating UnsortedFile for", filePath, tags);
+    const dateTaken = await exifToolService.getDateTaken(filePath);
+    console.log(`Date taken for ${filePath}`, dateTaken);
 
     return {
-        filePath: filePath.replaceAll("\\", "/"),
-        metadataDateTaken: null,
-        filenameDateTaken: null,
-        isVideo: supportedVideoExtensions.has(path.extname(filePath)),
+        filePath,
+        dateTaken,
+        isVideo: supportedVideoExtensions.has(path.extname(filePath).toLowerCase()),
     };
 }
