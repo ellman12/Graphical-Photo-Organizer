@@ -1,5 +1,5 @@
 import { app } from "electron";
-import { ExifTool, Tags } from "exiftool-vendored";
+import { ExifTool, Tags, WriteTaskResult } from "exiftool-vendored";
 import fs from "fs";
 import { fileURLToPath } from "node:url";
 import path from "path";
@@ -12,6 +12,7 @@ export type ExifToolService = {
     getDateTaken: (filePath: string) => Promise<DateTaken>;
     getMetadataDateTaken: (filePath: string) => Promise<MetadataDateTakenValue[]>;
     getFilenameDateTaken: (filePath: string) => Date | null;
+    writeDateTaken: (filePath: string, newDateTaken: Date | string | null) => Promise<WriteTaskResult>;
 };
 
 function getExifToolPath() {
@@ -32,6 +33,7 @@ export function createExifToolService(): ExifToolService {
 
     const exifTool = new ExifTool({
         exiftoolPath: exePath,
+        writeArgs: ["-overwrite_original"],
     });
 
     async function getDateTaken(filePath: string): Promise<DateTaken> {
@@ -81,11 +83,18 @@ export function createExifToolService(): ExifToolService {
         return date;
     }
 
+    async function writeDateTaken(filePath: string, newDateTaken: Date | string | null): Promise<WriteTaskResult> {
+        newDateTaken = newDateTaken?.toString() ?? "";
+        const metadataTags = Object.fromEntries(metadataTagNames.map((key) => [key, newDateTaken]));
+        return await exifTool.write(filePath, metadataTags);
+    }
+
     return {
         exifTool,
         getDateTaken,
         getMetadataDateTaken,
         getFilenameDateTaken,
+        writeDateTaken,
     };
 }
 
