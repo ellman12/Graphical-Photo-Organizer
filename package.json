@@ -8,6 +8,8 @@
         "dev": "vite",
         "build": "tsc && vite build && electron-builder",
         "lint": "eslint . --fix",
+        "test": "vitest",
+        "test:ui": "vitest --ui",
         "clean": "rm -rf node_modules out dist dist-electron release",
         "prepare": "husky"
     },
@@ -70,12 +72,14 @@
         "@eslint/js": "^9.39.0",
         "@tailwindcss/vite": "^4.1.16",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/jest": "^30.0.0",
         "@types/node": "^24.9.2",
         "@types/react": "^19.2.2",
         "@types/react-dom": "^19.2.2",
         "@typescript-eslint/eslint-plugin": "^8.46.2",
         "@typescript-eslint/parser": "^8.46.2",
         "@vitejs/plugin-react": "^5.1.0",
+        "@vitest/ui": "^4.0.7",
         "autoprefixer": "^10.4.21",
         "electron": "^39.0.0",
         "electron-builder": "^26.0.12",
@@ -96,6 +100,7 @@
         "typescript-eslint": "^8.46.2",
         "vite": "^7.1.12",
         "vite-plugin-electron": "^0.29.0",
-        "vite-plugin-electron-renderer": "^0.14.6"
+        "vite-plugin-electron-renderer": "^0.14.6",
+        "vitest": "^4.0.7"
     }
 }

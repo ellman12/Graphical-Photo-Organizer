@@ -1,7 +1,6 @@
 import { app } from "electron";
 import { ExifTool, Tags, WriteTaskResult } from "exiftool-vendored";
 import fs from "fs";
-import { fileURLToPath } from "node:url";
 import path from "path";
 import { DateTaken, MetadataDateTakenValue } from "../types/DateTaken";
 
@@ -9,30 +8,35 @@ const metadataTagNames: (keyof Tags)[] = ["CreateDate", "CreationDate", "Date", 
 
 export type ExifToolService = {
     exifTool: ExifTool;
+    getExifToolPath: () => string;
     getDateTaken: (filePath: string) => Promise<DateTaken>;
     getMetadataDateTaken: (filePath: string) => Promise<MetadataDateTakenValue[]>;
     getFilenameDateTaken: (filePath: string) => Date | null;
     writeDateTaken: (filePath: string, newDateTaken: Date | string | null) => Promise<WriteTaskResult>;
 };
 
-function getExifToolPath() {
-    if (app.isPackaged) {
-        return path.join(process.resourcesPath, "ExifTool", "exiftool.exe");
-    } else {
-        return path.join(path.dirname(fileURLToPath(import.meta.url)), "../bin/ExifTool/exiftool.exe");
-    }
-}
-
 //Wrapper around ExifTool for getting and setting file date taken values.
 export function createExifToolService(): ExifToolService {
+    function getExifToolPath(): string {
+        if (app?.isPackaged) {
+            return path.join(process.resourcesPath, "ExifTool", "exiftool.exe").replaceAll("\\", "/");
+        } else {
+            return path.join(process.cwd(), "bin/ExifTool/exiftool.exe").replaceAll("\\", "/");
+        }
+    }
+
     const exePath = getExifToolPath();
 
     if (!fs.existsSync(exePath)) {
-        throw new Error(`ExifTool executable not found at: ${exePath}`);
+        throw new Error(`ExifTool.exe not found at: ${exePath}`);
+    } else {
+        console.log(`Found ExifTool.exe at ${exePath}`);
     }
 
     const exifTool = new ExifTool({
         exiftoolPath: exePath,
+        keepUTCTime: false,
+        defaultVideosToUTC: false,
         writeArgs: ["-overwrite_original"],
     });
 
@@ -51,11 +55,14 @@ export function createExifToolService(): ExifToolService {
         return metadataTagNames
             .map((key) => ({ source: key, value: tags[key] }))
             .map((field) => {
-                const date = new Date(field.value?.toString() ?? "");
+                const date = new Date(field.value?.toLocaleString() ?? "");
                 const value = isNaN(date.getTime()) ? null : date;
+
+                if (value != null) console.log(`Found metadata value for ${field.source}`, value);
+
                 return { source: field.source, value };
             })
-            .filter((field) => field.value !== null) as MetadataDateTakenValue[]; //as is to remove null
+            .filter((field) => field.value !== null) as MetadataDateTakenValue[];
     }
 
     function getFilenameDateTaken(filePath: string): Date | null {
@@ -91,6 +98,7 @@ export function createExifToolService(): ExifToolService {
 
     return {
         exifTool,
+        getExifToolPath,
         getDateTaken,
         getMetadataDateTaken,
         getFilenameDateTaken,

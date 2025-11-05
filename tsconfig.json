@@ -5,6 +5,7 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "jsx": "react-jsx",
         "useDefineForClassFields": true,
+        "types": ["node", "vitest/globals"],
 
         //---------- Modules ----------
         "module": "ESNext",
@@ -32,5 +33,5 @@
         //---------- Output ----------
         "noEmit": true
     },
-    "include": ["src", "electron"]
+    "include": ["src", "tests", "electron"]
 }

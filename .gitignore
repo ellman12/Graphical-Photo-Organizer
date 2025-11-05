@@ -27,3 +27,5 @@ dist-electron
 release/
 
 .env
+tests/TestFiles/TempFiles/*
+
