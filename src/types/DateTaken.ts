@@ -13,3 +13,7 @@ export type DateTaken = {
     //A date taken value obtained from the name of the file, if present.
     filename: Date | null;
 };
+
+export const MetadataTagNames = ["CreateDate", "CreationDate", "Date", "DateTime", "DateTimeCreated", "DateTimeDigitized", "DateTimeOriginal", "DigitalCreationDateTime", "MediaCreateDate", "MediaModifyDate"] as const satisfies (keyof Tags)[];
+
+export type DateTakenSource = "Filename" | "Custom" | "None" | (typeof MetadataTagNames)[number];

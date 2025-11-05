@@ -63,6 +63,8 @@
         "@fontsource/roboto": "^5.2.8",
         "@mui/icons-material": "^7.3.4",
         "@mui/material": "^7.3.4",
+        "@mui/x-date-pickers": "^8.17.0",
+        "date-fns": "^4.1.0",
         "exiftool-vendored": "^31.2.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",

@@ -6,12 +6,12 @@ export type AppMode = "preSort" | "sorting";
 //Stores app config.
 interface AppStateStore {
     appMode: AppMode;
-    startSorting: () => void;
+    setAppMode: (newMode: AppMode) => void;
 }
 
 const useAppStateStoreBase = create<AppStateStore>()((set) => ({
     appMode: "preSort",
-    startSorting: () => set({ appMode: "sorting" }),
+    setAppMode: (newMode) => set({ appMode: newMode }),
 }));
 
 export const useAppStateStore = createSelectors(useAppStateStoreBase);

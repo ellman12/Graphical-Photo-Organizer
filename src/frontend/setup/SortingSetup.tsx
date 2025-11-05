@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useAppStateStore } from "../../stores/AppStateStore";
+import { useCurrentFileStore } from "../../stores/CurrentFileStore";
 import { useSortingStore } from "../../stores/SortingStore";
 
 type SetupFormFields = {
@@ -8,8 +9,9 @@ type SetupFormFields = {
 };
 
 export default function SortingSetup() {
-    const startSorting = useAppStateStore.use.startSorting();
+    const setAppMode = useAppStateStore.use.setAppMode();
     const { sourceDir, setSourceDir, destinationDir, setDestinationDir, unsortedFiles, setUnsortedFiles } = useSortingStore();
+    const setCurrentFile = useCurrentFileStore.use.setCurrentFile();
 
     async function pickSourceDir() {
         const path = (await backend.pickFolder()) ?? sourceDir;
@@ -17,6 +19,7 @@ export default function SortingSetup() {
 
         const files = await backend.getUnsortedFiles(path);
         setUnsortedFiles(files);
+        setCurrentFile(files[0]);
     }
 
     async function pickDestinationDir() {
@@ -39,6 +42,10 @@ export default function SortingSetup() {
 
     const errors = getInputErrors();
     const startButtonEnabled = sourceDir !== "" && destinationDir !== "" && sourceDir !== destinationDir && !Object.values(errors).some((e) => e !== undefined);
+
+    function startSorting() {
+        setAppMode("sorting");
+    }
 
     return (
         <Stack gap={2}>

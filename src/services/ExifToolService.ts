@@ -1,10 +1,8 @@
 import { app } from "electron";
-import { ExifTool, Tags, WriteTaskResult } from "exiftool-vendored";
+import { ExifTool, WriteTaskResult } from "exiftool-vendored";
 import fs from "fs";
 import path from "path";
-import { DateTaken, MetadataDateTakenValue } from "../types/DateTaken";
-
-const metadataTagNames: (keyof Tags)[] = ["CreateDate", "CreationDate", "Date", "DateTime", "DateTimeCreated", "DateTimeDigitized", "DateTimeOriginal", "DigitalCreationDateTime", "MediaCreateDate", "MediaModifyDate"] as const;
+import { DateTaken, MetadataDateTakenValue, MetadataTagNames } from "../types/DateTaken";
 
 export type ExifToolService = {
     exifTool: ExifTool;
@@ -52,8 +50,7 @@ export function createExifToolService(): ExifToolService {
     async function getMetadataDateTaken(filePath: string): Promise<MetadataDateTakenValue[]> {
         const tags = await exifTool.read(filePath);
 
-        return metadataTagNames
-            .map((key) => ({ source: key, value: tags[key] }))
+        return MetadataTagNames.map((key) => ({ source: key, value: tags[key] }))
             .map((field) => {
                 const date = new Date(field.value?.toLocaleString() ?? "");
                 const value = isNaN(date.getTime()) ? null : date;
@@ -92,7 +89,7 @@ export function createExifToolService(): ExifToolService {
 
     async function writeDateTaken(filePath: string, newDateTaken: Date | string | null): Promise<WriteTaskResult> {
         newDateTaken = newDateTaken?.toString() ?? "";
-        const metadataTags = Object.fromEntries(metadataTagNames.map((key) => [key, newDateTaken]));
+        const metadataTags = Object.fromEntries(MetadataTagNames.map((key) => [key, newDateTaken]));
         return await exifTool.write(filePath, metadataTags);
     }
 

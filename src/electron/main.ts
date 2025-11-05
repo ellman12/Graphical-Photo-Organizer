@@ -18,10 +18,14 @@ export let mainWindow: BrowserWindow | null;
 function createWindow() {
     mainWindow = new BrowserWindow({
         icon: path.join(process.env.VITE_PUBLIC!, "electron-vite.svg"),
+        width: 1280,
+        height: 720,
         webPreferences: {
             preload: path.join(__dirname, "preload.mjs"),
+            webSecurity: false,
         },
     });
+    mainWindow.removeMenu();
 
     if (VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(VITE_DEV_SERVER_URL);
