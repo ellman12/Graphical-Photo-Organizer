@@ -15,7 +15,7 @@ interface CurrentFileState {
     setNewDateTaken: (newDt: Date | null) => void;
 
     //Returns a path like rootPath/year/month/day/filename.ext
-    getRelativeDestinationPath: (rootPath: string) => string;
+    getDestinationPath: (rootPath: string) => string;
 }
 
 const useCurrentFileStoreBase = create<CurrentFileState>()((set, get) => ({
@@ -28,7 +28,7 @@ const useCurrentFileStoreBase = create<CurrentFileState>()((set, get) => ({
     newDateTaken: null,
     setNewDateTaken: (newDt) => set({ newDateTaken: newDt }),
 
-    getRelativeDestinationPath: (rootPath) => {
+    getDestinationPath: (rootPath) => {
         const file = get().currentFile;
         if (!file) return "";
 

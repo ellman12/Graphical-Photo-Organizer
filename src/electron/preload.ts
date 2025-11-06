@@ -8,6 +8,8 @@ export const backend = {
     getUnsortedFiles: async (dir: string): Promise<UnsortedFile[]> => await ipcRenderer.invoke("files:getUnsortedFiles", dir),
 
     pickFolder: async (): Promise<string | null> => await ipcRenderer.invoke("dialog:openFolder"),
+
+    moveFile: async (oldPath: string, newPath: string): Promise<void> => await ipcRenderer.invoke("files:moveFile", oldPath, newPath),
 };
 
 contextBridge.exposeInMainWorld("backend", backend);

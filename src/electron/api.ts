@@ -44,4 +44,8 @@ ipcMain.handle("dialog:openFolder", async (): Promise<string | null> => {
     return null;
 });
 
+ipcMain.handle("files:moveFile", async (event: IpcMainInvokeEvent, oldPath: string, newPath: string): Promise<void> => {
+    await fs.rename(oldPath, newPath);
+});
+
 console.log("Finish setting up API");

@@ -1,6 +1,7 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { useCurrentFileStore } from "../../stores/CurrentFileStore";
 import DateTakenSourcePicker from "./DateTakenSourcePicker";
+import ItemButtons from "./ItemButtons";
 
 export default function ItemControls() {
     const currentFile = useCurrentFileStore.use.currentFile();
@@ -16,6 +17,8 @@ export default function ItemControls() {
             <TextField value={newFilename} label="New Filename" variant="outlined" onChange={(event) => setNewFilename(event.target.value)} />
 
             <DateTakenSourcePicker />
+
+            <ItemButtons/>
         </Stack>
     );
 }
